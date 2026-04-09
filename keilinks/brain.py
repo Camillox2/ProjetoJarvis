@@ -4,7 +4,7 @@ import threading
 from typing import Generator
 import httpx
 from config import (
-    OLLAMA_HOST, LLM_MODEL, LLM_FALLBACK,
+    OLLAMA_HOST, LLM_MODEL, LLM_FALLBACKS,
     LLM_TIMEOUT_SLOW, LLM_RECOVER_AFTER, MAX_HISTORY_TURNS, OLLAMA_KEEP_ALIVE,
 )
 from keilinks.log import get_logger
@@ -36,12 +36,18 @@ _EMOJI_RE = re.compile(
     "\uFE0F"                 # variation selector
     "]+", flags=re.UNICODE
 )
+_THINK_RE = re.compile(r'<think>.*?</think>', re.DOTALL | re.IGNORECASE)
+_OPEN_THINK_RE = re.compile(r'<think>.*$', re.DOTALL | re.IGNORECASE)
+_THINK_TAG_RE = re.compile(r'</?think>', re.IGNORECASE)
 # Remove linhas que começam com PS:, Nota:, OBS:, (PS etc
 _META_LINE_RE = re.compile(r'(?:^|\n)\s*(?:PS:|Nota:|OBS:|\(PS|\(Obs)[^\n]*', re.IGNORECASE)
 
 
 def _clean_llm(text: str) -> str:
     """Remove emoji, metacomentários e pontuação órfã antes de falar."""
+    text = _THINK_RE.sub(' ', text)
+    text = _OPEN_THINK_RE.sub(' ', text)
+    text = _THINK_TAG_RE.sub(' ', text)
     text = _META_LINE_RE.sub('', text)
     text = _EMOJI_RE.sub('', text)
     # Remove pontuação órfã que sobra após limpeza de emoji (ex: "😊)" → ")")
@@ -60,8 +66,10 @@ class Brain:
         self.history: list[dict] = self._load_multi_session_history()
 
         self._primary    = LLM_MODEL
-        self._fallback   = LLM_FALLBACK
-        self._active     = LLM_MODEL
+        self._fallbacks  = [model for model in LLM_FALLBACKS if model and model != LLM_MODEL]
+        self._models     = [self._primary, *self._fallbacks]
+        self._active_index = 0
+        self._active     = self._models[self._active_index]
         self._using_fallback     = False
         self._fallback_successes = 0
         self._on_model_change    = on_model_change
@@ -73,7 +81,7 @@ class Brain:
         self._mood_hint: str = ""                  # Mood detection
 
         log.info("Modelo principal : %s", self._primary)
-        log.info("Fallback         : %s", self._fallback)
+        log.info("Fallbacks        : %s", ", ".join(self._fallbacks) if self._fallbacks else "nenhum")
 
     def set_rag_context(self, context: str):
         """Define o contexto RAG para a próxima chamada ao LLM."""
@@ -104,19 +112,29 @@ class Brain:
         return history
 
     # ─── Gestão de modelo ─────────────────────────────────────────────────────
-    def _switch_to_fallback(self, reason: str):
-        if self._using_fallback:
-            return
-        # Se primary == fallback, não há modelo menor — apenas loga, sem aviso ao usuário
-        if self._primary == self._fallback:
-            log.warning("Resposta lenta (%s) mas já no modelo único configurado.", reason)
-            return
-        self._using_fallback     = True
-        self._active             = self._fallback
+    def _restore_primary(self, reason: str = "recuperado"):
+        self._active_index       = 0
+        self._active             = self._primary
+        self._using_fallback     = False
         self._fallback_successes = 0
-        log.warning("Fallback → %s (%s)", self._fallback, reason)
+        log.info("Voltou para %s", self._primary)
         if self._on_model_change:
-            self._on_model_change(self._fallback, reason)
+            self._on_model_change(self._primary, reason)
+
+    def _switch_to_fallback(self, reason: str) -> bool:
+        next_index = self._active_index + 1
+        if next_index >= len(self._models):
+            log.warning("Sem fallback adicional (%s). Permanecendo em %s.", reason, self._active)
+            return False
+
+        self._active_index       = next_index
+        self._active             = self._models[self._active_index]
+        self._using_fallback     = self._active_index > 0
+        self._fallback_successes = 0
+        log.warning("Fallback → %s (%s)", self._active, reason)
+        if self._on_model_change:
+            self._on_model_change(self._active, reason)
+        return True
 
     def _try_recover(self):
         if not self._using_fallback:
@@ -124,12 +142,7 @@ class Brain:
         self._fallback_successes += 1
         if self._fallback_successes >= LLM_RECOVER_AFTER:
             if self._ping(self._primary):
-                self._using_fallback     = False
-                self._active             = self._primary
-                self._fallback_successes = 0
-                log.info("Voltou para %s", self._primary)
-                if self._on_model_change:
-                    self._on_model_change(self._primary, "recuperado")
+                self._restore_primary()
             else:
                 self._fallback_successes = 0
 
@@ -184,18 +197,22 @@ class Brain:
         if len(self.history) > max_msgs:
             self.history = self.history[-max_msgs:]
 
-    def _base_options(self) -> dict:
+    def _base_options(self, has_image: bool = False) -> dict:
+        num_ctx = 4096 if has_image else 2048
         if self._using_fallback:
             return {
                 "temperature": 0.75,
                 "top_p":       0.9,
-                "num_ctx":     1024,
+                "num_ctx":     num_ctx,
                 "num_predict": 128,
+                "num_batch":   128,
+                "num_keep":    64,
+                "repeat_penalty": 1.1,
             }
         return {
             "temperature": 0.75,
             "top_p":       0.9,
-            "num_ctx":     1536,   # contexto menor para reduzir prefill sem perder conversa útil
+            "num_ctx":     num_ctx,
             "num_predict": 160,    # limita geração pra não enrolar
             "num_batch":   256,
             "num_keep":    96,
@@ -203,7 +220,7 @@ class Brain:
         }
 
     # ─── Chamada normal (não-streaming) ───────────────────────────────────────
-    def _call_llm(self, system: str, messages: list[dict]) -> str:
+    def _call_llm(self, system: str, messages: list[dict], has_image: bool = False) -> str:
         for attempt in range(2):
             payload = {
                 "model":    self._active,
@@ -211,7 +228,7 @@ class Brain:
                 "stream":   False,
                 "think":    False,
                 "keep_alive": OLLAMA_KEEP_ALIVE,
-                "options":  self._base_options(),
+                "options":  self._base_options(has_image=has_image),
             }
             t0 = time.monotonic()
             try:
@@ -229,7 +246,7 @@ class Brain:
                     log.error("Modelo %s retornou apenas thinking (%d chars) em %.1fs.", self._active, len(thinking), elapsed)
                     return "Não consegui formular a resposta agora. Tenta de novo."
 
-                if elapsed > LLM_TIMEOUT_SLOW and not self._using_fallback:
+                if elapsed > LLM_TIMEOUT_SLOW:
                     self._switch_to_fallback(f"lento ({elapsed:.0f}s)")
 
                 if self._using_fallback:
@@ -237,18 +254,15 @@ class Brain:
                 return reply
 
             except httpx.TimeoutException:
-                if not self._using_fallback and attempt == 0:
-                    self._switch_to_fallback("timeout")
+                if attempt == 0 and self._switch_to_fallback("timeout"):
                     continue
                 return "Demorou demais. Tenta de novo?"
             except MemoryError:
-                if not self._using_fallback and attempt == 0:
-                    self._switch_to_fallback("erro de memória de vídeo")
+                if attempt == 0 and self._switch_to_fallback("erro de memória de vídeo"):
                     continue
                 return "Memória cheia. Tenta em instantes."
             except httpx.HTTPStatusError as e:
-                if e.response.status_code in (500, 503) and attempt == 0:
-                    self._switch_to_fallback(f"HTTP {e.response.status_code}")
+                if e.response.status_code in (500, 503) and attempt == 0 and self._switch_to_fallback(f"HTTP {e.response.status_code}"):
                     continue
                 return f"Erro de servidor: {e}"
             except Exception as e:
@@ -256,12 +270,19 @@ class Brain:
         return "Não consegui responder agora."
 
     # ─── Chamada com streaming (para TTS em tempo real) ───────────────────────
-    def _stream_llm(self, system: str, messages: list[dict], store_reply: bool = True) -> Generator[str, None, None]:
+    def _stream_llm(
+        self,
+        system: str,
+        messages: list[dict],
+        store_reply: bool = True,
+        has_image: bool = False,
+        stop_event: threading.Event | None = None,
+    ) -> Generator[str, None, None]:
         """
         Faz streaming do LLM e yield de sentenças completas conforme chegam.
         A Voice pode começar a falar a primeira frase enquanto o resto ainda gera.
         """
-        opts = self._base_options()
+        opts = self._base_options(has_image=has_image)
         payload = {
             "model":    self._active,
             "messages": [{
@@ -276,12 +297,13 @@ class Brain:
         # Log de contexto para diagnóstico
         sys_len = len(system)
         hist_len = sum(len(m.get("content", "")) for m in messages)
-        log.info("[TIMING] LLM stream: modelo=%s, system=%d chars, history=%d chars (%d msgs), num_ctx=%s",
-                 self._active, sys_len, hist_len, len(messages), opts.get("num_ctx"))
+        log.info("[TIMING] LLM stream: modelo=%s, system=%d chars, history=%d chars (%d msgs), num_ctx=%s, has_image=%s",
+             self._active, sys_len, hist_len, len(messages), opts.get("num_ctx"), has_image)
 
         buffer      = ""
         full_reply  = ""
         oom_hit     = False
+        cancelled   = False
         t0          = time.monotonic()
         t_first     = None   # tempo até primeiro token
         token_count = 0
@@ -292,6 +314,9 @@ class Brain:
             with self._client.stream("POST", "/api/chat", json=payload, timeout=120.0) as resp:
                 resp.raise_for_status()
                 for line in resp.iter_lines():
+                    if stop_event and stop_event.is_set():
+                        cancelled = True
+                        break
                     if not line:
                         continue
                     try:
@@ -336,13 +361,16 @@ class Brain:
         except httpx.TimeoutException:
             elapsed = time.monotonic() - t0
             log.error("[TIMING] Timeout após %.1fs (%d tokens)", elapsed, token_count)
-            if not self._using_fallback:
-                self._switch_to_fallback(f"timeout streaming ({elapsed:.0f}s)")
+            self._switch_to_fallback(f"timeout streaming ({elapsed:.0f}s)")
             yield "Demorei demais. Pode repetir?"
             return
         except Exception as e:
             log.error("[TIMING] Erro no stream: %s", e)
             yield f"Tive um problema aqui: {e}"
+            return
+
+        if cancelled:
+            log.info("[TIMING] LLM stream cancelado: %.1fs, %d tokens", time.monotonic() - t0, token_count)
             return
 
         # Flush do buffer restante
@@ -374,7 +402,9 @@ class Brain:
             yield "Fiquei sem memória no meio da resposta. Vou usar o modelo menor."
             return
 
-        if not full_reply.strip():
+        clean_reply = _clean_llm(full_reply)
+
+        if not clean_reply:
             log.error(
                 "Modelo %s retornou resposta vazia. thinking_chars=%d, prompt_tokens=%s, eval_tokens=%s",
                 self._active,
@@ -387,21 +417,22 @@ class Brain:
 
         # Detecta resposta lenta
         elapsed = time.monotonic() - t0
-        if elapsed > LLM_TIMEOUT_SLOW and not self._using_fallback:
+        if elapsed > LLM_TIMEOUT_SLOW:
             self._switch_to_fallback(f"lento ({elapsed:.0f}s)")
 
         if self._using_fallback:
             self._try_recover()
 
         # Salva histórico com a resposta completa
-        if store_reply and full_reply:
-            self.history.append({"role": "assistant", "content": full_reply.strip()})
+        if store_reply and clean_reply:
+            self.history.append({"role": "assistant", "content": clean_reply})
             self.memory.save_history(self.history)
 
     # ─── Interface pública ────────────────────────────────────────────────────
     def think_stream(self, user_text: str,
                      image_b64: str | None = None,
-                     internal: bool = False) -> Generator[str, None, None]:
+                     internal: bool = False,
+                     stop_event: threading.Event | None = None) -> Generator[str, None, None]:
         """
         Versão streaming do think().
         Faz yield de sentenças conforme o LLM gera — use com voice.speak_stream().
@@ -440,11 +471,21 @@ class Brain:
         log.info("[TIMING] Build prompt: %.3fs", time.monotonic() - t_prompt)
 
         generated_parts: list[str] = []
-        for piece in self._stream_llm(system, call_history, store_reply=not internal):
+        for piece in self._stream_llm(
+            system,
+            call_history,
+            store_reply=not internal,
+            has_image=bool(image_b64),
+            stop_event=stop_event,
+        ):
             generated_parts.append(piece)
             yield piece
 
         log.info("[TIMING] think_stream total: %.1fs", time.monotonic() - t0_total)
+
+        cancelled = bool(stop_event and stop_event.is_set())
+        if cancelled:
+            return
 
         if not internal:
             final_text = " ".join(p.strip() for p in generated_parts if p.strip()).strip()
@@ -480,7 +521,7 @@ class Brain:
             result         = self.searcher.search(query)
             search_context = self.searcher.format_for_prompt(result)
 
-        reply = self._call_llm(self._build_system_prompt(search_context), call_history)
+        reply = self._call_llm(self._build_system_prompt(search_context), call_history, has_image=bool(image_b64))
 
         if not search_context and self.searcher.should_search_reactive(reply):
             query  = self.searcher.build_query(user_text)

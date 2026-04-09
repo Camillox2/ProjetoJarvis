@@ -9,7 +9,7 @@ import sounddevice as sd
 from faster_whisper import WhisperModel
 from typing import Callable
 from config import (
-    WHISPER_MODEL, WHISPER_LANGUAGE, WHISPER_COMPUTE_TYPE,
+    WHISPER_MODEL, WHISPER_LANGUAGE,
     SAMPLE_RATE, SILENCE_THRESHOLD, SILENCE_DURATION, MAX_RECORD_SECS,
 )
 from keilinks.log import get_logger
@@ -27,17 +27,11 @@ class Ears:
     def _load_model(self):
         if self.model is not None:
             return
-        try:
-            self.model = WhisperModel(
-                WHISPER_MODEL,
-                device="cuda",
-                compute_type=WHISPER_COMPUTE_TYPE,
-            )
-        except Exception as e:
-            log.error("Falha ao carregar Whisper em CUDA: %s — tentando CPU", e)
-            self.model = WhisperModel(
-                WHISPER_MODEL, device="cpu", compute_type="int8",
-            )
+        # STT roda em CPU — mantém VRAM livre para o LLM (Ollama).
+        # int8 em CPU é rápido o suficiente para PT-BR com o modelo small.
+        self.model = WhisperModel(
+            WHISPER_MODEL, device="cpu", compute_type="int8",
+        )
         log.info("Pronta pra ouvir.")
 
     def unload(self):

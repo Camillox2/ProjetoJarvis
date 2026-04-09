@@ -2,10 +2,11 @@ import os
 
 # ─── Modelos ───────────────────────────────────────────────────────────────────
 OLLAMA_HOST  = "http://localhost:11434"
-# qwen3-vl:4b no Ollama 0.20.4 está consumindo a saída inteira em thinking.
-# gemma3:4b é o modelo local mais estável e rápido aqui, com suporte a visão.
-LLM_MODEL    = "gemma3:4b"
-LLM_FALLBACK = "gemma3:4b"
+# Qwen 3.5 unifica texto e visão e evita swap constante entre modelos.
+LLM_MODEL     = "qwen3.5:4b"
+LLM_FALLBACKS = ["qwen3.5:2b", "qwen3.5:0.8b"]
+# Compatibilidade com componentes antigos que ainda usam um único fallback.
+LLM_FALLBACK  = LLM_FALLBACKS[0]
 OLLAMA_KEEP_ALIVE = "30m"
 
 # Tempo máximo de resposta antes de considerar "lento demais" (segundos)
@@ -15,9 +16,9 @@ LLM_TIMEOUT_SLOW  = 45.0
 LLM_RECOVER_AFTER = 5
 
 # ─── STT (fala → texto) ────────────────────────────────────────────────────────
-WHISPER_MODEL        = "medium"
+WHISPER_MODEL        = "small"
 WHISPER_LANGUAGE     = "pt"
-WHISPER_COMPUTE_TYPE = "int8_float16"  # economiza ~600MB vs float16, mesma qualidade
+WHISPER_COMPUTE_TYPE = "int8"
 
 # ─── TTS (texto → fala) ────────────────────────────────────────────────────────
 TTS_VOICE = "pt-BR-FranciscaNeural"
@@ -57,7 +58,7 @@ CONTINUOUS_LISTEN_TIMEOUT = 8.0    # segundos de silêncio antes de voltar pro i
 CONTINUOUS_MAX_TURNS      = 20     # máximo de turnos antes de forçar idle
 
 # ─── Logging ──────────────────────────────────────────────────────────────────
-LOG_LEVEL = "INFO"       # DEBUG | INFO | WARNING | ERROR
+LOG_LEVEL = "DEBUG"      # DEBUG | INFO | WARNING | ERROR
 LOG_FILE  = "logs/keilinks.log"
 
 # ─── Notas / Obsidian ────────────────────────────────────────────────────────

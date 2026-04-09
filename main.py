@@ -179,6 +179,23 @@ def main():
     rag        = RAGMemory()
     voice_prof = VoiceProfile()
 
+    def speak_brain_stream(
+        prompt_text: str,
+        *,
+        image_b64: str | None = None,
+        internal: bool = False,
+        interruptible: bool = True,
+    ) -> bool:
+        return voice.speak_stream(
+            lambda stop_event: brain.think_stream(
+                prompt_text,
+                image_b64=image_b64,
+                internal=internal,
+                stop_event=stop_event,
+            ),
+            interruptible=interruptible,
+        )
+
     # Aplica perfil de voz calibrado (se existir)
     if voice_prof.calibrated:
         thresholds = voice_prof.get_thresholds()
@@ -339,7 +356,7 @@ def main():
                     if user_reply:
                         anim.set_state("thinking")
                         anim.set_state("speaking")
-                        voice.speak_stream(brain.think_stream(user_reply))
+                        speak_brain_stream(user_reply)
 
                 presence.resume()
                 screen_mon.resume()
@@ -471,7 +488,7 @@ def main():
                 anim.set_state("thinking")
                 prompt = day_summary.build_summary_prompt()
                 anim.set_state("speaking")
-                voice.speak_stream(brain.think_stream(prompt, internal=True))
+                speak_brain_stream(prompt, internal=True)
                 continue
 
             # ── Google Calendar ────────────────────────────────────────────────
@@ -528,7 +545,7 @@ def main():
                     learner_summary  = brain.learner.get_profile_summary(),
                 )
                 anim.set_state("speaking")
-                voice.speak_stream(brain.think_stream(prompt, internal=True))
+                speak_brain_stream(prompt, internal=True)
                 continue
 
             # ── Memória ───────────────────────────────────────────────────────
@@ -600,7 +617,7 @@ def main():
                             "Resume o que encontrou de forma conversacional."
                         )
                         anim.set_state("speaking")
-                        voice.speak_stream(brain.think_stream(prompt, internal=True))
+                        speak_brain_stream(prompt, internal=True)
                     else:
                         anim.set_state("speaking")
                         voice.speak(f"Não encontrei nada sobre '{query}' no histórico.")
@@ -672,7 +689,7 @@ def main():
                 target_lang = extract_target_language(user_text)
                 prompt      = build_translate_prompt(screen_text, target_lang)
                 anim.set_state("speaking")
-                voice.speak_stream(brain.think_stream(prompt, internal=True))
+                speak_brain_stream(prompt, internal=True)
                 continue
 
             # ── Resumo de página ──────────────────────────────────────────────
@@ -687,7 +704,7 @@ def main():
                 voice.speak("Deixa eu acessar...", interruptible=False)
                 prompt = summarizer.summarize_url(url, mode=mode)
                 anim.set_state("speaking")
-                voice.speak_stream(brain.think_stream(prompt, internal=True))
+                speak_brain_stream(prompt, internal=True)
                 continue
 
             # ── OCR ───────────────────────────────────────────────────────────
@@ -704,7 +721,7 @@ def main():
                         "O usuário pediu pra você ler o texto que está na tela. "
                         "Leia de forma natural, resumindo se for muito longo:\n\n" + text_on_screen
                     )
-                    voice.speak_stream(brain.think_stream(prompt, internal=True))
+                    speak_brain_stream(prompt, internal=True)
                 continue
 
             # ── Visão ─────────────────────────────────────────────────────────
@@ -727,6 +744,12 @@ def main():
 
             # Suprime alertas de hardware enquanto o LLM processa (GPU sempre ~97%)
             stats.set_suppress(True)
+
+            try:
+                import torch
+                _vram_before = torch.cuda.memory_allocated() / 1024**2
+            except Exception:
+                _vram_before = None
 
             # Injeta contexto RAG de conversas anteriores
             t0_rag = _time.monotonic()
@@ -754,11 +777,19 @@ def main():
             if mood_summary:
                 brain.set_mood_hint(mood_summary)
 
-            sentence_gen = brain.think_stream(user_text, image_b64=image_b64)
-
             anim.set_state("speaking")
-            completed = voice.speak_stream(sentence_gen)
+            completed = speak_brain_stream(user_text, image_b64=image_b64)
             stats.set_suppress(False)  # reativa alertas após resposta
+
+            try:
+                import torch
+                _vram_after = torch.cuda.memory_allocated() / 1024**2
+                if _vram_before is not None:
+                    log.debug("[VRAM] Antes LLM: %.0fMB  Depois: %.0fMB  Δ=%.0fMB  Pipeline: %.1fs",
+                              _vram_before, _vram_after, _vram_after - _vram_before,
+                              _time.monotonic() - t0_pipeline)
+            except Exception:
+                pass
 
             # Salva resposta do assistant no histórico + RAG
             if brain.history and brain.history[-1].get("role") == "assistant":
@@ -775,7 +806,7 @@ def main():
                     rag.add(user_text2, role="user")
                     anim.set_state("thinking")
                     anim.set_state("speaking")
-                    voice.speak_stream(brain.think_stream(user_text2))
+                    speak_brain_stream(user_text2)
                     if brain.history and brain.history[-1].get("role") == "assistant":
                         assistant_text2 = brain.history[-1]["content"]
                         history_db.add_message(session_id, "assistant", assistant_text2)

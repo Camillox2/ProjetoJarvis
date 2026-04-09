@@ -471,3 +471,351 @@ An error happened while trying to locate the files on the Hub and we cannot find
 [10:34:09] INFO  rag            │ RAG pronto — 29 documentos indexados.
 [10:35:56] INFO  wakeword       │ Palma candidata: peak=0.22 rms=0.023 crest=9.7 onset=0.22 active=0.029
 [10:35:57] INFO  rag            │ RAG pronto — 29 documentos indexados.
+[11:54:37] INFO  brain          │ Modelo principal : qwen3.5:4b
+[11:54:37] INFO  brain          │ Fallbacks        : qwen3.5:2b, qwen3.5:0.8b
+[11:54:37] INFO  ears           │ Carregando modelo de fala (small)...
+[11:54:50] INFO  ears           │ Pronta pra ouvir.
+[11:54:50] INFO  comtypes.client._code_cache │ Could not import comtypes.gen, trying to create it.
+[11:54:50] INFO  comtypes.client._code_cache │ Created comtypes.gen directory: 'D:\ProjetoJarvis\.venv\Lib\site-packages\comtypes\gen'
+[11:54:50] INFO  comtypes.client._code_cache │ Writing __init__.py file: 'D:\ProjetoJarvis\.venv\Lib\site-packages\comtypes\gen\__init__.py'
+[11:54:50] INFO  comtypes.client._code_cache │ Using writeable comtypes cache directory: 'D:\ProjetoJarvis\.venv\Lib\site-packages\comtypes\gen'
+[11:54:50] INFO  comtypes.client._generate │ Could not import comtypes.gen._C866CA3A_32F7_11D2_9602_00C04F8EE628_0_5_4: No module named 'comtypes.gen._C866CA3A_32F7_11D2_9602_00C04F8EE628_0_5_4'
+[11:54:50] INFO  comtypes.client._generate │ # Generating comtypes.gen._C866CA3A_32F7_11D2_9602_00C04F8EE628_0_5_4
+[11:54:50] INFO  comtypes.client._generate │ # Generating comtypes.gen.SpeechLib
+[11:54:50] INFO  comtypes.client._generate │ Could not import comtypes.gen._00020430_0000_0000_C000_000000000046_0_2_0: No module named 'comtypes.gen._00020430_0000_0000_C000_000000000046_0_2_0'
+[11:54:50] INFO  comtypes.client._generate │ # Generating comtypes.gen._00020430_0000_0000_C000_000000000046_0_2_0
+[11:54:50] INFO  comtypes.client._generate │ # Generating comtypes.gen.stdole
+[11:54:51] INFO  voice          │ TTS: edge-tts online — pt-BR-FranciscaNeural
+[11:54:53] INFO  eyes           │ Câmera iniciada (índice=0, 640x480).
+[11:54:53] INFO  wakeword       │ Carregando detector de wake word (tiny)...
+[11:54:53] INFO  wakeword       │ Wake word pronta.
+[11:54:53] INFO  spotify        │ Spotify Web API: sem credenciais. Usando teclas de mídia.
+[11:54:54] INFO  rag            │ RAG pronto — 29 documentos indexados.
+[11:54:54] INFO  skills         │ Skills carregados: exemplo
+[11:54:54] INFO  calendar       │ Google Calendar: credentials.json não encontrado. Desativado.
+[11:54:55] INFO  presence       │ Monitorando você a cada 25s.
+[11:54:55] INFO  web            │ Interface web em http://localhost:7865
+[11:54:55] INFO  voice          │ Oi, amor. Câmera ligada. Me chama ou bate palmas quando precisar.
+[11:54:57] INFO  voice          │ Interrompida.
+[11:54:57] INFO  wakeword       │ Aguardando wake word ou palmas...
+[11:55:03] INFO  brain          │ Warmup do modelo qwen3.5:4b em 5.84s
+[11:55:13] INFO  wakeword       │ Ouvi: 'void!'
+[11:55:13] INFO  wakeword       │ Wake word detectada!
+[11:55:13] INFO  voice          │ Oi!
+[11:55:18] ERROR ears           │ Erro na transcrição: cuBLAS failed with status CUBLAS_STATUS_NOT_SUPPORTED
+[11:55:18] INFO  voice          │ Não entendi. Pode repetir?
+[11:55:24] ERROR ears           │ Erro na transcrição: cuBLAS failed with status CUBLAS_STATUS_NOT_SUPPORTED
+[11:55:24] INFO  main           │ Conversa encerrada por silêncio (timeout).
+[11:55:24] INFO  main           │ Voltando ao modo idle.
+[11:55:24] INFO  wakeword       │ Carregando detector de wake word (tiny)...
+[11:55:25] INFO  wakeword       │ Wake word pronta.
+[11:55:25] INFO  wakeword       │ Aguardando wake word ou palmas...
+[11:55:31] INFO  wakeword       │ Ouvi: 'como você está?'
+[11:56:07] INFO  wakeword       │ Ouvi: 'ula!'
+[11:56:09] INFO  wakeword       │ Ouvi: 'e...'
+[11:56:16] INFO  wakeword       │ Ouvi: 'os fameres espondendo.'
+[11:56:18] INFO  wakeword       │ Palma candidata: peak=0.19 rms=0.047 crest=4.2 onset=0.19 active=0.219
+[11:56:18] INFO  wakeword       │ Palma detectada (1/2).
+[11:56:19] INFO  wakeword       │ Ouvi: 'você não vai me responder?'
+[11:57:39] INFO  monitor        │ Monitoramento de tela encerrado.
+[11:57:39] ERROR wakeword       │ Erro no stream de áudio do wake word: Cannot operate on a closed database.
+[12:53:25] DEBUG comtypes       │ CoInitializeEx(None, 2)
+[12:53:25] INFO  brain          │ Modelo principal : qwen3.5:4b
+[12:53:25] INFO  brain          │ Fallbacks        : qwen3.5:2b, qwen3.5:0.8b
+[12:53:25] INFO  ears           │ Carregando modelo de fala (small)...
+[12:53:27] INFO  ears           │ Pronta pra ouvir.
+[12:53:27] INFO  comtypes.client._code_cache │ Imported existing <module 'comtypes.gen' from 'D:\\ProjetoJarvis\\.venv\\Lib\\site-packages\\comtypes\\gen\\__init__.py'>
+[12:53:27] INFO  comtypes.client._code_cache │ Using writeable comtypes cache directory: 'D:\ProjetoJarvis\.venv\Lib\site-packages\comtypes\gen'
+[12:53:27] DEBUG comtypes.client._create │ SAPI.SPVoice -> {96749377-3391-11D2-9EE3-00C04F797396}
+[12:53:27] DEBUG comtypes.client._create │ CoCreateInstance({96749377-3391-11D2-9EE3-00C04F797396}, clsctx=None, interface=None)
+[12:53:27] DEBUG comtypes.client._managing │ GetBestInterface(<POINTER(IUnknown) ptr=0x290eaf9f700 at 290ef54b350>)
+[12:53:27] DEBUG comtypes.client._managing │ Does implement IProvideClassInfo
+[12:53:27] DEBUG comtypes.client._managing │ Default interface is {269316D8-57BD-11D2-9EEE-00C04F797396}
+[12:53:27] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IUnknown) ptr=0x290eaf9f740 at 290ef6e95e0>
+[12:53:27] DEBUG comtypes.client._generate │ GetModule(TLIBATTR(GUID={C866CA3A-32F7-11D2-9602-00C04F8EE628}, Version=5.4, LCID=0, FLags=0x8))
+[12:53:27] DEBUG comtypes.client._managing │ Implements default interface from typeinfo <class 'comtypes.gen._C866CA3A_32F7_11D2_9602_00C04F8EE628_0_5_4.ISpeechVoice'>
+[12:53:27] DEBUG comtypes.client._managing │ Final result is <POINTER(ISpeechVoice) ptr=0x290eaf9f740 at 29087c08690>
+[12:53:27] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(ITypeLib) ptr=0x290ee6cd110 at 29087c08500>
+[12:53:27] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(ITypeInfo) ptr=0x290ee5d9a58 at 29087befa20>
+[12:53:27] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(ITypeInfo) ptr=0x290ee5d9ab0 at 29087c08050>
+[12:53:27] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IProvideClassInfo) ptr=0x290eaf9f760 at 29087bef890>
+[12:53:27] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IUnknown) ptr=0x290eaf9f700 at 290ef54b350>
+[12:53:27] DEBUG comtypes.client._events │ <POINTER(ISpeechVoice) ptr=0x290eaf9f740 at 29087c08690> using sinkinterface from clsid <class 'comtypes.gen._C866CA3A_32F7_11D2_9602_00C04F8EE628_0_5_4._ISpeechVoiceEvents'>
+[12:53:27] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IProvideClassInfo2) ptr=0x290eaf9f760 at 29087bef890>
+[12:53:27] DEBUG comtypes._vtbl │ <comtypes.client._events.CreateEventReceiver.<locals>.Sink object at 0x00000290EF68A7B0>: _ISpeechVoiceEvents.VoiceChange not implemented
+[12:53:27] DEBUG comtypes._vtbl │ <comtypes.client._events.CreateEventReceiver.<locals>.Sink object at 0x00000290EF68A7B0>: _ISpeechVoiceEvents.Bookmark not implemented
+[12:53:27] DEBUG comtypes._vtbl │ <comtypes.client._events.CreateEventReceiver.<locals>.Sink object at 0x00000290EF68A7B0>: _ISpeechVoiceEvents.Sentence not implemented
+[12:53:27] DEBUG comtypes._vtbl │ <comtypes.client._events.CreateEventReceiver.<locals>.Sink object at 0x00000290EF68A7B0>: _ISpeechVoiceEvents.Phoneme not implemented
+[12:53:27] DEBUG comtypes._vtbl │ <comtypes.client._events.CreateEventReceiver.<locals>.Sink object at 0x00000290EF68A7B0>: _ISpeechVoiceEvents.Viseme not implemented
+[12:53:27] DEBUG comtypes._vtbl │ <comtypes.client._events.CreateEventReceiver.<locals>.Sink object at 0x00000290EF68A7B0>: _ISpeechVoiceEvents.AudioLevel not implemented
+[12:53:27] DEBUG comtypes._vtbl │ <comtypes.client._events.CreateEventReceiver.<locals>.Sink object at 0x00000290EF68A7B0>: _ISpeechVoiceEvents.EnginePrivate not implemented
+[12:53:27] DEBUG comtypes.client._events │ Start advise <class 'comtypes.gen._C866CA3A_32F7_11D2_9602_00C04F8EE628_0_5_4._ISpeechVoiceEvents'>
+[12:53:27] DEBUG comtypes._comobject │ <comtypes.client._events.CreateEventReceiver.<locals>.Sink object at 0x00000290EF68A7B0>.QueryInterface({A372ACD1-3BEF-4BBD-8FFB-CB3E2B416AF8}) -> S_OK
+[12:53:27] DEBUG comtypes._comobject │ 1 active COM objects: Added   <comtypes.client._events.CreateEventReceiver.<locals>.Sink object at 0x00000290EF68A7B0>
+[12:53:27] DEBUG comtypes._comobject │ <comtypes.client._events.CreateEventReceiver.<locals>.Sink object at 0x00000290EF68A7B0>.AddRef() -> 1
+[12:53:27] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IConnectionPointContainer) ptr=0x290eaf9f768 at 29087c08b40>
+[12:53:27] DEBUG comtypes.client._managing │ wrap_outparam(<POINTER(ISpeechObjectToken) ptr=0x290eafa00b0 at 29087c08b40>)
+[12:53:27] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(ISpeechObjectToken) ptr=0x290eafa00b0 at 29087c08b40>
+[12:53:27] DEBUG comtypes.client._managing │ wrap_outparam(<POINTER(ISpeechObjectTokens) ptr=0x290eafb3b50 at 29087c08b40>)
+[12:53:27] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IUnknown) ptr=0x290eafa5d70 at 290ef6e9750>
+[12:53:27] DEBUG comtypes.client._managing │ wrap_outparam(<POINTER(IDispatch) ptr=0x290eafb08c0 at 29087c08e60>)
+[12:53:27] DEBUG comtypes.client._managing │ GetBestInterface(<POINTER(IDispatch) ptr=0x290eafb08c0 at 29087c08e60>)
+[12:53:27] DEBUG comtypes.client._managing │ Does NOT implement IProvideClassInfo, trying IProvideClassInfo2
+[12:53:27] DEBUG comtypes.client._managing │ Does NOT implement IProvideClassInfo/IProvideClassInfo2
+[12:53:27] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IUnknown) ptr=0x290ee5d9b60 at 290ef6aa6d0>
+[12:53:27] DEBUG comtypes.client._managing │ Default interface is {C74A3ADC-B727-4500-A84A-B526721C8B8C}
+[12:53:27] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IUnknown) ptr=0x290eafb08c0 at 290ef68aba0>
+[12:53:27] DEBUG comtypes.client._generate │ GetModule(TLIBATTR(GUID={C866CA3A-32F7-11D2-9602-00C04F8EE628}, Version=5.4, LCID=0, FLags=0x8))
+[12:53:27] DEBUG comtypes.client._managing │ Implements default interface from typeinfo <class 'comtypes.gen._C866CA3A_32F7_11D2_9602_00C04F8EE628_0_5_4.ISpeechObjectToken'>
+[12:53:27] DEBUG comtypes.client._managing │ Final result is <POINTER(ISpeechObjectToken) ptr=0x290eafb08c0 at 29087c09310>
+[12:53:27] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(ITypeLib) ptr=0x290ee6cd110 at 29087c09180>
+[12:53:27] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IDispatch) ptr=0x290eafb08c0 at 29087c094a0>
+[12:53:27] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(ITypeInfo) ptr=0x290ee5d9b60 at 29084fbc650>
+[12:53:27] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IDispatch) ptr=0x290eafb08c0 at 29087c08e60>
+[12:53:27] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IEnumVARIANT) ptr=0x290eafa5d70 at 29087c08ff0>
+[12:53:27] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(ISpeechObjectTokens) ptr=0x290eafb3b50 at 29087c08b40>
+[12:53:27] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(ISpeechObjectToken) ptr=0x290eafb08c0 at 29087c09310>
+[12:53:27] DEBUG comtypes.client._managing │ wrap_outparam(<POINTER(ISpeechObjectTokens) ptr=0x290eafb3b50 at 29087c09310>)
+[12:53:27] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IUnknown) ptr=0x290eafa58f0 at 290ef68aba0>
+[12:53:27] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(ISpeechObjectTokens) ptr=0x290eafb3b50 at 29087c09310>
+[12:53:27] DEBUG comtypes.client._managing │ wrap_outparam(<POINTER(IDispatch) ptr=0x290eafb1250 at 29084fbc4d0>)
+[12:53:27] DEBUG comtypes.client._managing │ GetBestInterface(<POINTER(IDispatch) ptr=0x290eafb1250 at 29084fbc4d0>)
+[12:53:27] DEBUG comtypes.client._managing │ Does NOT implement IProvideClassInfo, trying IProvideClassInfo2
+[12:53:27] DEBUG comtypes.client._managing │ Does NOT implement IProvideClassInfo/IProvideClassInfo2
+[12:53:27] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IUnknown) ptr=0x290ee5d9b60 at 29084fa2210>
+[12:53:27] DEBUG comtypes.client._managing │ Default interface is {C74A3ADC-B727-4500-A84A-B526721C8B8C}
+[12:53:27] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IUnknown) ptr=0x290eafb1250 at 29084fa2210>
+[12:53:27] DEBUG comtypes.client._generate │ GetModule(TLIBATTR(GUID={C866CA3A-32F7-11D2-9602-00C04F8EE628}, Version=5.4, LCID=0, FLags=0x8))
+[12:53:27] DEBUG comtypes.client._managing │ Implements default interface from typeinfo <class 'comtypes.gen._C866CA3A_32F7_11D2_9602_00C04F8EE628_0_5_4.ISpeechObjectToken'>
+[12:53:27] DEBUG comtypes.client._managing │ Final result is <POINTER(ISpeechObjectToken) ptr=0x290eafb1250 at 29084fbcdd0>
+[12:53:27] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(ITypeLib) ptr=0x290ee6cd110 at 29084fbcc50>
+[12:53:27] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IDispatch) ptr=0x290eafb1250 at 29084fbc7d0>
+[12:53:27] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(ITypeInfo) ptr=0x290ee5d9b60 at 29084fbcad0>
+[12:53:27] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IDispatch) ptr=0x290eafb1250 at 29084fbc4d0>
+[12:53:27] DEBUG comtypes.client._managing │ wrap_outparam(<POINTER(IDispatch) ptr=0x290eafb0e60 at 290ef6e98c0>)
+[12:53:27] DEBUG comtypes.client._managing │ GetBestInterface(<POINTER(IDispatch) ptr=0x290eafb0e60 at 290ef6e98c0>)
+[12:53:27] DEBUG comtypes.client._managing │ Does NOT implement IProvideClassInfo, trying IProvideClassInfo2
+[12:53:27] DEBUG comtypes.client._managing │ Does NOT implement IProvideClassInfo/IProvideClassInfo2
+[12:53:27] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IUnknown) ptr=0x290ee5d9b60 at 29084fe0b00>
+[12:53:27] DEBUG comtypes.client._managing │ Default interface is {C74A3ADC-B727-4500-A84A-B526721C8B8C}
+[12:53:27] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IUnknown) ptr=0x290eafb0e60 at 29084fe0b00>
+[12:53:27] DEBUG comtypes.client._generate │ GetModule(TLIBATTR(GUID={C866CA3A-32F7-11D2-9602-00C04F8EE628}, Version=5.4, LCID=0, FLags=0x8))
+[12:53:27] DEBUG comtypes.client._managing │ Implements default interface from typeinfo <class 'comtypes.gen._C866CA3A_32F7_11D2_9602_00C04F8EE628_0_5_4.ISpeechObjectToken'>
+[12:53:27] DEBUG comtypes.client._managing │ Final result is <POINTER(ISpeechObjectToken) ptr=0x290eafb0e60 at 29084fbcad0>
+[12:53:27] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(ITypeLib) ptr=0x290ee6cd110 at 29084fbc4d0>
+[12:53:27] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IDispatch) ptr=0x290eafb0e60 at 290ef6e9a30>
+[12:53:27] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(ITypeInfo) ptr=0x290ee5d9b60 at 290ef6e9ba0>
+[12:53:27] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IDispatch) ptr=0x290eafb0e60 at 290ef6e98c0>
+[12:53:27] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(ISpeechObjectToken) ptr=0x290eafb1250 at 29084fbcdd0>
+[12:53:27] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IEnumVARIANT) ptr=0x290eafa58f0 at 29087c08b40>
+[12:53:27] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(ISpeechObjectToken) ptr=0x290eafb0e60 at 29084fbcad0>
+[12:53:27] DEBUG comtypes._comobject │ <comtypes.client._events.CreateEventReceiver.<locals>.Sink object at 0x00000290EF68A7B0>.Release() -> 0
+[12:53:27] DEBUG comtypes._comobject │ 0 active COM objects: Removed <comtypes.client._events.CreateEventReceiver.<locals>.Sink object at 0x00000290EF68A7B0>
+[12:53:27] DEBUG comtypes._comobject │ Remaining: []
+[12:53:27] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IConnectionPoint) ptr=0x290eaf9f748 at 29087c08cd0>
+[12:53:27] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(ISpeechVoice) ptr=0x290eaf9f740 at 29087c08690>
+[12:53:27] INFO  voice          │ TTS: edge-tts online — pt-BR-FranciscaNeural
+[12:53:29] INFO  eyes           │ Câmera iniciada (índice=0, 640x480).
+[12:53:29] INFO  wakeword       │ Carregando detector de wake word (tiny)...
+[12:53:29] INFO  wakeword       │ Wake word pronta.
+[12:53:30] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IPropertyStore) ptr=0x290ee7d8010 at 29087c08690>
+[12:53:30] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IMMDeviceEnumerator) ptr=0x290c9740890 at 29087befd40>
+[12:53:30] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IMMDevice) ptr=0x290a6eda5f0 at 29087befbb0>
+[12:53:30] INFO  spotify        │ Spotify Web API: sem credenciais. Usando teclas de mídia.
+[12:53:31] DEBUG chromadb.config │ Starting component System
+[12:53:31] DEBUG chromadb.config │ Starting component Posthog
+[12:53:31] INFO  rag            │ RAG pronto — 29 documentos indexados.
+[12:53:31] DEBUG skills         │ Skill 'Exemplo' carregado (2 triggers).
+[12:53:31] INFO  skills         │ Skills carregados: exemplo
+[12:53:31] INFO  calendar       │ Google Calendar: credentials.json não encontrado. Desativado.
+[12:53:31] INFO  presence       │ Monitorando você a cada 25s.
+[12:53:31] INFO  web            │ Interface web em http://localhost:7865
+[12:53:31] DEBUG history        │ Sessão 13 iniciada.
+[12:53:31] INFO  voice          │ Oi, amor. Câmera ligada. Me chama ou bate palmas quando precisar.
+[12:53:31] DEBUG asyncio        │ Using proactor: IocpProactor
+[12:53:31] DEBUG asyncio        │ Using proactor: IocpProactor
+[12:53:32] DEBUG voice          │ [TIMING] TTS synth: 1.48s (65 chars)
+[12:53:34] INFO  voice          │ Interrompida.
+[12:53:34] INFO  wakeword       │ Aguardando wake word ou palmas...
+[12:53:37] INFO  wakeword       │ Ouvi: 'oito, tudo bom?'
+[12:53:37] INFO  wakeword       │ Wake word detectada!
+[12:53:45] DEBUG comtypes       │ CoInitializeEx(None, 2)
+[12:53:46] INFO  brain          │ Modelo principal : qwen3.5:4b
+[12:53:46] INFO  brain          │ Fallbacks        : qwen3.5:2b, qwen3.5:0.8b
+[12:53:46] INFO  ears           │ Carregando modelo de fala (small)...
+[12:53:48] INFO  ears           │ Pronta pra ouvir.
+[12:53:48] INFO  comtypes.client._code_cache │ Imported existing <module 'comtypes.gen' from 'D:\\ProjetoJarvis\\.venv\\Lib\\site-packages\\comtypes\\gen\\__init__.py'>
+[12:53:48] INFO  comtypes.client._code_cache │ Using writeable comtypes cache directory: 'D:\ProjetoJarvis\.venv\Lib\site-packages\comtypes\gen'
+[12:53:49] DEBUG comtypes.client._create │ SAPI.SPVoice -> {96749377-3391-11D2-9EE3-00C04F797396}
+[12:53:49] DEBUG comtypes.client._create │ CoCreateInstance({96749377-3391-11D2-9EE3-00C04F797396}, clsctx=None, interface=None)
+[12:53:49] DEBUG comtypes.client._managing │ GetBestInterface(<POINTER(IUnknown) ptr=0x22cadc8f850 at 22cb227bdd0>)
+[12:53:49] DEBUG comtypes.client._managing │ Does implement IProvideClassInfo
+[12:53:49] DEBUG comtypes.client._managing │ Default interface is {269316D8-57BD-11D2-9EEE-00C04F797396}
+[12:53:49] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IUnknown) ptr=0x22cadc8f890 at 22caf47d470>
+[12:53:49] DEBUG comtypes.client._generate │ GetModule(TLIBATTR(GUID={C866CA3A-32F7-11D2-9602-00C04F8EE628}, Version=5.4, LCID=0, FLags=0x8))
+[12:53:49] DEBUG comtypes.client._managing │ Implements default interface from typeinfo <class 'comtypes.gen._C866CA3A_32F7_11D2_9602_00C04F8EE628_0_5_4.ISpeechVoice'>
+[12:53:49] DEBUG comtypes.client._managing │ Final result is <POINTER(ISpeechVoice) ptr=0x22cadc8f890 at 22cba95c820>
+[12:53:49] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(ITypeLib) ptr=0x22caae67160 at 22cba95c690>
+[12:53:49] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(ITypeInfo) ptr=0x22cbda46598 at 22cba943bb0>
+[12:53:49] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(ITypeInfo) ptr=0x22cbda465f0 at 22cba95c1e0>
+[12:53:49] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IProvideClassInfo) ptr=0x22cadc8f8b0 at 22cba943a20>
+[12:53:49] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IUnknown) ptr=0x22cadc8f850 at 22cb227bdd0>
+[12:53:49] DEBUG comtypes.client._events │ <POINTER(ISpeechVoice) ptr=0x22cadc8f890 at 22cba95c820> using sinkinterface from clsid <class 'comtypes.gen._C866CA3A_32F7_11D2_9602_00C04F8EE628_0_5_4._ISpeechVoiceEvents'>
+[12:53:49] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IProvideClassInfo2) ptr=0x22cadc8f8b0 at 22cba943a20>
+[12:53:49] DEBUG comtypes._vtbl │ <comtypes.client._events.CreateEventReceiver.<locals>.Sink object at 0x0000022CAF4967B0>: _ISpeechVoiceEvents.VoiceChange not implemented
+[12:53:49] DEBUG comtypes._vtbl │ <comtypes.client._events.CreateEventReceiver.<locals>.Sink object at 0x0000022CAF4967B0>: _ISpeechVoiceEvents.Bookmark not implemented
+[12:53:49] DEBUG comtypes._vtbl │ <comtypes.client._events.CreateEventReceiver.<locals>.Sink object at 0x0000022CAF4967B0>: _ISpeechVoiceEvents.Sentence not implemented
+[12:53:49] DEBUG comtypes._vtbl │ <comtypes.client._events.CreateEventReceiver.<locals>.Sink object at 0x0000022CAF4967B0>: _ISpeechVoiceEvents.Phoneme not implemented
+[12:53:49] DEBUG comtypes._vtbl │ <comtypes.client._events.CreateEventReceiver.<locals>.Sink object at 0x0000022CAF4967B0>: _ISpeechVoiceEvents.Viseme not implemented
+[12:53:49] DEBUG comtypes._vtbl │ <comtypes.client._events.CreateEventReceiver.<locals>.Sink object at 0x0000022CAF4967B0>: _ISpeechVoiceEvents.AudioLevel not implemented
+[12:53:49] DEBUG comtypes._vtbl │ <comtypes.client._events.CreateEventReceiver.<locals>.Sink object at 0x0000022CAF4967B0>: _ISpeechVoiceEvents.EnginePrivate not implemented
+[12:53:49] DEBUG comtypes.client._events │ Start advise <class 'comtypes.gen._C866CA3A_32F7_11D2_9602_00C04F8EE628_0_5_4._ISpeechVoiceEvents'>
+[12:53:49] DEBUG comtypes._comobject │ <comtypes.client._events.CreateEventReceiver.<locals>.Sink object at 0x0000022CAF4967B0>.QueryInterface({A372ACD1-3BEF-4BBD-8FFB-CB3E2B416AF8}) -> S_OK
+[12:53:49] DEBUG comtypes._comobject │ 1 active COM objects: Added   <comtypes.client._events.CreateEventReceiver.<locals>.Sink object at 0x0000022CAF4967B0>
+[12:53:49] DEBUG comtypes._comobject │ <comtypes.client._events.CreateEventReceiver.<locals>.Sink object at 0x0000022CAF4967B0>.AddRef() -> 1
+[12:53:49] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IConnectionPointContainer) ptr=0x22cadc8f8b8 at 22cba95ccd0>
+[12:53:49] DEBUG comtypes.client._managing │ wrap_outparam(<POINTER(ISpeechObjectToken) ptr=0x22cadc90400 at 22cba95ccd0>)
+[12:53:49] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(ISpeechObjectToken) ptr=0x22cadc90400 at 22cba95ccd0>
+[12:53:49] DEBUG comtypes.client._managing │ wrap_outparam(<POINTER(ISpeechObjectTokens) ptr=0x22cadca3d20 at 22cba95ccd0>)
+[12:53:49] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IUnknown) ptr=0x22cadc95aa0 at 22caf47d5e0>
+[12:53:49] DEBUG comtypes.client._managing │ wrap_outparam(<POINTER(IDispatch) ptr=0x22cadca0c40 at 22cba95cff0>)
+[12:53:49] DEBUG comtypes.client._managing │ GetBestInterface(<POINTER(IDispatch) ptr=0x22cadca0c40 at 22cba95cff0>)
+[12:53:49] DEBUG comtypes.client._managing │ Does NOT implement IProvideClassInfo, trying IProvideClassInfo2
+[12:53:49] DEBUG comtypes.client._managing │ Does NOT implement IProvideClassInfo/IProvideClassInfo2
+[12:53:49] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IUnknown) ptr=0x22cbda466a0 at 22caf4ca6d0>
+[12:53:49] DEBUG comtypes.client._managing │ Default interface is {C74A3ADC-B727-4500-A84A-B526721C8B8C}
+[12:53:49] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IUnknown) ptr=0x22cadca0c40 at 22caf496ba0>
+[12:53:49] DEBUG comtypes.client._generate │ GetModule(TLIBATTR(GUID={C866CA3A-32F7-11D2-9602-00C04F8EE628}, Version=5.4, LCID=0, FLags=0x8))
+[12:53:49] DEBUG comtypes.client._managing │ Implements default interface from typeinfo <class 'comtypes.gen._C866CA3A_32F7_11D2_9602_00C04F8EE628_0_5_4.ISpeechObjectToken'>
+[12:53:49] DEBUG comtypes.client._managing │ Final result is <POINTER(ISpeechObjectToken) ptr=0x22cadca0c40 at 22cba95d4a0>
+[12:53:49] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(ITypeLib) ptr=0x22caae67160 at 22cba95d310>
+[12:53:49] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IDispatch) ptr=0x22cadca0c40 at 22cba95d630>
+[12:53:49] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(ITypeInfo) ptr=0x22cbda466a0 at 22cb4488350>
+[12:53:49] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IDispatch) ptr=0x22cadca0c40 at 22cba95cff0>
+[12:53:49] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IEnumVARIANT) ptr=0x22cadc95aa0 at 22cba95d180>
+[12:53:49] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(ISpeechObjectTokens) ptr=0x22cadca3d20 at 22cba95ccd0>
+[12:53:49] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(ISpeechObjectToken) ptr=0x22cadca0c40 at 22cba95d4a0>
+[12:53:49] DEBUG comtypes.client._managing │ wrap_outparam(<POINTER(ISpeechObjectTokens) ptr=0x22cadca3d20 at 22cba95d4a0>)
+[12:53:49] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IUnknown) ptr=0x22cadc955c0 at 22caf496ba0>
+[12:53:49] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(ISpeechObjectTokens) ptr=0x22cadca3d20 at 22cba95d4a0>
+[12:53:49] DEBUG comtypes.client._managing │ wrap_outparam(<POINTER(IDispatch) ptr=0x22cadca0580 at 22cb44881d0>)
+[12:53:49] DEBUG comtypes.client._managing │ GetBestInterface(<POINTER(IDispatch) ptr=0x22cadca0580 at 22cb44881d0>)
+[12:53:49] DEBUG comtypes.client._managing │ Does NOT implement IProvideClassInfo, trying IProvideClassInfo2
+[12:53:49] DEBUG comtypes.client._managing │ Does NOT implement IProvideClassInfo/IProvideClassInfo2
+[12:53:49] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IUnknown) ptr=0x22cbda466a0 at 22cb43fe490>
+[12:53:49] DEBUG comtypes.client._managing │ Default interface is {C74A3ADC-B727-4500-A84A-B526721C8B8C}
+[12:53:49] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IUnknown) ptr=0x22cadca0580 at 22cb43fe490>
+[12:53:49] DEBUG comtypes.client._generate │ GetModule(TLIBATTR(GUID={C866CA3A-32F7-11D2-9602-00C04F8EE628}, Version=5.4, LCID=0, FLags=0x8))
+[12:53:49] DEBUG comtypes.client._managing │ Implements default interface from typeinfo <class 'comtypes.gen._C866CA3A_32F7_11D2_9602_00C04F8EE628_0_5_4.ISpeechObjectToken'>
+[12:53:49] DEBUG comtypes.client._managing │ Final result is <POINTER(ISpeechObjectToken) ptr=0x22cadca0580 at 22cb4488ad0>
+[12:53:49] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(ITypeLib) ptr=0x22caae67160 at 22cb4488950>
+[12:53:49] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IDispatch) ptr=0x22cadca0580 at 22cb44884d0>
+[12:53:49] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(ITypeInfo) ptr=0x22cbda466a0 at 22cb44887d0>
+[12:53:49] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IDispatch) ptr=0x22cadca0580 at 22cb44881d0>
+[12:53:49] DEBUG comtypes.client._managing │ wrap_outparam(<POINTER(IDispatch) ptr=0x22cadca0f10 at 22caf47d750>)
+[12:53:49] DEBUG comtypes.client._managing │ GetBestInterface(<POINTER(IDispatch) ptr=0x22cadca0f10 at 22caf47d750>)
+[12:53:49] DEBUG comtypes.client._managing │ Does NOT implement IProvideClassInfo, trying IProvideClassInfo2
+[12:53:49] DEBUG comtypes.client._managing │ Does NOT implement IProvideClassInfo/IProvideClassInfo2
+[12:53:49] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IUnknown) ptr=0x22cbda466a0 at 22cb4444770>
+[12:53:49] DEBUG comtypes.client._managing │ Default interface is {C74A3ADC-B727-4500-A84A-B526721C8B8C}
+[12:53:49] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IUnknown) ptr=0x22cadca0f10 at 22cb4444770>
+[12:53:49] DEBUG comtypes.client._generate │ GetModule(TLIBATTR(GUID={C866CA3A-32F7-11D2-9602-00C04F8EE628}, Version=5.4, LCID=0, FLags=0x8))
+[12:53:49] DEBUG comtypes.client._managing │ Implements default interface from typeinfo <class 'comtypes.gen._C866CA3A_32F7_11D2_9602_00C04F8EE628_0_5_4.ISpeechObjectToken'>
+[12:53:49] DEBUG comtypes.client._managing │ Final result is <POINTER(ISpeechObjectToken) ptr=0x22cadca0f10 at 22cb44887d0>
+[12:53:49] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(ITypeLib) ptr=0x22caae67160 at 22cb44881d0>
+[12:53:49] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IDispatch) ptr=0x22cadca0f10 at 22caf47d8c0>
+[12:53:49] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(ITypeInfo) ptr=0x22cbda466a0 at 22caf47da30>
+[12:53:49] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IDispatch) ptr=0x22cadca0f10 at 22caf47d750>
+[12:53:49] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(ISpeechObjectToken) ptr=0x22cadca0580 at 22cb4488ad0>
+[12:53:49] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IEnumVARIANT) ptr=0x22cadc955c0 at 22cba95ccd0>
+[12:53:49] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(ISpeechObjectToken) ptr=0x22cadca0f10 at 22cb44887d0>
+[12:53:49] DEBUG comtypes._comobject │ <comtypes.client._events.CreateEventReceiver.<locals>.Sink object at 0x0000022CAF4967B0>.Release() -> 0
+[12:53:49] DEBUG comtypes._comobject │ 0 active COM objects: Removed <comtypes.client._events.CreateEventReceiver.<locals>.Sink object at 0x0000022CAF4967B0>
+[12:53:49] DEBUG comtypes._comobject │ Remaining: []
+[12:53:49] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IConnectionPoint) ptr=0x22cadc8f898 at 22cba95ce60>
+[12:53:49] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(ISpeechVoice) ptr=0x22cadc8f890 at 22cba95c820>
+[12:53:49] INFO  voice          │ TTS: edge-tts online — pt-BR-FranciscaNeural
+[12:53:50] INFO  eyes           │ Câmera iniciada (índice=0, 640x480).
+[12:53:50] INFO  wakeword       │ Carregando detector de wake word (tiny)...
+[12:53:51] INFO  wakeword       │ Wake word pronta.
+[12:53:51] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IPropertyStore) ptr=0x22cb13dc070 at 22cba95ce60>
+[12:53:51] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IMMDeviceEnumerator) ptr=0x22caa42d380 at 22cba943bb0>
+[12:53:51] DEBUG comtypes._post_coinit.unknwn │ Release <POINTER(IMMDevice) ptr=0x22cd510fe70 at 22cba95c820>
+[12:53:51] INFO  spotify        │ Spotify Web API: sem credenciais. Usando teclas de mídia.
+[12:53:52] DEBUG chromadb.config │ Starting component System
+[12:53:52] DEBUG chromadb.config │ Starting component Posthog
+[12:53:52] INFO  rag            │ RAG pronto — 29 documentos indexados.
+[12:53:52] DEBUG skills         │ Skill 'Exemplo' carregado (2 triggers).
+[12:53:52] INFO  skills         │ Skills carregados: exemplo
+[12:53:52] INFO  calendar       │ Google Calendar: credentials.json não encontrado. Desativado.
+[12:53:52] INFO  presence       │ Monitorando você a cada 25s.
+[12:53:52] INFO  web            │ Interface web em http://localhost:7865
+[12:53:52] DEBUG history        │ Sessão 14 iniciada.
+[12:53:52] INFO  voice          │ Oi, amor. Câmera ligada. Me chama ou bate palmas quando precisar.
+[12:53:52] DEBUG asyncio        │ Using proactor: IocpProactor
+[12:53:52] DEBUG asyncio        │ Using proactor: IocpProactor
+[12:53:53] DEBUG voice          │ [TIMING] TTS synth: 1.45s (65 chars)
+[12:53:55] INFO  voice          │ Interrompida.
+[12:53:55] INFO  wakeword       │ Aguardando wake word ou palmas...
+[12:53:58] INFO  wakeword       │ Ouvi: 'oito do bom?'
+[12:53:58] INFO  wakeword       │ Wake word detectada!
+[12:53:58] DEBUG wakeword       │ Wake word model descarregado da VRAM.
+[12:53:58] INFO  voice          │ Oi!
+[12:53:58] DEBUG asyncio        │ Using proactor: IocpProactor
+[12:53:59] INFO  brain          │ Warmup do modelo qwen3.5:4b em 3.21s
+[12:53:59] DEBUG voice          │ [TIMING] TTS synth: 1.38s (3 chars)
+[12:54:01] DEBUG ears           │ Ouvindo... (timeout=None)
+[12:54:04] INFO  ears           │ [Você] Como é que você está? (STT: 1.3s, áudio: 2.2s)
+[12:54:04] DEBUG chromadb.utils.embedding_functions.onnx_mini_lm_l6_v2 │ WARNING: No ONNX providers provided, defaulting to available providers: ['AzureExecutionProvider', 'CPUExecutionProvider']
+[12:54:04] INFO  voice          │ Tô bem. E você?
+[12:54:04] DEBUG asyncio        │ Using proactor: IocpProactor
+[12:54:06] DEBUG voice          │ [TIMING] TTS synth: 1.97s (15 chars)
+[12:54:08] DEBUG ears           │ Ouvindo... (timeout=8.0)
+[12:54:12] INFO  ears           │ [Você] Que tarefas temos para hoje? (STT: 1.3s, áudio: 2.6s)
+[12:54:12] DEBUG chromadb.utils.embedding_functions.onnx_mini_lm_l6_v2 │ WARNING: No ONNX providers provided, defaulting to available providers: ['AzureExecutionProvider', 'CPUExecutionProvider']
+[12:54:13] DEBUG chromadb.utils.embedding_functions.onnx_mini_lm_l6_v2 │ WARNING: No ONNX providers provided, defaulting to available providers: ['AzureExecutionProvider', 'CPUExecutionProvider']
+[12:54:13] INFO  main           │ [TIMING] RAG query: 0.19s
+[12:54:13] DEBUG mood           │ Humor: neutro (conf=0.40, energy=0.1273, pitch=128Hz, speed=0.38)
+[12:54:13] DEBUG main           │ [TIMING] Mood detect: 0.03s
+[12:54:13] INFO  brain          │ [TIMING] Build prompt: 0.000s
+[12:54:13] INFO  brain          │ [TIMING] LLM stream: modelo=qwen3.5:4b, system=1346 chars, history=334 chars (9 msgs), num_ctx=2048, has_image=False
+[12:54:17] INFO  brain          │ [TIMING] Primeiro token em 3.8s
+[12:54:17] INFO  voice          │ Olha, eu não tenho tarefas, só estou aqui pra te ouvir.
+[12:54:17] DEBUG asyncio        │ Using proactor: IocpProactor
+[12:54:17] INFO  brain          │ [TIMING] LLM completo: 4.3s total, 26 tokens, 6.1 tok/s, first=3.8s
+[12:54:17] INFO  brain          │ [TIMING] Ollama: load=3.33s prompt=0.37s eval=0.46s prompt_tokens=621 eval_tokens=27 thinking_chars=0
+[12:54:17] INFO  brain          │ [TIMING] think_stream total: 4.3s
+[12:54:19] DEBUG voice          │ [TIMING] TTS synth: 1.60s (55 chars)
+[12:54:20] INFO  voice          │ Interrompida.
+[12:54:20] DEBUG chromadb.utils.embedding_functions.onnx_mini_lm_l6_v2 │ WARNING: No ONNX providers provided, defaulting to available providers: ['AzureExecutionProvider', 'CPUExecutionProvider']
+[12:54:20] DEBUG ears           │ Ouvindo... (timeout=None)
+[12:54:26] INFO  ears           │ [Você] Você pode criar um timer de 5 minutos pra mim? (STT: 1.5s, áudio: 4.2s)
+[12:54:26] DEBUG chromadb.utils.embedding_functions.onnx_mini_lm_l6_v2 │ WARNING: No ONNX providers provided, defaulting to available providers: ['AzureExecutionProvider', 'CPUExecutionProvider']
+[12:54:26] INFO  brain          │ [TIMING] Build prompt: 0.000s
+[12:54:26] INFO  brain          │ [TIMING] LLM stream: modelo=qwen3.5:4b, system=822 chars, history=469 chars (11 msgs), num_ctx=2048, has_image=False
+[12:54:50] INFO  brain          │ [TIMING] Primeiro token em 24.0s
+[12:54:51] INFO  voice          │ Eu não consigo criar timers, mas você pode usar aplicativos de celular ou sites para isso.
+[12:54:51] DEBUG asyncio        │ Using proactor: IocpProactor
+[12:54:51] INFO  brain          │ [TIMING] LLM completo: 24.4s total, 25 tokens, 1.0 tok/s, first=24.0s
+[12:54:51] INFO  brain          │ [TIMING] Ollama: load=23.57s prompt=0.29s eval=0.47s prompt_tokens=448 eval_tokens=26 thinking_chars=0
+[12:54:51] INFO  brain          │ [TIMING] think_stream total: 24.4s
+[12:54:52] DEBUG voice          │ [TIMING] TTS synth: 1.64s (90 chars)
+[12:54:58] INFO  voice          │ O que mais precisa resolver hoje?
+[12:54:58] DEBUG asyncio        │ Using proactor: IocpProactor
+[12:55:00] DEBUG voice          │ [TIMING] TTS synth: 1.54s (33 chars)
+[12:55:03] DEBUG chromadb.utils.embedding_functions.onnx_mini_lm_l6_v2 │ WARNING: No ONNX providers provided, defaulting to available providers: ['AzureExecutionProvider', 'CPUExecutionProvider']
+[12:55:03] DEBUG ears           │ Ouvindo... (timeout=8.0)
+[12:55:10] INFO  ears           │ [Você] O que eu estou fazendo? Veja pela minha tela. (STT: 1.6s, áudio: 5.1s)
+[12:55:10] DEBUG chromadb.utils.embedding_functions.onnx_mini_lm_l6_v2 │ WARNING: No ONNX providers provided, defaulting to available providers: ['AzureExecutionProvider', 'CPUExecutionProvider']
+[12:55:10] DEBUG chromadb.utils.embedding_functions.onnx_mini_lm_l6_v2 │ WARNING: No ONNX providers provided, defaulting to available providers: ['AzureExecutionProvider', 'CPUExecutionProvider']
+[12:55:10] INFO  main           │ [TIMING] RAG query: 0.18s
+[12:55:10] DEBUG mood           │ Humor: neutro (conf=0.40, energy=0.1256, pitch=198Hz, speed=0.54)
+[12:55:10] DEBUG main           │ [TIMING] Mood detect: 0.06s
+[12:55:10] INFO  brain          │ [TIMING] Build prompt: 0.000s
+[12:55:10] INFO  brain          │ [TIMING] LLM stream: modelo=qwen3.5:4b, system=1297 chars, history=638 chars (13 msgs), num_ctx=2048, has_image=False
+[12:55:24] INFO  brain          │ [TIMING] Primeiro token em 13.5s
+[12:55:24] INFO  voice          │ Eu não consigo ver sua tela nem saber o que você está fazendo.
+[12:55:24] DEBUG asyncio        │ Using proactor: IocpProactor
+[12:55:24] INFO  brain          │ [TIMING] LLM completo: 14.0s total, 23 tokens, 1.6 tok/s, first=13.5s
+[12:55:24] INFO  brain          │ [TIMING] Ollama: load=12.99s prompt=0.43s eval=0.43s prompt_tokens=692 eval_tokens=24 thinking_chars=0
+[12:55:24] INFO  brain          │ [TIMING] think_stream total: 14.0s

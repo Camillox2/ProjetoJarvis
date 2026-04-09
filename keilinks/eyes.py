@@ -39,6 +39,13 @@ class Eyes:
             log.info("Câmera iniciada (índice=%d, %dx%d).", CAMERA_INDEX, 640, 480)
 
     # ─── Câmera física ────────────────────────────────────────────────────────
+    def capture_frame(self) -> np.ndarray | None:
+        """Retorna o frame atual como array BGR. Mais eficiente para processamento local (sem codificação)."""
+        if self.cap is None or not self.cap.isOpened():
+            return None
+        ret, frame = self.cap.read()
+        return frame if ret else None
+
     def capture_frame_b64(self) -> str | None:
         if self.cap is None or not self.cap.isOpened():
             return None

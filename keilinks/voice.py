@@ -9,6 +9,7 @@ Interrupção: para de falar quando o usuário começa a falar.
 
 import asyncio
 import os
+import queue
 import subprocess
 import tempfile
 import threading
@@ -36,6 +37,7 @@ INTERRUPT_THRESHOLD = 0.04
 INTERRUPT_HOLD_SECS = 0.4
 
 _BACKEND: str | None = None   # "piper" | "sapi" | "edge" — detectado no __init__
+_STREAM_SENTINEL = object()
 
 
 def _detect_backend() -> str:
@@ -158,16 +160,63 @@ class Voice:
 
     def speak_stream(self, sentence_gen, interruptible: bool = True) -> bool:
         """
-        Recebe um gerador de sentenças (do brain.think_stream) e fala cada uma
-        conforme chega — começa a falar antes de terminar de gerar.
+        Recebe um gerador ou fábrica de gerador e desacopla geração e fala.
+        O produtor continua consumindo o stream do LLM enquanto o consumidor
+        sintetiza e toca o áudio em paralelo.
         Retorna False se foi interrompida pelo usuário.
         """
-        for sentence in sentence_gen:
-            if not sentence.strip():
-                continue
-            completed = self.speak(sentence, interruptible=interruptible)
-            if not completed:
-                return False   # interrompida
+        sentence_queue: queue.Queue = queue.Queue()
+        stop_event = threading.Event()
+        interrupted = threading.Event()
+
+        def _resolve_source():
+            if callable(sentence_gen):
+                return sentence_gen(stop_event)
+            return sentence_gen
+
+        def _producer():
+            try:
+                for sentence in _resolve_source():
+                    if stop_event.is_set():
+                        break
+                    if sentence and sentence.strip():
+                        sentence_queue.put(sentence)
+            except Exception as e:
+                log.error("Erro no produtor do streaming TTS: %s", e)
+            finally:
+                sentence_queue.put(_STREAM_SENTINEL)
+
+        def _consumer():
+            while True:
+                sentence = sentence_queue.get()
+                if sentence is _STREAM_SENTINEL:
+                    break
+                if stop_event.is_set():
+                    continue
+                completed = self.speak(sentence, interruptible=interruptible)
+                if not completed:
+                    interrupted.set()
+                    stop_event.set()
+                    self.stop()
+                    break
+
+        producer = threading.Thread(target=_producer, daemon=True)
+        consumer = threading.Thread(target=_consumer, daemon=True)
+        producer.start()
+        consumer.start()
+
+        while consumer.is_alive():
+            consumer.join(0.1)
+            if interrupted.is_set():
+                break
+
+        if interrupted.is_set():
+            stop_event.set()
+            producer.join(timeout=1.0)
+            return False
+
+        producer.join()
+        consumer.join()
         return True
 
     def stop(self):
@@ -220,10 +269,12 @@ class Voice:
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy():
             if self._interrupted:
+                self._stop_monitor = True
                 pygame.mixer.music.stop()
                 log.info("Interrompida.")
                 return False
             pygame.time.wait(50)
+        self._stop_monitor = True
         return True
 
     # ─── Monitor de interrupção ───────────────────────────────────────────────
