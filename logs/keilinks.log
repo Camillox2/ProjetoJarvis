@@ -819,3 +819,271 @@ An error happened while trying to locate the files on the Hub and we cannot find
 [12:55:24] INFO  brain          │ [TIMING] LLM completo: 14.0s total, 23 tokens, 1.6 tok/s, first=13.5s
 [12:55:24] INFO  brain          │ [TIMING] Ollama: load=12.99s prompt=0.43s eval=0.43s prompt_tokens=692 eval_tokens=24 thinking_chars=0
 [12:55:24] INFO  brain          │ [TIMING] think_stream total: 14.0s
+[12:55:26] DEBUG voice          │ [TIMING] TTS synth: 1.88s (62 chars)
+[12:55:30] INFO  voice          │ Quer me contar o que tá fazendo agora?
+[12:55:30] DEBUG asyncio        │ Using proactor: IocpProactor
+[12:55:32] DEBUG voice          │ [TIMING] TTS synth: 1.72s (38 chars)
+[12:55:35] DEBUG chromadb.utils.embedding_functions.onnx_mini_lm_l6_v2 │ WARNING: No ONNX providers provided, defaulting to available providers: ['AzureExecutionProvider', 'CPUExecutionProvider']
+[12:55:35] DEBUG ears           │ Ouvindo... (timeout=8.0)
+[12:55:43] DEBUG ears           │ Timeout de escuta sem fala detectada.
+[12:55:43] INFO  main           │ Conversa encerrada por silêncio (timeout).
+[12:55:43] INFO  main           │ Voltando ao modo idle.
+[12:55:43] INFO  wakeword       │ Carregando detector de wake word (tiny)...
+[12:55:43] INFO  wakeword       │ Wake word pronta.
+[12:55:43] INFO  wakeword       │ Aguardando wake word ou palmas...
+[12:55:52] INFO  wakeword       │ Palma candidata: peak=0.28 rms=0.039 crest=7.2 onset=0.09 active=0.085
+[12:55:52] INFO  wakeword       │ Palma forte detectada — ativando.
+[12:55:52] DEBUG wakeword       │ Wake word model descarregado da VRAM.
+[12:55:52] INFO  voice          │ Oi!
+[12:55:52] DEBUG asyncio        │ Using proactor: IocpProactor
+[12:55:53] DEBUG voice          │ [TIMING] TTS synth: 1.16s (3 chars)
+[12:55:54] DEBUG ears           │ Ouvindo... (timeout=None)
+[12:55:59] INFO  ears           │ [Você] Você pode criar uma nota para mim? (STT: 1.4s, áudio: 2.6s)
+[12:55:59] DEBUG chromadb.utils.embedding_functions.onnx_mini_lm_l6_v2 │ WARNING: No ONNX providers provided, defaulting to available providers: ['AzureExecutionProvider', 'CPUExecutionProvider']
+[12:55:59] DEBUG chromadb.utils.embedding_functions.onnx_mini_lm_l6_v2 │ WARNING: No ONNX providers provided, defaulting to available providers: ['AzureExecutionProvider', 'CPUExecutionProvider']
+[12:55:59] INFO  main           │ [TIMING] RAG query: 0.16s
+[12:55:59] DEBUG mood           │ Humor: neutro (conf=0.40, energy=0.0772, pitch=117Hz, speed=0.77)
+[12:55:59] DEBUG main           │ [TIMING] Mood detect: 0.03s
+[12:55:59] INFO  brain          │ [TIMING] Build prompt: 0.000s
+[12:55:59] INFO  brain          │ [TIMING] LLM stream: modelo=qwen3.5:4b, system=1227 chars, history=773 chars (15 msgs), num_ctx=2048, has_image=False
+[12:56:03] INFO  brain          │ [TIMING] Primeiro token em 4.2s
+[12:56:04] INFO  voice          │ Eu não posso criar uma nota por você, mas você pode usar o bloco de notas ou qualquer app de anotação no seu celular.
+[12:56:04] DEBUG asyncio        │ Using proactor: IocpProactor
+[12:56:04] INFO  brain          │ [TIMING] LLM completo: 4.9s total, 37 tokens, 7.5 tok/s, first=4.2s
+[12:56:04] INFO  brain          │ [TIMING] Ollama: load=3.67s prompt=0.45s eval=0.70s prompt_tokens=717 eval_tokens=38 thinking_chars=0
+[12:56:04] INFO  brain          │ [TIMING] think_stream total: 4.9s
+[12:56:06] DEBUG voice          │ [TIMING] TTS synth: 1.82s (117 chars)
+[12:56:12] INFO  voice          │ Interrompida.
+[12:56:12] DEBUG chromadb.utils.embedding_functions.onnx_mini_lm_l6_v2 │ WARNING: No ONNX providers provided, defaulting to available providers: ['AzureExecutionProvider', 'CPUExecutionProvider']
+[12:56:12] DEBUG ears           │ Ouvindo... (timeout=None)
+[12:56:22] INFO  ears           │ [Você] O que você pode fazer? (STT: 1.5s, áudio: 8.6s)
+[12:56:22] DEBUG chromadb.utils.embedding_functions.onnx_mini_lm_l6_v2 │ WARNING: No ONNX providers provided, defaulting to available providers: ['AzureExecutionProvider', 'CPUExecutionProvider']
+[12:56:23] INFO  brain          │ [TIMING] Build prompt: 0.000s
+[12:56:23] INFO  brain          │ [TIMING] LLM stream: modelo=qwen3.5:4b, system=822 chars, history=887 chars (16 msgs), num_ctx=2048, has_image=False
+[12:56:37] INFO  brain          │ [TIMING] Primeiro token em 14.3s
+[12:56:37] INFO  voice          │ Eu sou a Keilinks, aqui pra te ouvir, ajudar com tarefas simples e conversar quando precisar.
+[12:56:37] DEBUG asyncio        │ Using proactor: IocpProactor
+[12:56:38] INFO  brain          │ [TIMING] LLM completo: 14.9s total, 30 tokens, 2.0 tok/s, first=14.3s
+[12:56:38] INFO  brain          │ [TIMING] Ollama: load=13.86s prompt=0.36s eval=0.58s prompt_tokens=569 eval_tokens=31 thinking_chars=0
+[12:56:38] INFO  brain          │ [TIMING] think_stream total: 14.9s
+[12:56:39] DEBUG voice          │ [TIMING] TTS synth: 2.06s (93 chars)
+[12:56:45] INFO  voice          │ O que você quer que eu faça agora?
+[12:56:45] DEBUG asyncio        │ Using proactor: IocpProactor
+[12:56:47] DEBUG voice          │ [TIMING] TTS synth: 1.24s (34 chars)
+[12:56:48] INFO  voice          │ Interrompida.
+[12:56:48] DEBUG chromadb.utils.embedding_functions.onnx_mini_lm_l6_v2 │ WARNING: No ONNX providers provided, defaulting to available providers: ['AzureExecutionProvider', 'CPUExecutionProvider']
+[12:56:49] DEBUG ears           │ Ouvindo... (timeout=8.0)
+[12:56:55] INFO  ears           │ [Você] Como que tá o tempo hoje em Curitiba? (STT: 1.6s, áudio: 4.9s)
+[12:56:55] DEBUG chromadb.utils.embedding_functions.onnx_mini_lm_l6_v2 │ WARNING: No ONNX providers provided, defaulting to available providers: ['AzureExecutionProvider', 'CPUExecutionProvider']
+[12:56:56] INFO  weather        │ Buscando clima em Curitiba...
+[12:56:57] INFO  voice          │ Em Curitiba agora: 22°C, sensação de 24°C, ensolarado. Hoje: máxima 24°C, mínima 13°C, umidade 53%.
+[12:56:57] DEBUG asyncio        │ Using proactor: IocpProactor
+[12:57:00] DEBUG voice          │ [TIMING] TTS synth: 2.64s (99 chars)
+[12:57:13] DEBUG ears           │ Ouvindo... (timeout=8.0)
+[12:57:19] INFO  ears           │ [Você] É, me diga as notícias de hoje do mundo da tecnologia. (STT: 1.4s, áudio: 4.6s)
+[12:57:19] DEBUG chromadb.utils.embedding_functions.onnx_mini_lm_l6_v2 │ WARNING: No ONNX providers provided, defaulting to available providers: ['AzureExecutionProvider', 'CPUExecutionProvider']
+[12:57:19] DEBUG chromadb.utils.embedding_functions.onnx_mini_lm_l6_v2 │ WARNING: No ONNX providers provided, defaulting to available providers: ['AzureExecutionProvider', 'CPUExecutionProvider']
+[12:57:19] INFO  main           │ [TIMING] RAG query: 0.16s
+[12:57:19] DEBUG mood           │ Humor: neutro (conf=0.40, energy=0.0974, pitch=133Hz, speed=0.65)
+[12:57:19] DEBUG main           │ [TIMING] Mood detect: 0.04s
+[12:57:19] INFO  brain          │ Buscando na web...
+[12:57:19] INFO  voice          │ Deixa eu pesquisar...
+[12:57:19] DEBUG asyncio        │ Using proactor: IocpProactor
+[12:57:21] DEBUG voice          │ [TIMING] TTS synth: 1.53s (21 chars)
+[12:57:23] DEBUG rustls.webpki.anchors │ add_parsable_certificates processed 41 valid and 0 invalid certs
+[12:57:23] DEBUG reqwest.connect │ starting new connection: https://pt.wikipedia.org/
+[12:57:23] DEBUG reqwest.connect │ starting new connection: https://grokipedia.com/
+[12:57:23] DEBUG hyper_util.client.legacy.connect.http │ connecting to [2606:4700::6812:1302]:443
+[12:57:23] DEBUG hyper_util.client.legacy.connect.http │ connecting to [2a02:ec80:700:ed1a::1]:443
+[12:57:23] DEBUG hyper_util.client.legacy.connect.http │ connected to [2a02:ec80:700:ed1a::1]:443
+[12:57:23] DEBUG hyper_util.client.legacy.connect.http │ connected to [2606:4700::6812:1302]:443
+[12:57:23] DEBUG rustls.client.hs │ No cached session for DnsName("pt.wikipedia.org")
+[12:57:23] DEBUG rustls.client.hs │ No cached session for DnsName("grokipedia.com")
+[12:57:23] DEBUG rustls.client.hs │ Not resuming any session
+[12:57:23] DEBUG rustls.client.hs │ Not resuming any session
+[12:57:23] DEBUG rustls.client.hs │ Browser emulation: Some(BrowserEmulator { browser_type: Edge, version: BrowserVersion { major: 144, minor: 0, patch: 0 }, extension_order_seed: Some(36266), cipher_suites: Some([CipherSuite(0xa0a), TLS13_AES_128_GCM_SHA256, TLS13_AES_256_GCM_SHA384, TLS13_CHACHA20_POLY1305_SHA256, TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256, TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, CipherSuite(0x9c), CipherSuite(0x9d), CipherSuite(0x2f), CipherSuite(0x35)]), signature_algorithms: Some([ECDSA_NISTP256_SHA256, RSA_PSS_SHA256, RSA_PKCS1_SHA256, ECDSA_NISTP384_SHA384, RSA_PSS_SHA384, RSA_PKCS1_SHA384, RSA_PSS_SHA512, RSA_PKCS1_SHA512]), named_groups: Some([GREASE, X25519MLKEM768, X25519, secp256r1, secp384r1]), os_type: None, include_status_request_v2: false })
+[12:57:23] DEBUG rustls.client.hs │ Browser emulation: Some(BrowserEmulator { browser_type: Firefox, version: BrowserVersion { major: 148, minor: 0, patch: 0 }, extension_order_seed: Some(39612), cipher_suites: Some([TLS13_AES_128_GCM_SHA256, TLS13_CHACHA20_POLY1305_SHA256, TLS13_AES_256_GCM_SHA384, TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256, TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256, TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, CipherSuite(0x9c), CipherSuite(0x9d), CipherSuite(0x2f), CipherSuite(0x35)]), signature_algorithms: Some([ECDSA_NISTP256_SHA256, ECDSA_NISTP384_SHA384, ECDSA_NISTP521_SHA512, RSA_PSS_SHA256, RSA_PSS_SHA384, RSA_PSS_SHA512, RSA_PKCS1_SHA256, RSA_PKCS1_SHA384, RSA_PKCS1_SHA512, ECDSA_SHA1_Legacy, RSA_PKCS1_SHA1]), named_groups: Some([X25519MLKEM768, X25519, secp256r1, secp384r1, secp521r1, FFDHE2048, FFDHE3072]), os_type: None, include_status_request_v2: false })
+[12:57:23] DEBUG rustls.client.hs │ Using extension_order_seed: 1963
+[12:57:23] DEBUG rustls.client.hs │ Using extension_order_seed: 51597
+[12:57:23] DEBUG rustls.client.hs │ Browser emulation: Some(BrowserEmulator { browser_type: Edge, version: BrowserVersion { major: 144, minor: 0, patch: 0 }, extension_order_seed: Some(36266), cipher_suites: Some([CipherSuite(0xa0a), TLS13_AES_128_GCM_SHA256, TLS13_AES_256_GCM_SHA384, TLS13_CHACHA20_POLY1305_SHA256, TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256, TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, CipherSuite(0x9c), CipherSuite(0x9d), CipherSuite(0x2f), CipherSuite(0x35)]), signature_algorithms: Some([ECDSA_NISTP256_SHA256, RSA_PSS_SHA256, RSA_PKCS1_SHA256, ECDSA_NISTP384_SHA384, RSA_PSS_SHA384, RSA_PKCS1_SHA384, RSA_PSS_SHA512, RSA_PKCS1_SHA512]), named_groups: Some([GREASE, X25519MLKEM768, X25519, secp256r1, secp384r1]), os_type: None, include_status_request_v2: false })
+[12:57:23] DEBUG rustls.client.hs │ Cipher suites count: 16
+[12:57:23] DEBUG rustls.client.hs │ Browser emulation: Some(BrowserEmulator { browser_type: Firefox, version: BrowserVersion { major: 148, minor: 0, patch: 0 }, extension_order_seed: Some(39612), cipher_suites: Some([TLS13_AES_128_GCM_SHA256, TLS13_CHACHA20_POLY1305_SHA256, TLS13_AES_256_GCM_SHA384, TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256, TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256, TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, CipherSuite(0x9c), CipherSuite(0x9d), CipherSuite(0x2f), CipherSuite(0x35)]), signature_algorithms: Some([ECDSA_NISTP256_SHA256, ECDSA_NISTP384_SHA384, ECDSA_NISTP521_SHA512, RSA_PSS_SHA256, RSA_PSS_SHA384, RSA_PSS_SHA512, RSA_PKCS1_SHA256, RSA_PKCS1_SHA384, RSA_PKCS1_SHA512, ECDSA_SHA1_Legacy, RSA_PKCS1_SHA1]), named_groups: Some([X25519MLKEM768, X25519, secp256r1, secp384r1, secp521r1, FFDHE2048, FFDHE3072]), os_type: None, include_status_request_v2: false })
+[12:57:23] DEBUG rustls.client.hs │   [0] CipherSuite(0x7a7a)
+[12:57:23] DEBUG rustls.client.hs │ Cipher suites count: 17
+[12:57:23] DEBUG rustls.client.hs │   [1] TLS13_AES_128_GCM_SHA256
+[12:57:23] DEBUG rustls.client.hs │   [2] TLS13_AES_256_GCM_SHA384
+[12:57:23] DEBUG rustls.client.hs │   [3] TLS13_CHACHA20_POLY1305_SHA256
+[12:57:23] DEBUG rustls.client.hs │   [0] TLS13_AES_128_GCM_SHA256
+[12:57:23] DEBUG rustls.client.hs │   [1] TLS13_CHACHA20_POLY1305_SHA256
+[12:57:23] DEBUG rustls.client.hs │   [2] TLS13_AES_256_GCM_SHA384
+[12:57:23] DEBUG rustls.client.hs │   [4] TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+[12:57:23] DEBUG rustls.client.hs │   [3] TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+[12:57:23] DEBUG rustls.client.hs │   [5] TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+[12:57:23] DEBUG rustls.client.hs │   [6] TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+[12:57:23] DEBUG rustls.client.hs │   [4] TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+[12:57:23] DEBUG rustls.client.hs │   [7] TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+[12:57:23] DEBUG rustls.client.hs │   [5] TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256
+[12:57:23] DEBUG rustls.client.hs │   [8] TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256
+[12:57:23] DEBUG rustls.client.hs │   [6] TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+[12:57:23] DEBUG rustls.client.hs │   [9] TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+[12:57:23] DEBUG rustls.client.hs │   [7] TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+[12:57:23] DEBUG rustls.client.hs │   [10] TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA
+[12:57:23] DEBUG rustls.client.hs │   [8] TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+[12:57:23] DEBUG rustls.client.hs │   [11] TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA
+[12:57:23] DEBUG rustls.client.hs │   [12] CipherSuite(0x9c)
+[12:57:23] DEBUG rustls.client.hs │   [13] CipherSuite(0x9d)
+[12:57:23] DEBUG rustls.client.hs │   [9] TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA
+[12:57:23] DEBUG rustls.client.hs │   [14] CipherSuite(0x2f)
+[12:57:23] DEBUG rustls.client.hs │   [10] TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA
+[12:57:23] DEBUG rustls.client.hs │   [15] CipherSuite(0x35)
+[12:57:23] DEBUG rustls.client.hs │   [11] TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA
+[12:57:23] DEBUG rustls.client.hs │ Final cipher suites for ClientHello: [CipherSuite(0x7a7a), TLS13_AES_128_GCM_SHA256, TLS13_AES_256_GCM_SHA384, TLS13_CHACHA20_POLY1305_SHA256, TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256, TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, CipherSuite(0x9c), CipherSuite(0x9d), CipherSuite(0x2f), CipherSuite(0x35)]
+[12:57:23] DEBUG rustls.client.hs │   [12] TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA
+[12:57:23] DEBUG rustls.client.hs │   [13] CipherSuite(0x9c)
+[12:57:23] DEBUG rustls.client.hs │   [14] CipherSuite(0x9d)
+[12:57:23] DEBUG rustls.client.hs │   [15] CipherSuite(0x2f)
+[12:57:23] DEBUG rustls.client.hs │   [16] CipherSuite(0x35)
+[12:57:23] DEBUG rustls.client.hs │ Final cipher suites for ClientHello: [TLS13_AES_128_GCM_SHA256, TLS13_CHACHA20_POLY1305_SHA256, TLS13_AES_256_GCM_SHA384, TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256, TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256, TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, CipherSuite(0x9c), CipherSuite(0x9d), CipherSuite(0x2f), CipherSuite(0x35)]
+[12:57:23] DEBUG rustls.client.hs │ Using ciphersuite TLS13_AES_128_GCM_SHA256
+[12:57:23] DEBUG rustls.client.tls13 │ Not resuming
+[12:57:23] DEBUG rustls.client.tls13 │ TLS1.3 encrypted extensions: ServerExtensions { server_name_ack: (), selected_protocol: SingleProtocolName(ProtocolName(6832)), unknown_extensions: {}, .. }
+[12:57:23] DEBUG rustls.client.hs │ ALPN protocol is Some(b"h2")
+[12:57:23] DEBUG h2.client      │ binding client connection
+[12:57:23] DEBUG h2.client      │ client connection bound
+[12:57:23] DEBUG h2.client      │ handshake2: settings header_table_size=Some(65536), enable_push=Some(false), initial_window_size=Some(6291456), max_frame_size=None, max_header_list_size=Some(262144)
+[12:57:23] DEBUG h2.client      │ handshake2: sending initial settings frame
+[12:57:23] DEBUG h2.codec.framed_write │ send frame=Settings { flags: (0x0), header_table_size: 65536, enable_push: 0, initial_window_size: 6291456, max_header_list_size: 262144 }
+[12:57:23] DEBUG h2.frame.settings │ encoding SETTINGS; len=24, order=SettingsOrder { ids: [HeaderTableSize, EnablePush, InitialWindowSize, MaxHeaderListSize] }, header_table_size=Some(65536), enable_push=Some(0), initial_window_size=Some(6291456), max_frame_size=None, max_header_list_size=Some(262144)
+[12:57:23] DEBUG h2.frame.settings │ encoding setting; val=HeaderTableSize(65536)
+[12:57:23] DEBUG h2.frame.settings │ encoding setting; val=EnablePush(0)
+[12:57:23] DEBUG h2.frame.settings │ encoding setting; val=InitialWindowSize(6291456)
+[12:57:23] DEBUG h2.frame.settings │ encoding setting; val=MaxHeaderListSize(262144)
+[12:57:23] DEBUG h2.proto.connection │ Connection; peer=Client
+[12:57:23] DEBUG hyper_util.client.legacy.pool │ pooling idle connection for ("https", pt.wikipedia.org)
+[12:57:23] DEBUG h2.codec.framed_write │ send frame=WindowUpdate { stream_id: StreamId(0), size_increment: 15663105 }
+[12:57:23] DEBUG h2.codec.framed_write │ send frame=Headers { stream_id: StreamId(1), flags: (0x25: END_HEADERS | END_STREAM | PRIORITY), stream_dep: StreamDependency { dependency_id: StreamId(0), weight: 255, is_exclusive: true } }
+[12:57:23] DEBUG rustls.client.hs │ Using ciphersuite TLS13_AES_128_GCM_SHA256
+[12:57:23] DEBUG rustls.client.tls13 │ Not resuming
+[12:57:23] DEBUG rustls.client.tls13 │ TLS1.3 encrypted extensions: ServerExtensions { server_name_ack: (), selected_protocol: SingleProtocolName(ProtocolName(6832)), encrypted_client_hello_ack: ServerEncryptedClientHello { retry_configs: [V18(EchConfigContents { key_config: HpkeKeyConfig { config_id: 20, kem_id: DHKEM_X25519_HKDF_SHA256, public_key: 79ddaf3cc597d51c884f8c53e1af2e4c5a3185de428cf1282c6b465f2fc5887c, symmetric_cipher_suites: [HpkeSymmetricCipherSuite { kdf_id: HKDF_SHA256, aead_id: AES_128_GCM }] }, maximum_name_length: 0, public_name: DnsName("cloudflare-ech.com"), extensions: [] })] }, unknown_extensions: {}, .. }
+[12:57:23] DEBUG rustls.client.hs │ ALPN protocol is Some(b"h2")
+[12:57:23] DEBUG h2.client      │ binding client connection
+[12:57:23] DEBUG h2.client      │ client connection bound
+[12:57:23] DEBUG h2.client      │ handshake2: settings header_table_size=Some(65536), enable_push=Some(false), initial_window_size=Some(131072), max_frame_size=Some(16384), max_header_list_size=None
+[12:57:23] DEBUG h2.client      │ handshake2: sending initial settings frame
+[12:57:23] DEBUG h2.codec.framed_write │ send frame=Settings { flags: (0x0), header_table_size: 65536, enable_push: 0, initial_window_size: 131072, max_frame_size: 16384 }
+[12:57:23] DEBUG h2.frame.settings │ encoding SETTINGS; len=24, order=SettingsOrder { ids: [HeaderTableSize, EnablePush, InitialWindowSize, MaxFrameSize] }, header_table_size=Some(65536), enable_push=Some(0), initial_window_size=Some(131072), max_frame_size=Some(16384), max_header_list_size=None
+[12:57:23] DEBUG h2.frame.settings │ encoding setting; val=HeaderTableSize(65536)
+[12:57:23] DEBUG h2.frame.settings │ encoding setting; val=EnablePush(0)
+[12:57:23] DEBUG h2.frame.settings │ encoding setting; val=InitialWindowSize(131072)
+[12:57:23] DEBUG h2.frame.settings │ encoding setting; val=MaxFrameSize(16384)
+[12:57:23] DEBUG h2.proto.connection │ Connection; peer=Client
+[12:57:23] DEBUG hyper_util.client.legacy.pool │ pooling idle connection for ("https", grokipedia.com)
+[12:57:23] DEBUG h2.codec.framed_write │ send frame=WindowUpdate { stream_id: StreamId(0), size_increment: 12517377 }
+[12:57:23] DEBUG h2.codec.framed_write │ send frame=Headers { stream_id: StreamId(3), flags: (0x25: END_HEADERS | END_STREAM | PRIORITY), stream_dep: StreamDependency { dependency_id: StreamId(0), weight: 41, is_exclusive: false } }
+[12:57:23] DEBUG h2.codec.framed_read │ received frame=Settings { flags: (0x0), max_concurrent_streams: 100, initial_window_size: 16384, enable_connect_protocol: 1 }
+[12:57:23] DEBUG h2.codec.framed_write │ send frame=Settings { flags: (0x1: ACK) }
+[12:57:23] DEBUG h2.frame.settings │ encoding SETTINGS; len=0, order=SettingsOrder { ids: [HeaderTableSize, EnablePush, MaxConcurrentStreams, InitialWindowSize, MaxFrameSize, MaxHeaderListSize, EnableConnectProtocol, NoRfc7540Priorities] }, header_table_size=None, enable_push=None, initial_window_size=None, max_frame_size=None, max_header_list_size=None
+[12:57:23] DEBUG h2.codec.framed_read │ received frame=Settings { flags: (0x1: ACK) }
+[12:57:23] DEBUG h2.proto.settings │ received settings ACK; applying Settings { flags: (0x0), header_table_size: 65536, enable_push: 0, initial_window_size: 6291456, max_header_list_size: 262144 }
+[12:57:23] DEBUG h2.codec.framed_read │ received frame=Settings { flags: (0x0), max_concurrent_streams: 100, initial_window_size: 65536, max_frame_size: 16777215 }
+[12:57:23] DEBUG h2.codec.framed_write │ send frame=Settings { flags: (0x1: ACK) }
+[12:57:23] DEBUG h2.frame.settings │ encoding SETTINGS; len=0, order=SettingsOrder { ids: [HeaderTableSize, EnablePush, MaxConcurrentStreams, InitialWindowSize, MaxFrameSize, MaxHeaderListSize, EnableConnectProtocol, NoRfc7540Priorities] }, header_table_size=None, enable_push=None, initial_window_size=None, max_frame_size=None, max_header_list_size=None
+[12:57:23] DEBUG h2.codec.framed_read │ received frame=WindowUpdate { stream_id: StreamId(0), size_increment: 2147418112 }
+[12:57:23] DEBUG h2.codec.framed_read │ received frame=Settings { flags: (0x1: ACK) }
+[12:57:23] DEBUG h2.proto.settings │ received settings ACK; applying Settings { flags: (0x0), header_table_size: 65536, enable_push: 0, initial_window_size: 131072, max_frame_size: 16384 }
+[12:57:24] DEBUG h2.hpack.decoder │ Decoder changed max table size from=0 to=0
+[12:57:24] DEBUG h2.codec.framed_read │ received frame=Headers { stream_id: StreamId(1), flags: (0x4: END_HEADERS) }
+[12:57:24] DEBUG h2.codec.framed_read │ received frame=Data { stream_id: StreamId(1), flags: (0x1: END_STREAM) }
+[12:57:24] DEBUG cookie_store.cookie_store │ inserting secure cookie 'WMF-Last-Access'
+[12:57:24] DEBUG cookie_store.cookie_store │ inserting secure cookie 'WMF-Last-Access-Global'
+[12:57:24] DEBUG cookie_store.cookie_store │ inserting secure cookie 'GeoIP'
+[12:57:24] DEBUG cookie_store.cookie_store │ inserting secure cookie 'NetworkProbeLimit'
+[12:57:24] DEBUG cookie_store.cookie_store │ inserting secure cookie 'WMF-Uniq'
+[12:57:24] INFO  primp          │ response: https://pt.wikipedia.org/w/api.php?action=opensearch&profile=fuzzy&limit=1&search=%C3%A9%2C%20me%20diga%20as%20not%C3%ADcias%20de%20hoje%20do%20mundo%20da%20tecnologia. 200
+[12:57:24] DEBUG h2.hpack.decoder │ Decoder changed max table size from=0 to=4096
+[12:57:24] DEBUG h2.codec.framed_read │ received frame=Headers { stream_id: StreamId(3), flags: (0x4: END_HEADERS) }
+[12:57:24] DEBUG h2.codec.framed_read │ received frame=Data { stream_id: StreamId(3) }
+[12:57:24] DEBUG h2.codec.framed_read │ received frame=Data { stream_id: StreamId(3), flags: (0x1: END_STREAM) }
+[12:57:24] DEBUG cookie_store.cookie_store │ inserting secure cookie 'grokipedia-affinity'
+[12:57:24] DEBUG cookie_store.cookie_store │ inserting secure cookie '__cf_bm'
+[12:57:24] INFO  primp          │ response: https://grokipedia.com/api/typeahead?query=%C3%A9%2C+me+diga+as+not%C3%ADcias+de+hoje+do+mundo+da+tecnologia.&limit=1 200
+[12:57:24] DEBUG cookie_store.cookie_store │ inserting Set-Cookie 'Cookie { cookie_string: Some("br=br"), name: Indexed(0, 2), value: Indexed(3, 5), expires: None, max_age: None, domain: None, path: None, secure: None, http_only: None, same_site: None, partitioned: None }'
+[12:57:24] DEBUG cookie_store.cookie_store │ inserting Set-Cookie 'Cookie { cookie_string: Some("useLocation=0"), name: Indexed(0, 11), value: Indexed(12, 13), expires: None, max_age: None, domain: None, path: None, secure: None, http_only: None, same_site: None, partitioned: None }'
+[12:57:24] DEBUG reqwest.connect │ starting new connection: https://search.brave.com/
+[12:57:24] DEBUG hyper_util.client.legacy.connect.http │ connecting to [2600:9000:28b5:4a00:5:a6ac:6100:93a1]:443
+[12:57:24] DEBUG hyper_util.client.legacy.connect.http │ connecting to 3.163.63.110:443
+[12:57:24] DEBUG hyper_util.client.legacy.connect.http │ connected to [2600:9000:28b5:4a00:5:a6ac:6100:93a1]:443
+[12:57:24] DEBUG rustls.client.hs │ No cached session for DnsName("search.brave.com")
+[12:57:24] DEBUG rustls.client.hs │ Not resuming any session
+[12:57:24] DEBUG rustls.client.hs │ Browser emulation: Some(BrowserEmulator { browser_type: Firefox, version: BrowserVersion { major: 146, minor: 0, patch: 0 }, extension_order_seed: Some(39612), cipher_suites: Some([TLS13_AES_128_GCM_SHA256, TLS13_CHACHA20_POLY1305_SHA256, TLS13_AES_256_GCM_SHA384, TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256, TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256, TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, CipherSuite(0x9c), CipherSuite(0x9d), CipherSuite(0x2f), CipherSuite(0x35)]), signature_algorithms: Some([ECDSA_NISTP256_SHA256, ECDSA_NISTP384_SHA384, ECDSA_NISTP521_SHA512, RSA_PSS_SHA256, RSA_PSS_SHA384, RSA_PSS_SHA512, RSA_PKCS1_SHA256, RSA_PKCS1_SHA384, RSA_PKCS1_SHA512, ECDSA_SHA1_Legacy, RSA_PKCS1_SHA1]), named_groups: Some([X25519MLKEM768, X25519, secp256r1, secp384r1, secp521r1, FFDHE2048, FFDHE3072]), os_type: None, include_status_request_v2: false })
+[12:57:24] DEBUG rustls.client.hs │ Using extension_order_seed: 39011
+[12:57:24] DEBUG rustls.client.hs │ Browser emulation: Some(BrowserEmulator { browser_type: Firefox, version: BrowserVersion { major: 146, minor: 0, patch: 0 }, extension_order_seed: Some(39612), cipher_suites: Some([TLS13_AES_128_GCM_SHA256, TLS13_CHACHA20_POLY1305_SHA256, TLS13_AES_256_GCM_SHA384, TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256, TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256, TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, CipherSuite(0x9c), CipherSuite(0x9d), CipherSuite(0x2f), CipherSuite(0x35)]), signature_algorithms: Some([ECDSA_NISTP256_SHA256, ECDSA_NISTP384_SHA384, ECDSA_NISTP521_SHA512, RSA_PSS_SHA256, RSA_PSS_SHA384, RSA_PSS_SHA512, RSA_PKCS1_SHA256, RSA_PKCS1_SHA384, RSA_PKCS1_SHA512, ECDSA_SHA1_Legacy, RSA_PKCS1_SHA1]), named_groups: Some([X25519MLKEM768, X25519, secp256r1, secp384r1, secp521r1, FFDHE2048, FFDHE3072]), os_type: None, include_status_request_v2: false })
+[12:57:24] DEBUG rustls.client.hs │ Cipher suites count: 17
+[12:57:24] DEBUG rustls.client.hs │   [0] TLS13_AES_128_GCM_SHA256
+[12:57:24] DEBUG rustls.client.hs │   [1] TLS13_CHACHA20_POLY1305_SHA256
+[12:57:24] DEBUG rustls.client.hs │   [2] TLS13_AES_256_GCM_SHA384
+[12:57:24] DEBUG rustls.client.hs │   [3] TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+[12:57:24] DEBUG rustls.client.hs │   [4] TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+[12:57:24] DEBUG rustls.client.hs │   [5] TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256
+[12:57:24] DEBUG rustls.client.hs │   [6] TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+[12:57:24] DEBUG rustls.client.hs │   [7] TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+[12:57:24] DEBUG rustls.client.hs │   [8] TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+[12:57:24] DEBUG rustls.client.hs │   [9] TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA
+[12:57:24] DEBUG rustls.client.hs │   [10] TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA
+[12:57:24] DEBUG rustls.client.hs │   [11] TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA
+[12:57:24] DEBUG rustls.client.hs │   [12] TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA
+[12:57:24] DEBUG rustls.client.hs │   [13] CipherSuite(0x9c)
+[12:57:24] DEBUG rustls.client.hs │   [14] CipherSuite(0x9d)
+[12:57:24] DEBUG rustls.client.hs │   [15] CipherSuite(0x2f)
+[12:57:24] DEBUG rustls.client.hs │   [16] CipherSuite(0x35)
+[12:57:24] DEBUG rustls.client.hs │ Final cipher suites for ClientHello: [TLS13_AES_128_GCM_SHA256, TLS13_CHACHA20_POLY1305_SHA256, TLS13_AES_256_GCM_SHA384, TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256, TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256, TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, CipherSuite(0x9c), CipherSuite(0x9d), CipherSuite(0x2f), CipherSuite(0x35)]
+[12:57:24] DEBUG rustls.client.hs │ Using ciphersuite TLS13_AES_128_GCM_SHA256
+[12:57:24] DEBUG rustls.client.tls13 │ Not resuming
+[12:57:24] DEBUG rustls.client.tls13 │ TLS1.3 encrypted extensions: ServerExtensions { server_name_ack: (), selected_protocol: SingleProtocolName(ProtocolName(6832)), unknown_extensions: {}, .. }
+[12:57:24] DEBUG rustls.client.hs │ ALPN protocol is Some(b"h2")
+[12:57:24] DEBUG h2.client      │ binding client connection
+[12:57:24] DEBUG h2.client      │ client connection bound
+[12:57:24] DEBUG h2.client      │ handshake2: settings header_table_size=Some(65536), enable_push=Some(false), initial_window_size=Some(131072), max_frame_size=Some(16384), max_header_list_size=None
+[12:57:24] DEBUG h2.client      │ handshake2: sending initial settings frame
+[12:57:24] DEBUG h2.codec.framed_write │ send frame=Settings { flags: (0x0), header_table_size: 65536, enable_push: 0, initial_window_size: 131072, max_frame_size: 16384 }
+[12:57:24] DEBUG h2.frame.settings │ encoding SETTINGS; len=24, order=SettingsOrder { ids: [HeaderTableSize, EnablePush, InitialWindowSize, MaxFrameSize] }, header_table_size=Some(65536), enable_push=Some(0), initial_window_size=Some(131072), max_frame_size=Some(16384), max_header_list_size=None
+[12:57:24] DEBUG h2.frame.settings │ encoding setting; val=HeaderTableSize(65536)
+[12:57:24] DEBUG h2.frame.settings │ encoding setting; val=EnablePush(0)
+[12:57:24] DEBUG h2.frame.settings │ encoding setting; val=InitialWindowSize(131072)
+[12:57:24] DEBUG h2.frame.settings │ encoding setting; val=MaxFrameSize(16384)
+[12:57:24] DEBUG h2.proto.connection │ Connection; peer=Client
+[12:57:24] DEBUG hyper_util.client.legacy.pool │ pooling idle connection for ("https", search.brave.com)
+[12:57:24] DEBUG h2.codec.framed_write │ send frame=WindowUpdate { stream_id: StreamId(0), size_increment: 12517377 }
+[12:57:24] DEBUG h2.codec.framed_write │ send frame=Headers { stream_id: StreamId(3), flags: (0x25: END_HEADERS | END_STREAM | PRIORITY), stream_dep: StreamDependency { dependency_id: StreamId(0), weight: 41, is_exclusive: false } }
+[12:57:24] DEBUG h2.codec.framed_read │ received frame=Settings { flags: (0x0), max_concurrent_streams: 128, initial_window_size: 65536, max_frame_size: 16777215 }
+[12:57:24] DEBUG h2.codec.framed_write │ send frame=Settings { flags: (0x1: ACK) }
+[12:57:24] DEBUG h2.frame.settings │ encoding SETTINGS; len=0, order=SettingsOrder { ids: [HeaderTableSize, EnablePush, MaxConcurrentStreams, InitialWindowSize, MaxFrameSize, MaxHeaderListSize, EnableConnectProtocol, NoRfc7540Priorities] }, header_table_size=None, enable_push=None, initial_window_size=None, max_frame_size=None, max_header_list_size=None
+[12:57:24] DEBUG h2.codec.framed_read │ received frame=WindowUpdate { stream_id: StreamId(0), size_increment: 2147418112 }
+[12:57:24] DEBUG h2.codec.framed_read │ received frame=Settings { flags: (0x1: ACK) }
+[12:57:24] DEBUG h2.proto.settings │ received settings ACK; applying Settings { flags: (0x0), header_table_size: 65536, enable_push: 0, initial_window_size: 131072, max_frame_size: 16384 }
+[12:57:25] DEBUG h2.hpack.decoder │ Decoder changed max table size from=0 to=0
+[12:57:25] DEBUG h2.codec.framed_read │ received frame=Headers { stream_id: StreamId(3), flags: (0x4: END_HEADERS) }
+[12:57:25] DEBUG h2.codec.framed_read │ received frame=Data { stream_id: StreamId(3) }
+[12:57:25] DEBUG cookie_store.cookie_store │ inserting secure cookie 'useLocation'
+[12:57:25] INFO  primp          │ response: https://search.brave.com/search?q=%C3%A9%2C+me+diga+as+not%C3%ADcias+de+hoje+do+mundo+da+tecnologia.&source=web 200
+[12:57:25] DEBUG h2.codec.framed_read │ received frame=Data { stream_id: StreamId(3) }
+[12:57:25] DEBUG h2.codec.framed_read │ received frame=Data { stream_id: StreamId(3) }
+[12:57:25] DEBUG h2.codec.framed_read │ received frame=Data { stream_id: StreamId(3) }
+[12:57:25] DEBUG h2.codec.framed_read │ received frame=Data { stream_id: StreamId(3) }
+[12:57:25] DEBUG h2.codec.framed_read │ received frame=Data { stream_id: StreamId(3), flags: (0x1: END_STREAM) }
+[12:57:26] INFO  brain          │ [TIMING] Busca web: 6.9s (query='é, me diga as notícias de hoje do mundo da tecnologia.')
+[12:57:26] INFO  brain          │ [TIMING] Build prompt: 0.000s
+[12:57:26] INFO  brain          │ [TIMING] LLM stream: modelo=qwen3.5:4b, system=3094 chars, history=978 chars (16 msgs), num_ctx=2048, has_image=False
+[12:57:31] INFO  brain          │ [TIMING] Primeiro token em 4.8s
+[12:57:31] INFO  voice          │ A Inteligência Artificial da OpenAI, o ChatGPT, está enfrentando reclamações de falhas de desempenho e quedas repentinas.
+[12:57:31] DEBUG asyncio        │ Using proactor: IocpProactor
+[12:57:32] INFO  brain          │ [TIMING] LLM completo: 6.1s total, 62 tokens, 10.1 tok/s, first=4.8s
+[12:57:32] INFO  brain          │ [TIMING] Ollama: load=3.83s prompt=0.83s eval=1.32s prompt_tokens=1267 eval_tokens=63 thinking_chars=0
+[12:57:32] INFO  brain          │ [TIMING] think_stream total: 13.0s
+[12:57:33] DEBUG voice          │ [TIMING] TTS synth: 1.70s (121 chars)
+[12:57:41] INFO  voice          │ Além disso, o celular Motorola Razr Fold pode ser vendido no Brasil e o iFood lançou uma nova função para entregadores escolherem suas próprias rotas.
+[12:57:41] DEBUG asyncio        │ Using proactor: IocpProactor
+[12:57:45] DEBUG voice          │ [TIMING] TTS synth: 3.16s (150 chars)
+[12:57:46] INFO  voice          │ Interrompida.
+[12:57:46] DEBUG chromadb.utils.embedding_functions.onnx_mini_lm_l6_v2 │ WARNING: No ONNX providers provided, defaulting to available providers: ['AzureExecutionProvider', 'CPUExecutionProvider']
+[12:57:47] DEBUG ears           │ Ouvindo... (timeout=None)
