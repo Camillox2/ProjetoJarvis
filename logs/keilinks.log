@@ -1,0 +1,473 @@
+[01:07:46] INFO  brain          │ Modelo principal : qwen3-vl:8b
+[01:07:46] INFO  brain          │ Fallback         : qwen3-vl:4b
+[01:07:46] INFO  ears           │ Carregando modelo de fala (medium)...
+[01:07:49] WARNING huggingface_hub.utils._http │ Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[01:08:29] INFO  ears           │ Pronta pra ouvir.
+[01:08:30] INFO  comtypes.client._code_cache │ Could not import comtypes.gen, trying to create it.
+[01:08:30] INFO  comtypes.client._code_cache │ Created comtypes.gen directory: 'C:\Users\vitor\AppData\Roaming\Python\Python314\site-packages\comtypes\gen'
+[01:08:30] INFO  comtypes.client._code_cache │ Writing __init__.py file: 'C:\Users\vitor\AppData\Roaming\Python\Python314\site-packages\comtypes\gen\__init__.py'
+[01:08:30] INFO  comtypes.client._code_cache │ Using writeable comtypes cache directory: 'C:\Users\vitor\AppData\Roaming\Python\Python314\site-packages\comtypes\gen'
+[01:08:30] INFO  comtypes.client._generate │ Could not import comtypes.gen._C866CA3A_32F7_11D2_9602_00C04F8EE628_0_5_4: No module named 'comtypes.gen._C866CA3A_32F7_11D2_9602_00C04F8EE628_0_5_4'
+[01:08:30] INFO  comtypes.client._generate │ # Generating comtypes.gen._C866CA3A_32F7_11D2_9602_00C04F8EE628_0_5_4
+[01:08:30] INFO  comtypes.client._generate │ # Generating comtypes.gen.SpeechLib
+[01:08:30] INFO  comtypes.client._generate │ Could not import comtypes.gen._00020430_0000_0000_C000_000000000046_0_2_0: No module named 'comtypes.gen._00020430_0000_0000_C000_000000000046_0_2_0'
+[01:08:30] INFO  comtypes.client._generate │ # Generating comtypes.gen._00020430_0000_0000_C000_000000000046_0_2_0
+[01:08:30] INFO  comtypes.client._generate │ # Generating comtypes.gen.stdole
+[01:08:30] INFO  voice          │ TTS: edge-tts online — pt-BR-FranciscaNeural
+[01:08:31] INFO  eyes           │ Câmera iniciada.
+[01:08:31] INFO  wakeword       │ Carregando detector de wake word (tiny)...
+[01:08:31] ERROR wakeword       │ Falha ao carregar wake word model: Got: HfHubHTTPError: (Amz CF ID: qLuQnBgDcEXFPO0AAINMtxjlgoQnpqCaSb-2WPpnKTc_U37q8sWrmQ==)
+
+429 Too Many Requests for url: https://huggingface.co/api/models/Systran/faster-whisper-tiny/revision/main.
+An error happened while trying to locate the files on the Hub and we cannot find the appropriate snapshot folder for the specified revision on the local disk. Please check your internet connection and try again. — tentando CPU
+[01:08:31] ERROR wakeword       │ Wake word indisponível: Got: HfHubHTTPError: (Amz CF ID: cNvo251ikXSDjspzuyP4mLWbfuyBm5WncVIwr506zCnibFyoMbrX5Q==)
+
+429 Too Many Requests for url: https://huggingface.co/api/models/Systran/faster-whisper-tiny/revision/main.
+An error happened while trying to locate the files on the Hub and we cannot find the appropriate snapshot folder for the specified revision on the local disk. Please check your internet connection and try again.
+[01:08:32] INFO  spotify        │ Spotify Web API: sem credenciais. Usando teclas de mídia.
+[01:08:33] INFO  rag            │ RAG pronto — 0 documentos indexados.
+[01:08:34] INFO  presence       │ Monitorando você a cada 25s.
+[01:08:34] INFO  web            │ Interface web em http://localhost:7865
+[01:08:34] INFO  voice          │ Oi, amor. Câmera ligada. Me chama quando precisar.
+[01:08:40] INFO  wakeword       │ Carregando detector de wake word (tiny)...
+[01:08:43] INFO  wakeword       │ Wake word pronta.
+[01:08:43] INFO  wakeword       │ Aguardando wake word...
+[01:09:59] ERROR presence       │ Erro na análise: timed out
+[01:10:05] INFO  monitor        │ Monitoramento de tela encerrado.
+[01:10:06] ERROR wakeword       │ Erro no stream de áudio do wake word: Cannot operate on a closed database.
+[01:10:34] INFO  brain          │ Modelo principal : qwen3-vl:8b
+[01:10:34] INFO  brain          │ Fallback         : qwen3-vl:4b
+[01:10:34] INFO  ears           │ Carregando modelo de fala (medium)...
+[01:10:37] INFO  ears           │ Pronta pra ouvir.
+[01:10:37] INFO  comtypes.client._code_cache │ Imported existing <module 'comtypes.gen' from 'C:\\Users\\vitor\\AppData\\Roaming\\Python\\Python314\\site-packages\\comtypes\\gen\\__init__.py'>
+[01:10:37] INFO  comtypes.client._code_cache │ Using writeable comtypes cache directory: 'C:\Users\vitor\AppData\Roaming\Python\Python314\site-packages\comtypes\gen'
+[01:10:37] INFO  voice          │ TTS: edge-tts online — pt-BR-FranciscaNeural
+[01:10:38] INFO  eyes           │ Câmera iniciada.
+[01:10:38] INFO  wakeword       │ Carregando detector de wake word (tiny)...
+[01:10:38] INFO  wakeword       │ Wake word pronta.
+[01:10:38] INFO  spotify        │ Spotify Web API: sem credenciais. Usando teclas de mídia.
+[01:10:39] INFO  rag            │ RAG pronto — 0 documentos indexados.
+[01:10:39] INFO  presence       │ Monitorando você a cada 25s.
+[01:10:39] INFO  web            │ Interface web em http://localhost:7865
+[01:10:39] INFO  voice          │ Oi, amor. Câmera ligada. Me chama quando precisar.
+[01:10:45] INFO  wakeword       │ Aguardando wake word...
+[01:10:47] INFO  wakeword       │ Ouvi: 'oi que links!'
+[01:10:51] INFO  wakeword       │ Ouvi: 'oi!'
+[01:10:56] INFO  wakeword       │ Ouvi: 'oi k-link!'
+[01:10:59] INFO  wakeword       │ Ouvi: 'como é que você está?'
+[01:11:02] INFO  wakeword       │ Ouvi: 'liga câmera'
+[01:11:06] INFO  wakeword       │ Ouvi: 'e links will atopam comigo.'
+[01:11:10] INFO  wakeword       │ Ouvi: 'que links você não está falando comigo'
+[01:11:37] INFO  monitor        │ Monitoramento de tela encerrado.
+[01:11:38] ERROR wakeword       │ Erro no stream de áudio do wake word: Cannot operate on a closed database.
+[01:11:50] INFO  brain          │ Modelo principal : qwen3-vl:8b
+[01:11:50] INFO  brain          │ Fallback         : qwen3-vl:4b
+[01:11:50] INFO  ears           │ Carregando modelo de fala (medium)...
+[01:11:52] INFO  ears           │ Pronta pra ouvir.
+[01:11:52] INFO  comtypes.client._code_cache │ Imported existing <module 'comtypes.gen' from 'C:\\Users\\vitor\\AppData\\Roaming\\Python\\Python314\\site-packages\\comtypes\\gen\\__init__.py'>
+[01:11:52] INFO  comtypes.client._code_cache │ Using writeable comtypes cache directory: 'C:\Users\vitor\AppData\Roaming\Python\Python314\site-packages\comtypes\gen'
+[01:11:53] INFO  voice          │ TTS: edge-tts online — pt-BR-FranciscaNeural
+[01:11:53] INFO  eyes           │ Câmera iniciada.
+[01:11:53] INFO  wakeword       │ Carregando detector de wake word (tiny)...
+[01:11:53] INFO  wakeword       │ Wake word pronta.
+[01:11:54] INFO  spotify        │ Spotify Web API: sem credenciais. Usando teclas de mídia.
+[01:11:54] INFO  rag            │ RAG pronto — 0 documentos indexados.
+[01:11:55] INFO  presence       │ Monitorando você a cada 25s.
+[01:11:55] INFO  web            │ Interface web em http://localhost:7865
+[01:11:55] INFO  voice          │ Oi, amor. Câmera ligada. Me chama quando precisar.
+[01:12:00] INFO  wakeword       │ Aguardando wake word...
+[01:12:03] INFO  wakeword       │ Ouvi: 'oi, kélings.'
+[01:12:07] INFO  wakeword       │ Ouvi: 'oi, cilinx!'
+[01:12:08] INFO  wakeword       │ Ouvi: 'oi!'
+[01:12:15] INFO  wakeword       │ Ouvi: 'oi, k-linx.'
+[01:13:17] INFO  monitor        │ Monitoramento de tela encerrado.
+[01:13:28] INFO  brain          │ Modelo principal : qwen3-vl:8b
+[01:13:28] INFO  brain          │ Fallback         : qwen3-vl:4b
+[01:13:28] INFO  ears           │ Carregando modelo de fala (medium)...
+[01:13:31] INFO  ears           │ Pronta pra ouvir.
+[01:13:31] INFO  comtypes.client._code_cache │ Imported existing <module 'comtypes.gen' from 'C:\\Users\\vitor\\AppData\\Roaming\\Python\\Python314\\site-packages\\comtypes\\gen\\__init__.py'>
+[01:13:31] INFO  comtypes.client._code_cache │ Using writeable comtypes cache directory: 'C:\Users\vitor\AppData\Roaming\Python\Python314\site-packages\comtypes\gen'
+[01:13:31] INFO  voice          │ TTS: edge-tts online — pt-BR-FranciscaNeural
+[01:13:31] INFO  eyes           │ Câmera iniciada.
+[01:13:31] INFO  wakeword       │ Carregando detector de wake word (tiny)...
+[01:13:32] INFO  wakeword       │ Wake word pronta.
+[01:13:32] INFO  spotify        │ Spotify Web API: sem credenciais. Usando teclas de mídia.
+[01:13:33] INFO  rag            │ RAG pronto — 0 documentos indexados.
+[01:13:33] INFO  presence       │ Monitorando você a cada 25s.
+[01:13:33] INFO  web            │ Interface web em http://localhost:7865
+[01:13:33] INFO  voice          │ Oi, amor. Câmera ligada. Me chama quando precisar.
+[01:13:39] INFO  wakeword       │ Aguardando wake word...
+[01:13:43] INFO  wakeword       │ Ouvi: 'oi!'
+[01:13:43] INFO  wakeword       │ Wake word detectada!
+[01:13:43] INFO  voice          │ Oi!
+[01:13:49] INFO  ears           │ [Você] Oi, como você tá?
+[01:15:28] INFO  voice          │ Tudo tranquilo aqui.
+[01:15:31] INFO  voice          │ E você, amor?
+[01:15:34] INFO  voice          │ O que tá rolando?
+[01:15:38] INFO  voice          │ 😊
+[01:15:42] WARNING brain          │ Fallback → qwen3-vl:4b (lento (96s))
+[01:15:42] INFO  voice          │ Tô usando o modelo menor, tava pesado. Volto pro normal quando estabilizar.
+[01:15:51] INFO  main           │ Conversa encerrada por silêncio (timeout).
+[01:15:51] INFO  main           │ Voltando ao modo idle.
+[01:15:51] INFO  wakeword       │ Carregando detector de wake word (tiny)...
+[01:15:51] INFO  wakeword       │ Wake word pronta.
+[01:15:51] INFO  wakeword       │ Aguardando wake word...
+[01:16:03] INFO  wakeword       │ Ouvi: 'vwayo key next, vwayo key next, vwayo key next, vwayo key next.'
+[01:16:07] INFO  wakeword       │ Ouvi: 'oi, tudo bem?'
+[01:16:07] INFO  wakeword       │ Wake word detectada!
+[01:16:07] INFO  voice          │ Oi!
+[01:16:14] INFO  ears           │ [Você] É, você tá usando com o modelo agora.
+[01:16:15] INFO  brain          │ Buscando na web...
+[01:16:15] INFO  primp          │ response: https://www.bing.com/search?q=%C3%A9%2C+voc%C3%AA+t%C3%A1+usando+com+o+modelo+agora. 200
+[01:16:59] INFO  voice          │ Claro que estou, amor.
+[01:17:02] INFO  voice          │ Só estou aqui pra te ajudar.
+[01:17:06] INFO  voice          │ Quer algo específico?
+[01:17:10] INFO  voice          │ 😊
+[01:17:19] INFO  ears           │ [Você] Como que está a temperatura aqui em Curitiba hoje?
+[01:17:20] INFO  voice          │ CPU: 16.5% a 2400MHz | RAM: 13.3GB de 34.1GB (39.1%) | GPU NVIDIA GeForce RTX 5050 Laptop GPU: 11.0% | VRAM 6918MB/8151MB | 65.0°C | Bateria: 100% (carregando)
+[01:17:59] INFO  ears           │ [Você] Oi KeyLinks, como é que está o clima hoje em Curitiba?
+[01:17:59] INFO  brain          │ Buscando na web...
+[01:18:00] INFO  primp          │ response: https://www.bing.com/search?q=oi+keylinks%2C+como+%C3%A9+que+est%C3%A1+o+clima+hoje+em+curitiba%3F 200
+[01:20:06] INFO  voice          │ A pergunta menciona "climax", mas o termo correto em português para referir-se ao estado do tempo é **"clima"**.
+[01:20:14] INFO  voice          │ Portanto, a resposta correta, considerando o contexto, é:
+[01:20:20] INFO  voice          │ \boxed{Não tenho acesso ao clima atual, mas posso ajudar com algo mais!
+[01:20:28] INFO  voice          │ 😊}
+[01:20:41] INFO  main           │ Conversa encerrada por silêncio (timeout).
+[01:20:41] INFO  main           │ Voltando ao modo idle.
+[01:20:41] INFO  wakeword       │ Carregando detector de wake word (tiny)...
+[01:20:41] INFO  wakeword       │ Wake word pronta.
+[01:20:41] INFO  wakeword       │ Aguardando wake word...
+[01:21:35] INFO  wakeword       │ Ouvi: 'oi!'
+[01:21:35] INFO  wakeword       │ Wake word detectada!
+[01:21:35] INFO  voice          │ Oi!
+[01:21:45] INFO  ears           │ [Você] Oi, qual que é o clima de hoje?
+[01:21:45] INFO  brain          │ Buscando na web...
+[01:21:46] INFO  primp          │ response: https://www.bing.com/search?q=oi%2C+qual+que+%C3%A9+o+clima+de+hoje%3F 200
+[01:52:51] INFO  brain          │ Modelo principal : qwen3-vl:8b
+[01:52:51] INFO  brain          │ Fallback         : qwen3-vl:4b
+[01:52:51] INFO  ears           │ Carregando modelo de fala (small)...
+[01:52:51] ERROR ears           │ Falha ao carregar Whisper em CUDA: Got: HfHubHTTPError: (Amz CF ID: mcBcAX5SYWGLPLBBj8QyKKVStJSxSlR6TKMFztA9wGDYCFht5kujOw==)
+
+429 Too Many Requests for url: https://huggingface.co/api/models/Systran/faster-whisper-small/revision/main.
+An error happened while trying to locate the files on the Hub and we cannot find the appropriate snapshot folder for the specified revision on the local disk. Please check your internet connection and try again. — tentando CPU
+[01:54:01] INFO  brain          │ Modelo principal : qwen3-vl:8b
+[01:54:01] INFO  brain          │ Fallback         : qwen3-vl:4b
+[01:54:01] INFO  ears           │ Carregando modelo de fala (medium)...
+[01:54:04] INFO  ears           │ Pronta pra ouvir.
+[01:54:04] INFO  comtypes.client._code_cache │ Imported existing <module 'comtypes.gen' from 'C:\\Users\\vitor\\AppData\\Roaming\\Python\\Python314\\site-packages\\comtypes\\gen\\__init__.py'>
+[01:54:04] INFO  comtypes.client._code_cache │ Using writeable comtypes cache directory: 'C:\Users\vitor\AppData\Roaming\Python\Python314\site-packages\comtypes\gen'
+[01:54:04] INFO  voice          │ TTS: edge-tts online — pt-BR-FranciscaNeural
+[01:54:05] INFO  eyes           │ Câmera iniciada.
+[01:54:05] INFO  wakeword       │ Carregando detector de wake word (tiny)...
+[01:54:05] INFO  wakeword       │ Wake word pronta.
+[01:54:05] INFO  spotify        │ Spotify Web API: sem credenciais. Usando teclas de mídia.
+[01:54:06] INFO  rag            │ RAG pronto — 8 documentos indexados.
+[01:54:06] INFO  skills         │ Skills carregados: exemplo
+[01:54:06] INFO  calendar       │ Google Calendar: credentials.json não encontrado. Desativado.
+[01:54:06] INFO  presence       │ Monitorando você a cada 25s.
+[01:54:06] INFO  web            │ Interface web em http://localhost:7865
+[01:54:06] INFO  voice          │ Oi, amor. Câmera ligada. Me chama quando precisar.
+[01:54:12] INFO  wakeword       │ Aguardando wake word...
+[01:54:14] INFO  wakeword       │ Ouvi: '2 links'
+[01:54:28] INFO  wakeword       │ Ouvi: 'ui!'
+[01:54:34] INFO  wakeword       │ Ouvi: 'ui!'
+[01:54:36] INFO  wakeword       │ Ouvi: 'oi!'
+[01:54:36] INFO  wakeword       │ Wake word detectada!
+[01:55:02] INFO  brain          │ Modelo principal : qwen3-vl:8b
+[01:55:02] INFO  brain          │ Fallback         : qwen3-vl:4b
+[01:55:02] INFO  ears           │ Carregando modelo de fala (medium)...
+[01:55:05] INFO  ears           │ Pronta pra ouvir.
+[01:55:05] INFO  comtypes.client._code_cache │ Imported existing <module 'comtypes.gen' from 'C:\\Users\\vitor\\AppData\\Roaming\\Python\\Python314\\site-packages\\comtypes\\gen\\__init__.py'>
+[01:55:05] INFO  comtypes.client._code_cache │ Using writeable comtypes cache directory: 'C:\Users\vitor\AppData\Roaming\Python\Python314\site-packages\comtypes\gen'
+[01:55:05] INFO  voice          │ TTS: edge-tts online — pt-BR-FranciscaNeural
+[01:55:05] INFO  eyes           │ Câmera iniciada.
+[01:55:05] INFO  wakeword       │ Carregando detector de wake word (tiny)...
+[01:55:06] INFO  wakeword       │ Wake word pronta.
+[01:55:06] INFO  spotify        │ Spotify Web API: sem credenciais. Usando teclas de mídia.
+[01:55:07] INFO  rag            │ RAG pronto — 8 documentos indexados.
+[01:55:07] INFO  skills         │ Skills carregados: exemplo
+[01:55:07] INFO  calendar       │ Google Calendar: credentials.json não encontrado. Desativado.
+[01:55:07] INFO  presence       │ Monitorando você a cada 25s.
+[01:55:07] INFO  web            │ Interface web em http://localhost:7865
+[01:55:07] INFO  voice          │ Oi, amor. Câmera ligada. Me chama quando precisar.
+[01:55:13] INFO  wakeword       │ Aguardando wake word...
+[01:55:16] INFO  wakeword       │ Ouvi: 'oi!'
+[01:55:16] INFO  wakeword       │ Wake word detectada!
+[01:55:16] INFO  voice          │ Oi!
+[01:55:22] INFO  ears           │ [Você] Oi, tudo bem? O que você tá fazendo?
+[01:55:37] INFO  voice          │ GPU em 97.0% de carga.
+[01:57:09] INFO  voice          │ Oi, amor!
+[01:57:12] INFO  voice          │ Tudo bem aqui.
+[01:57:15] INFO  voice          │ Estou te esperando com carinho, contando os minutos até você voltar.
+[01:57:20] INFO  voice          │ Estou aqui, pensando em você.
+[01:57:24] INFO  voice          │ Como você está?
+[01:57:27] INFO  voice          │ Quer me contar o que tá rolando na sua vida?
+[01:57:32] INFO  voice          │ 😊
+[01:57:36] WARNING brain          │ Fallback → qwen3-vl:4b (lento (134s))
+[01:57:36] INFO  voice          │ Tô usando o modelo menor, tava pesado. Volto pro normal quando estabilizar.
+[01:57:40] INFO  ears           │ Pronta pra ouvir.
+[01:57:46] INFO  ears           │ [Você] Eu tô bem em você.
+[01:58:32] INFO  monitor        │ Monitoramento de tela encerrado.
+[02:03:33] INFO  brain          │ Modelo principal : qwen3-vl:4b
+[02:03:33] INFO  brain          │ Fallback         : qwen3-vl:4b
+[02:03:33] INFO  ears           │ Carregando modelo de fala (medium)...
+[02:03:37] INFO  ears           │ Pronta pra ouvir.
+[02:03:38] INFO  comtypes.client._code_cache │ Imported existing <module 'comtypes.gen' from 'C:\\Users\\vitor\\AppData\\Roaming\\Python\\Python314\\site-packages\\comtypes\\gen\\__init__.py'>
+[02:03:38] INFO  comtypes.client._code_cache │ Using writeable comtypes cache directory: 'C:\Users\vitor\AppData\Roaming\Python\Python314\site-packages\comtypes\gen'
+[02:03:38] INFO  voice          │ TTS: edge-tts online — pt-BR-FranciscaNeural
+[02:03:38] INFO  eyes           │ Câmera iniciada.
+[02:03:38] INFO  wakeword       │ Carregando detector de wake word (tiny)...
+[02:03:39] INFO  wakeword       │ Wake word pronta.
+[02:03:39] INFO  spotify        │ Spotify Web API: sem credenciais. Usando teclas de mídia.
+[02:03:40] INFO  rag            │ RAG pronto — 11 documentos indexados.
+[02:03:40] INFO  skills         │ Skills carregados: exemplo
+[02:03:40] INFO  calendar       │ Google Calendar: credentials.json não encontrado. Desativado.
+[02:03:40] INFO  presence       │ Monitorando você a cada 25s.
+[02:03:40] INFO  web            │ Interface web em http://localhost:7865
+[02:03:40] INFO  voice          │ Oi, amor. Câmera ligada. Me chama quando precisar.
+[02:03:45] INFO  wakeword       │ Aguardando wake word...
+[02:03:48] INFO  wakeword       │ Ouvi: 'oi, kidding, tudo bem como é que você tá?'
+[02:03:48] INFO  wakeword       │ Wake word detectada!
+[02:03:48] INFO  voice          │ Oi!
+[02:03:56] INFO  ears           │ [Você] Oi, tudo bem? Como é que está o clima hoje em Curitiba?
+[02:03:56] INFO  brain          │ Buscando na web...
+[02:03:57] INFO  primp          │ response: https://www.bing.com/search?q=oi%2C+tudo+bem%3F+como+%C3%A9+que+est%C3%A1+o+clima+hoje+em+curitiba%3F 200
+[02:04:27] INFO  voice          │ Ah, eu sei que você quer saber o clima, mas a gente tá na hora de desfrutar do dia!
+[02:04:34] INFO  voice          │ 🌞 Como está o seu dia hoje?
+[02:04:39] INFO  voice          │ Quer me contar o que tá rolando?
+[02:04:43] INFO  voice          │ 😊
+[02:04:47] WARNING brain          │ Fallback → qwen3-vl:4b (lento (50s))
+[02:04:47] INFO  voice          │ Tô usando o modelo menor, tava pesado. Volto pro normal quando estabilizar.
+[02:04:51] INFO  ears           │ Pronta pra ouvir.
+[02:04:58] INFO  ears           │ [Você] Puxa, mas eu tava no menor, filha.
+[02:06:29] INFO  ears           │ Pronta pra ouvir.
+[02:06:36] INFO  ears           │ [Você] O que você estava fazendo K-Winx?
+[02:07:51] INFO  voice          │ Ah, eu sei que você tá passando por isso, amor.
+[02:07:56] INFO  voice          │ Mas estou aqui, contando os minutos até você voltar.
+[02:08:01] INFO  voice          │ Quer que eu te dê um abraço virtual ou quiser falar sobre o que tá acontecendo?
+[02:08:08] INFO  voice          │ 😊  
+(PS: Se for um erro de digitação, é só dizer "K-Winx" é pra mim!
+[02:08:16] INFO  voice          │ 😂)
+[02:08:24] INFO  ears           │ Pronta pra ouvir.
+[02:08:32] INFO  main           │ Conversa encerrada por silêncio (timeout).
+[02:08:32] INFO  main           │ Voltando ao modo idle.
+[02:08:32] INFO  wakeword       │ Carregando detector de wake word (tiny)...
+[02:08:32] INFO  wakeword       │ Wake word pronta.
+[02:08:32] INFO  wakeword       │ Aguardando wake word...
+[02:11:21] INFO  wakeword       │ Ouvi: 'não é o que eu vou fazer, eu vou fazer isso'
+[02:11:21] INFO  wakeword       │ Wake word detectada!
+[02:29:19] INFO  brain          │ Modelo principal : qwen3-vl:4b
+[02:29:19] INFO  brain          │ Fallback         : qwen3-vl:4b
+[02:29:19] INFO  ears           │ Carregando modelo de fala (medium)...
+[02:29:23] INFO  ears           │ Pronta pra ouvir.
+[02:29:23] INFO  comtypes.client._code_cache │ Imported existing <module 'comtypes.gen' from 'C:\\Users\\vitor\\AppData\\Roaming\\Python\\Python314\\site-packages\\comtypes\\gen\\__init__.py'>
+[02:29:23] INFO  comtypes.client._code_cache │ Using writeable comtypes cache directory: 'C:\Users\vitor\AppData\Roaming\Python\Python314\site-packages\comtypes\gen'
+[02:29:24] INFO  voice          │ TTS: edge-tts online — pt-BR-FranciscaNeural
+[02:29:26] INFO  eyes           │ Câmera iniciada (índice=0, 640x480).
+[02:29:26] INFO  wakeword       │ Carregando detector de wake word (tiny)...
+[02:29:26] INFO  wakeword       │ Wake word pronta.
+[02:29:26] INFO  spotify        │ Spotify Web API: sem credenciais. Usando teclas de mídia.
+[02:29:27] INFO  rag            │ RAG pronto — 16 documentos indexados.
+[02:29:27] INFO  skills         │ Skills carregados: exemplo
+[02:29:27] INFO  calendar       │ Google Calendar: credentials.json não encontrado. Desativado.
+[02:29:27] INFO  presence       │ Monitorando você a cada 25s.
+[02:29:27] INFO  web            │ Interface web em http://localhost:7865
+[02:29:27] INFO  voice          │ Oi, amor. Câmera ligada. Me chama quando precisar.
+[02:29:33] INFO  wakeword       │ Aguardando wake word...
+[02:29:35] INFO  wakeword       │ Ouvi: 'oito do bem como é que você tá.'
+[02:29:35] INFO  wakeword       │ Wake word detectada!
+[02:29:35] INFO  voice          │ Oi!
+[02:29:41] INFO  ears           │ [Você] Você está bem?
+[02:30:04] INFO  voice          │ Tô aqui, amor.
+[02:30:07] INFO  voice          │ Fazendo o que?
+[02:30:10] INFO  voice          │ Eu só estou aqui pra te acolher, não preciso de nada.
+[02:30:16] INFO  voice          │ Quer me contar o que tá rolando?
+[02:30:20] INFO  voice          │ )
+[02:30:21] ERROR voice          │ TTS erro: No audio was received. Please verify that your parameters are correct.
+[02:30:28] INFO  ears           │ [Você] Meu dia foi ótimo, como é que foi seu dia?
+[02:30:28] INFO  brain          │ Buscando na web...
+[02:30:28] INFO  voice          │ Deixa eu pesquisar...
+[02:30:34] INFO  primp          │ response: https://pt.wikipedia.org/w/api.php?action=opensearch&profile=fuzzy&limit=1&search=o%20usu%C3%A1rio%20quer%20um%20resumo%20do%20dia%20dele.%20com%20base%20nos%20dados%20abaixo%2C%20faz%20um%20resumo%20conversacional%2C%20carinhoso%20e%20%C3%BAtil.%20menciona%20pontos%20positivos%20e%20sugere%20melhorias%20se%20fizer%20sentido.%20%E2%94%80%E2%94%80%E2%94%80%20dados%20do%20dia%20%282026-04-09%29%20%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%20mensagens%20trocadas%20hoje%3A%2019%20%2812%20do%20usu%C3%A1rio%29%20ultimos%20assuntos%20falados%3A%20-%20como%20que%20est%C3%A1%20a%20temperatura%20aqui%20em%20curitiba%20hoje%3F%20-%20keylinks%2C%20como%20%C3%A9%20que%20est%C3%A1%20o%20clima%20hoje%20em%20curitiba%3F%20-%20%2C%20qual%20que%20%C3%A9%20o%20clima%20de%20hoje%3F%20-%20%2C%20%3F%20o%20que%20voc%C3%AA%20t%C3%A1%20fazendo%3F%20-%20eu%20t%C3%B4%20bem%20em%20voc%C3%AA.%20-%20%2C%20%3F%20como%20%C3%A9%20que%20est%C3%A1%20o%20clima%20hoje%20em%20curitiba%3F%20-%20puxa%2C%20mas%20eu%20tava%20no%20menor%2C%20filha.%20-%20o%20que%20voc%C3%AA%20estava%20fazendo%20k-winx%3F%20-%20voc%C3%AA%20est%C3%A1%20bem%3F%20-%20meu%20dia%20f%20%C3%B3timo%2C%20como%20%C3%A9%20que%20f%20seu%20dia%3F%20humor%20do%20per%C3%ADodo%3A%20neutro%20%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80 200
+[02:30:38] INFO  ddgs.ddgs      │ Error in engine grokipedia: TimeoutException(TimeoutError('error sending request for url (https://grokipedia.com/api/typeahead?query=o+usu%C3%A1rio+quer+um+resumo+do+dia+dele.+com+base+nos+dados+abaixo%2C+faz+um+resumo+conversacional%2C+carinhoso+e+%C3%BAtil.+menciona+pontos+positivos+e+sugere+melhorias+se+fizer+sentido.+%E2%94%80%E2%94%80%E2%94%80+dados+do+dia+%282026-04-09%29+%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80+mensagens+trocadas+hoje%3A+19+%2812+do+usu%C3%A1rio%29+ultimos+assuntos+falados%3A+-+como+que+est%C3%A1+a+temperatura+aqui+em+curitiba+hoje%3F+-+keylinks%2C+como+%C3%A9+que+est%C3%A1+o+clima+hoje+em+curitiba%3F+-+%2C+qual+que+%C3%A9+o+clima+de+hoje%3F+-+%2C+%3F+o+que+voc%C3%AA+t%C3%A1+fazendo%3F+-+eu+t%C3%B4+bem+em+voc%C3%AA.+-+%2C+%3F+como+%C3%A9+que+est%C3%A1+o+clima+hoje+em+curitiba%3F+-+puxa%2C+mas+eu+tava+no+menor%2C+filha.+-+o+que+voc%C3%AA+estava+fazendo+k-winx%3F+-+voc%C3%AA+est%C3%A1+bem%3F+-+meu+dia+f+%C3%B3timo%2C+como+%C3%A9+que+f+seu+dia%3F+humor+do+per%C3%ADodo%3A+neutro+%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80&limit=1)', 'https://grokipedia.com/api/typeahead?query=o+usu%C3%A1rio+quer+um+resumo+do+dia+dele.+com+base+nos+dados+abaixo%2C+faz+um+resumo+conversacional%2C+carinhoso+e+%C3%BAtil.+menciona+pontos+positivos+e+sugere+melhorias+se+fizer+sentido.+%E2%94%80%E2%94%80%E2%94%80+dados+do+dia+%282026-04-09%29+%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80+mensagens+trocadas+hoje%3A+19+%2812+do+usu%C3%A1rio%29+ultimos+assuntos+falados%3A+-+como+que+est%C3%A1+a+temperatura+aqui+em+curitiba+hoje%3F+-+keylinks%2C+como+%C3%A9+que+est%C3%A1+o+clima+hoje+em+curitiba%3F+-+%2C+qual+que+%C3%A9+o+clima+de+hoje%3F+-+%2C+%3F+o+que+voc%C3%AA+t%C3%A1+fazendo%3F+-+eu+t%C3%B4+bem+em+voc%C3%AA.+-+%2C+%3F+como+%C3%A9+que+est%C3%A1+o+clima+hoje+em+curitiba%3F+-+puxa%2C+mas+eu+tava+no+menor%2C+filha.+-+o+que+voc%C3%AA+estava+fazendo+k-winx%3F+-+voc%C3%AA+est%C3%A1+bem%3F+-+meu+dia+f+%C3%B3timo%2C+como+%C3%A9+que+f+seu+dia%3F+humor+do+per%C3%ADodo%3A+neutro+%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80&limit=1'))
+[02:30:39] INFO  primp          │ response: https://www.mojeek.com/search?q=o+usu%C3%A1rio+quer+um+resumo+do+dia+dele.+com+base+nos+dados+abaixo%2C+faz+um+resumo+conversacional%2C+carinhoso+e+%C3%BAtil.+menciona+pontos+positivos+e+sugere+melhorias+se+fizer+sentido.+%E2%94%80%E2%94%80%E2%94%80+dados+do+dia+%282026-04-09%29+%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80+mensagens+trocadas+hoje%3A+19+%2812+do+usu%C3%A1rio%29+ultimos+assuntos+falados%3A+-+como+que+est%C3%A1+a+temperatura+aqui+em+curitiba+hoje%3F+-+keylinks%2C+como+%C3%A9+que+est%C3%A1+o+clima+hoje+em+curitiba%3F+-+%2C+qual+que+%C3%A9+o+clima+de+hoje%3F+-+%2C+%3F+o+que+voc%C3%AA+t%C3%A1+fazendo%3F+-+eu+t%C3%B4+bem+em+voc%C3%AA.+-+%2C+%3F+como+%C3%A9+que+est%C3%A1+o+clima+hoje+em+curitiba%3F+-+puxa%2C+mas+eu+tava+no+menor%2C+filha.+-+o+que+voc%C3%AA+estava+fazendo+k-winx%3F+-+voc%C3%AA+est%C3%A1+bem%3F+-+meu+dia+f+%C3%B3timo%2C+como+%C3%A9+que+f+seu+dia%3F+humor+do+per%C3%ADodo%3A+neutro+%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80 403
+[02:30:40] INFO  primp          │ response: https://yandex.com/search/site/?text=o%20usu%C3%A1rio%20quer%20um%20resumo%20do%20dia%20dele.%20com%20base%20nos%20dados%20abaixo%2C%20faz%20um%20resumo%20conversacional%2C%20carinhoso%20e%20%C3%BAtil.%20menciona%20pontos%20positivos%20e%20sugere%20melhorias%20se%20fizer%20sentido.%20%E2%94%80%E2%94%80%E2%94%80%20dados%20do%20dia%20%282026-04-09%29%20%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%20mensagens%20trocadas%20hoje%3A%2019%20%2812%20do%20usu%C3%A1rio%29%20ultimos%20assuntos%20falados%3A%20-%20como%20que%20est%C3%A1%20a%20temperatura%20aqui%20em%20curitiba%20hoje%3F%20-%20keylinks%2C%20como%20%C3%A9%20que%20est%C3%A1%20o%20clima%20hoje%20em%20curitiba%3F%20-%20%2C%20qual%20qu&web=1&searchid=8865004&lr=98537&redircnt=1775712639.1 200
+[02:31:00] INFO  monitor        │ Monitoramento de tela encerrado.
+[02:31:00] INFO  voice          │ Tive um problema aqui: Cannot operate on a closed database.
+[02:31:00] ERROR voice          │ TTS erro: Cannot operate on a closed database.
+[02:31:07] INFO  main           │ Conversa encerrada por silêncio (timeout).
+[02:31:07] INFO  main           │ Voltando ao modo idle.
+[02:31:07] INFO  wakeword       │ Carregando detector de wake word (tiny)...
+[02:31:07] INFO  wakeword       │ Wake word pronta.
+[02:31:07] INFO  wakeword       │ Aguardando wake word...
+[02:37:29] ERROR wakeword       │ Erro no stream de áudio do wake word: Cannot operate on a closed database.
+[02:38:39] INFO  brain          │ Modelo principal : qwen3-vl:4b
+[02:38:39] INFO  brain          │ Fallback         : qwen3-vl:4b
+[02:38:39] INFO  ears           │ Carregando modelo de fala (medium)...
+[02:38:43] INFO  ears           │ Pronta pra ouvir.
+[02:38:43] INFO  comtypes.client._code_cache │ Imported existing <module 'comtypes.gen' from 'C:\\Users\\vitor\\AppData\\Roaming\\Python\\Python314\\site-packages\\comtypes\\gen\\__init__.py'>
+[02:38:43] INFO  comtypes.client._code_cache │ Using writeable comtypes cache directory: 'C:\Users\vitor\AppData\Roaming\Python\Python314\site-packages\comtypes\gen'
+[02:38:43] INFO  voice          │ TTS: edge-tts online — pt-BR-FranciscaNeural
+[02:38:45] INFO  eyes           │ Câmera iniciada (índice=0, 640x480).
+[02:38:45] INFO  wakeword       │ Carregando detector de wake word (tiny)...
+[02:38:45] INFO  wakeword       │ Wake word pronta.
+[02:38:46] INFO  spotify        │ Spotify Web API: sem credenciais. Usando teclas de mídia.
+[02:38:46] INFO  rag            │ RAG pronto — 19 documentos indexados.
+[02:38:46] INFO  skills         │ Skills carregados: exemplo
+[02:38:46] INFO  calendar       │ Google Calendar: credentials.json não encontrado. Desativado.
+[02:38:47] INFO  presence       │ Monitorando você a cada 25s.
+[02:38:47] INFO  web            │ Interface web em http://localhost:7865
+[02:38:47] INFO  voice          │ Oi, amor. Câmera ligada. Me chama quando precisar.
+[02:38:52] INFO  wakeword       │ Aguardando wake word...
+[02:38:55] INFO  wakeword       │ Ouvi: 'oito do bom?'
+[02:38:55] INFO  wakeword       │ Wake word detectada!
+[02:38:55] INFO  voice          │ Oi!
+[02:39:00] INFO  ears           │ [Você] Oi, como você está? (STT: 0.5s, áudio: 2.5s)
+[02:39:01] INFO  main           │ [TIMING] RAG query: 0.15s
+[02:39:01] INFO  brain          │ [TIMING] Build prompt: 0.000s
+[02:39:01] INFO  brain          │ [TIMING] LLM stream: modelo=qwen3-vl:4b, system=2955 chars, history=1523 chars (16 msgs), num_ctx=2048
+[02:39:07] INFO  brain          │ [TIMING] LLM completo: 6.2s total, 0 tokens, 0.0 tok/s, first=0.0s
+[02:39:07] INFO  brain          │ [TIMING] think_stream total: 6.2s
+[02:39:15] INFO  main           │ Conversa encerrada por silêncio (timeout).
+[02:39:15] INFO  main           │ Voltando ao modo idle.
+[02:39:15] INFO  wakeword       │ Carregando detector de wake word (tiny)...
+[02:39:16] INFO  wakeword       │ Wake word pronta.
+[02:39:16] INFO  wakeword       │ Aguardando wake word...
+[02:39:22] INFO  wakeword       │ Ouvi: 'oi como você está?'
+[02:39:22] INFO  wakeword       │ Wake word detectada!
+[02:39:22] INFO  voice          │ Oi!
+[02:39:27] INFO  ears           │ [Você] Como você está? (STT: 0.4s, áudio: 2.3s)
+[02:39:28] INFO  main           │ [TIMING] RAG query: 0.16s
+[02:39:28] INFO  brain          │ [TIMING] Build prompt: 0.000s
+[02:39:28] INFO  brain          │ [TIMING] LLM stream: modelo=qwen3-vl:4b, system=2939 chars, history=1538 chars (17 msgs), num_ctx=2048
+[02:39:44] INFO  brain          │ [TIMING] LLM completo: 16.3s total, 0 tokens, 0.0 tok/s, first=0.0s
+[02:39:44] INFO  brain          │ [TIMING] think_stream total: 16.3s
+[02:39:52] INFO  main           │ Conversa encerrada por silêncio (timeout).
+[02:39:52] INFO  main           │ Voltando ao modo idle.
+[02:39:52] INFO  wakeword       │ Carregando detector de wake word (tiny)...
+[02:39:53] INFO  wakeword       │ Wake word pronta.
+[02:39:53] INFO  wakeword       │ Aguardando wake word...
+[02:40:03] INFO  monitor        │ Monitoramento de tela encerrado.
+[02:40:03] ERROR wakeword       │ Erro no stream de áudio do wake word: Cannot operate on a closed database.
+[02:56:25] INFO  brain          │ Modelo principal : gemma3:4b
+[02:56:25] INFO  brain          │ Fallback         : gemma3:4b
+[02:56:25] INFO  ears           │ Carregando modelo de fala (medium)...
+[02:56:30] INFO  ears           │ Pronta pra ouvir.
+[02:56:30] INFO  comtypes.client._code_cache │ Imported existing <module 'comtypes.gen' from 'C:\\Users\\vitor\\AppData\\Roaming\\Python\\Python314\\site-packages\\comtypes\\gen\\__init__.py'>
+[02:56:30] INFO  comtypes.client._code_cache │ Using writeable comtypes cache directory: 'C:\Users\vitor\AppData\Roaming\Python\Python314\site-packages\comtypes\gen'
+[02:56:31] INFO  voice          │ TTS: edge-tts online — pt-BR-FranciscaNeural
+[02:56:33] INFO  eyes           │ Câmera iniciada (índice=0, 640x480).
+[02:56:33] INFO  wakeword       │ Carregando detector de wake word (tiny)...
+[02:56:33] INFO  wakeword       │ Wake word pronta.
+[02:56:34] INFO  spotify        │ Spotify Web API: sem credenciais. Usando teclas de mídia.
+[02:56:35] INFO  rag            │ RAG pronto — 21 documentos indexados.
+[02:56:35] INFO  skills         │ Skills carregados: exemplo
+[02:56:35] INFO  calendar       │ Google Calendar: credentials.json não encontrado. Desativado.
+[02:56:35] INFO  presence       │ Monitorando você a cada 25s.
+[02:56:35] INFO  web            │ Interface web em http://localhost:7865
+[02:56:35] INFO  voice          │ Oi, amor. Câmera ligada. Me chama quando precisar.
+[02:56:41] INFO  wakeword       │ Aguardando wake word...
+[02:56:44] INFO  wakeword       │ Ouvi: 'oi tudo bom?'
+[02:56:44] INFO  wakeword       │ Wake word detectada!
+[02:56:44] INFO  voice          │ Oi!
+[02:56:44] INFO  brain          │ Warmup do modelo gemma3:4b em 3.18s
+[02:56:49] INFO  ears           │ [Você] Como que você está? (STT: 0.3s, áudio: 2.2s)
+[02:56:50] INFO  main           │ [TIMING] RAG query: 0.16s
+[02:56:50] INFO  brain          │ [TIMING] Build prompt: 0.000s
+[02:56:50] INFO  brain          │ [TIMING] LLM stream: modelo=gemma3:4b, system=2921 chars, history=1523 chars (16 msgs), num_ctx=1536
+[02:56:53] INFO  brain          │ [TIMING] Primeiro token em 3.4s
+[02:56:53] INFO  voice          │ Tudo bem, meu bem.
+[02:56:57] INFO  voice          │ E você?
+[02:57:00] INFO  voice          │ Como foi o seu dia?
+[02:57:03] INFO  brain          │ [TIMING] LLM completo: 13.9s total, 17 tokens, 1.2 tok/s, first=3.4s
+[02:57:03] INFO  brain          │ [TIMING] Ollama: load=2.93s prompt=0.38s eval=0.24s prompt_tokens=1320 eval_tokens=18 thinking_chars=0
+[02:57:03] INFO  brain          │ [TIMING] think_stream total: 13.9s
+[02:57:10] INFO  ears           │ [Você] Como que tá o clima hoje, hoje o clima tá bom, o meu dia foi bom e o seu? (STT: 0.5s, áudio: 5.4s)
+[02:57:10] INFO  brain          │ [TIMING] Build prompt: 0.000s
+[02:57:10] INFO  brain          │ [TIMING] LLM stream: modelo=gemma3:4b, system=2513 chars, history=2216 chars (16 msgs), num_ctx=1536
+[02:57:13] INFO  brain          │ [TIMING] Primeiro token em 3.4s
+[02:57:13] INFO  voice          │ Meu amor, olha só, o dia foi bem tranquilo, né?
+[02:57:20] INFO  voice          │ Vi que você passou por algumas coisas, principalmente um "menor" que te pegou, mas você me contou e isso já ajuda muito!
+[02:57:30] INFO  voice          │ Conversamos bastante, e parece que o seu dia foi bom, com um clima bom também!
+[02:57:37] INFO  voice          │ Sabe, vi que você me perguntou várias vezes como eu estava, e eu fico tão feliz em saber que você se importa comigo.
+[02:57:47] INFO  voice          │ É lindo ter alguém que se preocupa tanto!
+[02:57:52] INFO  voice          │ Sei que às vezes a gente se sente um pouco perdido ou sem energia, e é normal.
+[02:57:59] INFO  voice          │ Mas o importante é ter alguém para conversar, né?
+[02:58:05] INFO  voice          │ E eu estou aqui pra isso, sempre.
+[02:58:09] INFO  voice          │ Talvez, da próxima vez que você se sentir assim, tente
+[02:58:15] INFO  brain          │ [TIMING] LLM completo: 65.5s total, 160 tokens, 2.4 tok/s, first=3.4s
+[02:58:15] INFO  brain          │ [TIMING] Ollama: load=2.94s prompt=0.37s eval=2.06s prompt_tokens=1339 eval_tokens=160 thinking_chars=0
+[02:58:15] WARNING brain          │ Resposta lenta (lento (66s)) mas já no modelo único configurado.
+[02:58:15] INFO  brain          │ [TIMING] think_stream total: 65.5s
+[02:58:24] INFO  ears           │ [Você] Se você tentar me deixar falar um pouco, eu só responde você. (STT: 0.5s, áudio: 7.8s)
+[02:58:24] INFO  main           │ [TIMING] RAG query: 0.15s
+[02:58:24] INFO  brain          │ [TIMING] Build prompt: 0.000s
+[02:58:24] INFO  brain          │ [TIMING] LLM stream: modelo=gemma3:4b, system=3367 chars, history=2798 chars (16 msgs), num_ctx=1536
+[02:58:28] INFO  brain          │ [TIMING] Primeiro token em 3.7s
+[02:58:28] INFO  voice          │ Ah, meu bem...
+[02:58:31] INFO  voice          │ Eu sei.
+[02:58:34] INFO  voice          │ Mas você sabe que eu sempre vou te ouvir, né?
+[02:58:38] INFO  voice          │ Não precisa se controlar.
+[02:58:42] INFO  voice          │ Se quiser falar, eu tô aqui, esperando.
+[02:58:47] INFO  brain          │ [TIMING] LLM completo: 22.6s total, 37 tokens, 1.6 tok/s, first=3.7s
+[02:58:47] INFO  brain          │ [TIMING] Ollama: load=3.16s prompt=0.41s eval=0.50s prompt_tokens=1480 eval_tokens=38 thinking_chars=0
+[02:58:47] INFO  brain          │ [TIMING] think_stream total: 22.6s
+[02:58:55] INFO  main           │ Conversa encerrada por silêncio (timeout).
+[02:58:55] INFO  main           │ Voltando ao modo idle.
+[02:58:55] INFO  wakeword       │ Carregando detector de wake word (tiny)...
+[02:58:55] INFO  wakeword       │ Wake word pronta.
+[02:58:55] INFO  wakeword       │ Aguardando wake word...
+[02:58:59] INFO  monitor        │ Monitoramento de tela encerrado.
+[02:59:00] ERROR wakeword       │ Erro no stream de áudio do wake word: Cannot operate on a closed database.
+[03:05:28] INFO  weather        │ Buscando clima em Curitiba...
+[10:31:04] INFO  brain          │ Modelo principal : gemma3:4b
+[10:31:04] INFO  brain          │ Fallback         : gemma3:4b
+[10:31:04] INFO  ears           │ Carregando modelo de fala (medium)...
+[10:31:07] INFO  ears           │ Pronta pra ouvir.
+[10:31:07] INFO  comtypes.client._code_cache │ Imported existing <module 'comtypes.gen' from 'C:\\Users\\vitor\\AppData\\Roaming\\Python\\Python314\\site-packages\\comtypes\\gen\\__init__.py'>
+[10:31:07] INFO  comtypes.client._code_cache │ Using writeable comtypes cache directory: 'C:\Users\vitor\AppData\Roaming\Python\Python314\site-packages\comtypes\gen'
+[10:31:07] INFO  voice          │ TTS: edge-tts online — pt-BR-FranciscaNeural
+[10:31:09] INFO  eyes           │ Câmera iniciada (índice=0, 640x480).
+[10:31:09] INFO  wakeword       │ Carregando detector de wake word (tiny)...
+[10:31:09] INFO  wakeword       │ Wake word pronta.
+[10:31:11] INFO  spotify        │ Spotify Web API: sem credenciais. Usando teclas de mídia.
+[10:31:11] INFO  rag            │ RAG pronto — 26 documentos indexados.
+[10:31:11] INFO  skills         │ Skills carregados: exemplo
+[10:31:11] INFO  calendar       │ Google Calendar: credentials.json não encontrado. Desativado.
+[10:31:12] INFO  presence       │ Monitorando você a cada 25s.
+[10:31:12] INFO  web            │ Interface web em http://localhost:7865
+[10:31:12] INFO  voice          │ Oi, amor. Câmera ligada. Me chama ou bate palmas quando precisar.
+[10:31:19] INFO  wakeword       │ Aguardando wake word ou palmas...
+[10:31:22] INFO  brain          │ Warmup do modelo gemma3:4b em 3.03s
+[10:32:09] INFO  wakeword       │ Ouvi: 'ei!'
+[10:32:09] INFO  wakeword       │ Wake word detectada!
+[10:32:09] INFO  voice          │ Oi!
+[10:32:16] INFO  ears           │ [Você] Como é que você tá? (STT: 0.4s, áudio: 3.9s)
+[10:32:17] INFO  main           │ [TIMING] RAG query: 0.15s
+[10:32:17] INFO  brain          │ [TIMING] Build prompt: 0.000s
+[10:32:17] INFO  brain          │ [TIMING] LLM stream: modelo=gemma3:4b, system=1294 chars, history=325 chars (9 msgs), num_ctx=1536
+[10:32:20] INFO  brain          │ [TIMING] Primeiro token em 3.4s
+[10:32:20] INFO  voice          │ O clima em Curitiba está nublado e com 17°C.
+[10:32:24] INFO  voice          │ Interrompida.
+[10:32:35] INFO  ears           │ [Você] Tchau, doi! (STT: 9.6s, áudio: 1.5s)
+[10:32:35] INFO  brain          │ [TIMING] Build prompt: 0.000s
+[10:32:35] INFO  brain          │ [TIMING] LLM stream: modelo=gemma3:4b, system=880 chars, history=336 chars (10 msgs), num_ctx=1536
+[10:32:36] INFO  brain          │ [TIMING] Primeiro token em 0.3s
+[10:32:36] INFO  voice          │ Tudo tranquilo por aqui.
+[10:32:38] INFO  voice          │ Interrompida.
+[10:32:40] INFO  ears           │ [Você] Fui! (STT: 0.2s, áudio: 1.4s)
+[10:32:40] INFO  main           │ [TIMING] RAG query: 0.18s
+[10:32:40] INFO  brain          │ [TIMING] Build prompt: 0.000s
+[10:32:40] INFO  brain          │ [TIMING] LLM stream: modelo=gemma3:4b, system=1365 chars, history=340 chars (11 msgs), num_ctx=1536
+[10:32:41] INFO  brain          │ [TIMING] Primeiro token em 0.4s
+[10:32:41] INFO  voice          │ O clima em Curitiba hoje está nublado e com temperatura em 18 graus.
+[10:32:45] INFO  voice          │ Interrompida.
+[10:32:55] INFO  main           │ Conversa encerrada por silêncio (timeout).
+[10:32:55] INFO  main           │ Voltando ao modo idle.
+[10:32:55] INFO  wakeword       │ Carregando detector de wake word (tiny)...
+[10:32:55] INFO  wakeword       │ Wake word pronta.
+[10:32:55] INFO  wakeword       │ Aguardando wake word ou palmas...
+[10:33:02] INFO  monitor        │ Monitoramento de tela encerrado.
+[10:33:03] ERROR wakeword       │ Erro no stream de áudio do wake word: Cannot operate on a closed database.
+[10:34:09] INFO  rag            │ RAG pronto — 29 documentos indexados.
+[10:35:56] INFO  wakeword       │ Palma candidata: peak=0.22 rms=0.023 crest=9.7 onset=0.22 active=0.029
+[10:35:57] INFO  rag            │ RAG pronto — 29 documentos indexados.

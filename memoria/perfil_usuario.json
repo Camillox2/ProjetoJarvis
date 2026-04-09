@@ -1,0 +1,40 @@
+{
+  "nome": null,
+  "personalidade": [
+    "amigável",
+    "curioso",
+    "defensivo"
+  ],
+  "gostos": [
+    "clima",
+    "conversas"
+  ],
+  "desgostos": [
+    "ser interrompido"
+  ],
+  "rotina": [],
+  "objetivos": [],
+  "contexto_profissional": [],
+  "contexto_pessoal": [
+    "localização: Curitiba"
+  ],
+  "assuntos_frequentes": [
+    "clima em Curitiba",
+    "atividade do assistente",
+    "clima",
+    "bem-estar",
+    "comunicação"
+  ],
+  "padroes_humor": {
+    "manhã": "frustrado"
+  },
+  "horarios_uso": [
+    "01:57",
+    "02:04",
+    "02:06",
+    "02:08",
+    "02:57",
+    "02:58"
+  ],
+  "ultima_atualizacao": "09/04/2026 02:58"
+}

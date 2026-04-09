@@ -1,0 +1,34 @@
+[
+  {
+    "role": "user",
+    "content": "Oi KeyLinks, como é que está o clima hoje em Curitiba?"
+  },
+  {
+    "role": "user",
+    "content": "Oi, tudo bem? O que você tá fazendo?"
+  },
+  {
+    "role": "user",
+    "content": "Oi, tudo bem? Como é que está o clima hoje em Curitiba?"
+  },
+  {
+    "role": "user",
+    "content": "Puxa, mas eu tava no menor, filha."
+  },
+  {
+    "role": "user",
+    "content": "O que você estava fazendo K-Winx?"
+  },
+  {
+    "role": "user",
+    "content": "Você está bem?"
+  },
+  {
+    "role": "user",
+    "content": "Como que você está?"
+  },
+  {
+    "role": "user",
+    "content": "Se você tentar me deixar falar um pouco, eu só responde você."
+  }
+]

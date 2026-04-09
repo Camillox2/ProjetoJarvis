@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keilinks — Painel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg:      #0d1117;
+            --surface: #161b22;
+            --border:  #30363d;
+            --text:    #e6edf3;
+            --muted:   #8b949e;
+            --accent:  #58a6ff;
+            --green:   #3fb950;
+            --red:     #f85149;
+            --purple:  #bc8cff;
+            --orange:  #d29922;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+        }
+        /* ── Layout ─────────────────────────────────────────────────── */
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 16px 24px; border-bottom: 1px solid var(--border);
+            background: var(--surface);
+        }
+        header h1 { font-size: 1.3rem; }
+        header h1 span { color: var(--accent); }
+        .status-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            display: inline-block; margin-right: 8px;
+        }
+        .status-dot.online { background: var(--green); }
+        .status-dot.offline { background: var(--red); }
+        /* ── Tabs ─────────────────────────────────────────────────── */
+        .tabs {
+            display: flex; gap: 0; border-bottom: 1px solid var(--border);
+            background: var(--surface); overflow-x: auto;
+        }
+        .tab {
+            padding: 12px 20px; cursor: pointer; border: none; background: none;
+            color: var(--muted); font-size: 0.9rem; white-space: nowrap;
+            border-bottom: 2px solid transparent; transition: all 0.2s;
+        }
+        .tab:hover { color: var(--text); }
+        .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+        /* ── Panels ────────────────────────────────────────────────── */
+        .panel { display: none; padding: 24px 0; }
+        .panel.active { display: block; }
+        /* ── Cards ─────────────────────────────────────────────────── */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
+        .card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 8px; padding: 20px;
+        }
+        .card h3 { font-size: 0.85rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+        .card .value { font-size: 1.8rem; font-weight: 600; }
+        .card .sub { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
+        /* ── Search ────────────────────────────────────────────────── */
+        .search-bar {
+            display: flex; gap: 8px; margin-bottom: 20px;
+        }
+        .search-bar input {
+            flex: 1; padding: 10px 16px; border-radius: 6px;
+            border: 1px solid var(--border); background: var(--surface);
+            color: var(--text); font-size: 0.95rem; outline: none;
+        }
+        .search-bar input:focus { border-color: var(--accent); }
+        .search-bar button {
+            padding: 10px 20px; border-radius: 6px; border: none;
+            background: var(--accent); color: #fff; cursor: pointer;
+            font-size: 0.9rem; font-weight: 500;
+        }
+        .search-bar button:hover { opacity: 0.9; }
+        /* ── Messages ──────────────────────────────────────────────── */
+        .msg-list { display: flex; flex-direction: column; gap: 8px; }
+        .msg {
+            padding: 12px 16px; border-radius: 8px;
+            background: var(--surface); border: 1px solid var(--border);
+            font-size: 0.9rem;
+        }
+        .msg .meta { color: var(--muted); font-size: 0.8rem; margin-bottom: 4px; }
+        .msg.user .meta { color: var(--accent); }
+        .msg.assistant .meta { color: var(--purple); }
+        .msg .snippet { color: var(--orange); }
+        /* ── Notes ─────────────────────────────────────────────────── */
+        .note-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 16px; border-radius: 6px;
+            background: var(--surface); border: 1px solid var(--border);
+            margin-bottom: 8px; cursor: pointer; transition: border-color 0.2s;
+        }
+        .note-item:hover { border-color: var(--accent); }
+        .note-item .name { font-weight: 500; }
+        .note-item .date { color: var(--muted); font-size: 0.85rem; }
+        /* ── Progress bars ─────────────────────────────────────────── */
+        .bar-bg {
+            width: 100%; height: 8px; background: var(--border);
+            border-radius: 4px; overflow: hidden; margin-top: 8px;
+        }
+        .bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s; }
+        .bar-fill.cpu { background: var(--accent); }
+        .bar-fill.ram { background: var(--purple); }
+        .bar-fill.gpu { background: var(--green); }
+        .bar-fill.vram { background: var(--orange); }
+        /* ── Config table ──────────────────────────────────────────── */
+        .config-table { width: 100%; border-collapse: collapse; }
+        .config-table td {
+            padding: 8px 12px; border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+        }
+        .config-table td:first-child { color: var(--accent); font-family: monospace; }
+        /* ── Empty state ──────────────────────────────────────────── */
+        .empty { text-align: center; color: var(--muted); padding: 40px; font-size: 0.95rem; }
+        /* ── Loading ──────────────────────────────────────────────── */
+        .spinner {
+            display: inline-block; width: 16px; height: 16px;
+            border: 2px solid var(--border); border-top-color: var(--accent);
+            border-radius: 50%; animation: spin 0.6s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><span>⟡</span> Keilinks</h1>
+        <div id="status"><span class="status-dot offline"></span> Conectando...</div>
+    </header>
+
+    <div class="tabs">
+        <button class="tab active" data-panel="dashboard">Dashboard</button>
+        <button class="tab" data-panel="history">Histórico</button>
+        <button class="tab" data-panel="rag">Memória RAG</button>
+        <button class="tab" data-panel="notes">Notas</button>
+        <button class="tab" data-panel="hardware">Hardware</button>
+        <button class="tab" data-panel="config">Config</button>
+    </div>
+
+    <div class="container">
+        <!-- Dashboard -->
+        <div class="panel active" id="dashboard">
+            <div class="grid" id="dash-cards"></div>
+        </div>
+
+        <!-- Histórico -->
+        <div class="panel" id="history">
+            <div class="search-bar">
+                <input id="hist-search" placeholder="Buscar no histórico..." />
+                <button onclick="searchHistory()">Buscar</button>
+            </div>
+            <div id="hist-results" class="msg-list">
+                <div class="empty">Pesquise no histórico de conversas</div>
+            </div>
+        </div>
+
+        <!-- RAG -->
+        <div class="panel" id="rag">
+            <div class="search-bar">
+                <input id="rag-search" placeholder="Busca semântica na memória..." />
+                <button onclick="searchRAG()">Buscar</button>
+            </div>
+            <div id="rag-results" class="msg-list">
+                <div class="empty">Busque por contexto semântico nas conversas passadas</div>
+            </div>
+        </div>
+
+        <!-- Notas -->
+        <div class="panel" id="notes">
+            <div id="notes-list"></div>
+        </div>
+
+        <!-- Hardware -->
+        <div class="panel" id="hardware">
+            <div class="grid" id="hw-cards"></div>
+        </div>
+
+        <!-- Config -->
+        <div class="panel" id="config">
+            <div class="card">
+                <h3>Configuração Atual</h3>
+                <table class="config-table" id="config-table"></table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    const API = '';  // mesmo host
+
+    // ── Tabs ─────────────────────────────────────────────────────────────────
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+            tab.classList.add('active');
+            document.getElementById(tab.dataset.panel).classList.add('active');
+        });
+    });
+
+    // ── Helpers ──────────────────────────────────────────────────────────────
+    async function api(path) {
+        const r = await fetch(API + path);
+        return r.json();
+    }
+
+    function escapeHtml(s) {
+        const div = document.createElement('div');
+        div.textContent = s;
+        return div.innerHTML;
+    }
+
+    // ── Dashboard ────────────────────────────────────────────────────────────
+    async function loadDashboard() {
+        try {
+            const [status, hStats] = await Promise.all([
+                api('/api/status'),
+                api('/api/history/stats'),
+            ]);
+
+            document.getElementById('status').innerHTML =
+                `<span class="status-dot online"></span> Online`;
+
+            const cards = document.getElementById('dash-cards');
+            let html = '';
+
+            html += `<div class="card">
+                <h3>Conversas</h3>
+                <div class="value">${hStats.total_sessions || 0}</div>
+                <div class="sub">${hStats.total_messages || 0} mensagens</div>
+            </div>`;
+
+            html += `<div class="card">
+                <h3>Documentos RAG</h3>
+                <div class="value">${status.rag_documents || 0}</div>
+                <div class="sub">embeddings indexados</div>
+            </div>`;
+
+            html += `<div class="card">
+                <h3>Modo Estudo</h3>
+                <div class="value">${status.study_active ? '🟢 Ativo' : '⚪ Inativo'}</div>
+            </div>`;
+
+            if (status.hardware) {
+                const hw = status.hardware;
+                if (hw.cpu) {
+                    html += `<div class="card">
+                        <h3>CPU</h3>
+                        <div class="value">${hw.cpu.percent}%</div>
+                        <div class="bar-bg"><div class="bar-fill cpu" style="width:${hw.cpu.percent}%"></div></div>
+                    </div>`;
+                }
+                if (hw.ram) {
+                    html += `<div class="card">
+                        <h3>RAM</h3>
+                        <div class="value">${hw.ram.used_gb}/${hw.ram.total_gb} GB</div>
+                        <div class="bar-bg"><div class="bar-fill ram" style="width:${hw.ram.percent}%"></div></div>
+                    </div>`;
+                }
+                if (hw.gpu) {
+                    html += `<div class="card">
+                        <h3>GPU — ${escapeHtml(hw.gpu.name)}</h3>
+                        <div class="value">${hw.gpu.vram_used_mb}/${hw.gpu.vram_total_mb} MB</div>
+                        <div class="bar-bg"><div class="bar-fill vram" style="width:${hw.gpu.vram_pct}%"></div></div>
+                    </div>`;
+                }
+            }
+
+            cards.innerHTML = html;
+        } catch (e) {
+            document.getElementById('status').innerHTML =
+                `<span class="status-dot offline"></span> Offline`;
+        }
+    }
+
+    // ── History Search ───────────────────────────────────────────────────────
+    async function searchHistory() {
+        const q = document.getElementById('hist-search').value.trim();
+        if (!q) return;
+        const div = document.getElementById('hist-results');
+        div.innerHTML = '<div class="spinner"></div>';
+
+        const data = await api(`/api/history/search?q=${encodeURIComponent(q)}`);
+        if (!data.results || data.results.length === 0) {
+            div.innerHTML = '<div class="empty">Nenhum resultado.</div>';
+            return;
+        }
+
+        div.innerHTML = data.results.map(r => `
+            <div class="msg ${r.role}">
+                <div class="meta">${r.role === 'user' ? '👤 Você' : '🤖 Keilinks'} — ${escapeHtml(r.timestamp)}</div>
+                <div class="snippet">${escapeHtml(r.snippet || '')}</div>
+                <div>${escapeHtml(r.content)}</div>
+            </div>
+        `).join('');
+    }
+
+    document.getElementById('hist-search').addEventListener('keydown', e => {
+        if (e.key === 'Enter') searchHistory();
+    });
+
+    // ── RAG Search ───────────────────────────────────────────────────────────
+    async function searchRAG() {
+        const q = document.getElementById('rag-search').value.trim();
+        if (!q) return;
+        const div = document.getElementById('rag-results');
+        div.innerHTML = '<div class="spinner"></div>';
+
+        const data = await api(`/api/rag/search?q=${encodeURIComponent(q)}`);
+        if (!data.results || data.results.length === 0) {
+            div.innerHTML = '<div class="empty">Nenhum resultado.</div>';
+            return;
+        }
+
+        div.innerHTML = data.results.map(r => `
+            <div class="msg ${r.role}">
+                <div class="meta">${r.role === 'user' ? '👤' : '🤖'} ${escapeHtml(r.timestamp)} — dist: ${r.distance.toFixed(3)}</div>
+                <div>${escapeHtml(r.text)}</div>
+            </div>
+        `).join('');
+    }
+
+    document.getElementById('rag-search').addEventListener('keydown', e => {
+        if (e.key === 'Enter') searchRAG();
+    });
+
+    // ── Notes ────────────────────────────────────────────────────────────────
+    async function loadNotes() {
+        const div = document.getElementById('notes-list');
+        const data = await api('/api/notes');
+        if (!data.notes || data.notes.length === 0) {
+            div.innerHTML = '<div class="empty">Nenhuma nota.</div>';
+            return;
+        }
+
+        div.innerHTML = data.notes.map(n => `
+            <div class="note-item" onclick="viewNote('${escapeHtml(n.name)}')">
+                <span class="name">📝 ${escapeHtml(n.name)}</span>
+                <span class="date">${new Date(n.created).toLocaleDateString('pt-BR')}</span>
+            </div>
+        `).join('');
+    }
+
+    async function viewNote(name) {
+        const data = await api(`/api/notes/${encodeURIComponent(name)}`);
+        alert(data.content || 'Nota vazia.');
+    }
+
+    // ── Hardware ─────────────────────────────────────────────────────────────
+    async function loadHardware() {
+        const cards = document.getElementById('hw-cards');
+        const data = await api('/api/hardware');
+
+        let html = '';
+        if (data.cpu) {
+            html += `<div class="card">
+                <h3>CPU</h3>
+                <div class="value">${data.cpu.percent}%</div>
+                <div class="sub">${data.cpu.cores} cores / ${data.cpu.threads} threads — ${data.cpu.freq_mhz} MHz</div>
+                <div class="bar-bg"><div class="bar-fill cpu" style="width:${data.cpu.percent}%"></div></div>
+            </div>`;
+        }
+        if (data.ram) {
+            html += `<div class="card">
+                <h3>RAM</h3>
+                <div class="value">${data.ram.used_gb} / ${data.ram.total_gb} GB (${data.ram.percent}%)</div>
+                <div class="bar-bg"><div class="bar-fill ram" style="width:${data.ram.percent}%"></div></div>
+            </div>`;
+        }
+        if (data.gpu) {
+            html += `<div class="card">
+                <h3>GPU — ${escapeHtml(data.gpu.name)}</h3>
+                <div class="value">${data.gpu.load_pct}% load</div>
+                <div class="sub">VRAM: ${data.gpu.vram_used_mb}/${data.gpu.vram_total_mb} MB (${data.gpu.vram_pct}%) — ${data.gpu.temp_c}°C</div>
+                <div class="bar-bg"><div class="bar-fill gpu" style="width:${data.gpu.load_pct}%"></div></div>
+                <div class="bar-bg"><div class="bar-fill vram" style="width:${data.gpu.vram_pct}%"></div></div>
+            </div>`;
+        }
+        if (data.disk) {
+            html += `<div class="card">
+                <h3>Disco</h3>
+                <div class="value">${data.disk.free_gb} GB livres</div>
+                <div class="sub">${data.disk.used_gb} / ${data.disk.total_gb} GB (${data.disk.percent}%)</div>
+            </div>`;
+        }
+        cards.innerHTML = html || '<div class="empty">Sem dados de hardware.</div>';
+    }
+
+    // ── Config ───────────────────────────────────────────────────────────────
+    async function loadConfig() {
+        const table = document.getElementById('config-table');
+        const data = await api('/api/config');
+        table.innerHTML = Object.entries(data).map(([k, v]) =>
+            `<tr><td>${escapeHtml(k)}</td><td>${escapeHtml(String(v))}</td></tr>`
+        ).join('');
+    }
+
+    // ── Init ─────────────────────────────────────────────────────────────────
+    loadDashboard();
+    loadNotes();
+    loadHardware();
+    loadConfig();
+
+    // Auto-refresh dashboard a cada 30s
+    setInterval(loadDashboard, 30000);
+    setInterval(loadHardware, 30000);
+    </script>
+</body>
+</html>
