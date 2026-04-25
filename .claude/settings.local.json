@@ -1,7 +1,12 @@
 {
   "permissions": {
     "allow": [
-      "WebSearch"
+      "WebSearch",
+      "Bash(python:*)",
+      "Bash(D:\\\\ProjetoJarvis\\\\.venv\\\\Scripts\\\\pip.exe list:*)",
+      "Bash(findstr /i \"pygetwindow pyautogui win10toast psutil keyboard pyperclip screen mss pytesseract pillow requests pycaw plyer\")",
+      "Bash(cmd:*)",
+      "Bash(powershell:*)"
     ]
   }
 }

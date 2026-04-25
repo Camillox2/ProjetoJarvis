@@ -1,4 +1,5 @@
 @echo off
+cd /d "%~dp0"
 echo Iniciando Keilinks...
 :: ─── Otimizações de VRAM para Blackwell (RTX 50xx) ───────────────────────────
 :: Flash Attention: reduz VRAM do mecanismo de atenção significativamente
@@ -10,6 +11,7 @@ set OLLAMA_KV_CACHE_TYPE=q8_0
 
 :: Garante que o Ollama usa a GPU correta
 set CUDA_VISIBLE_DEVICES=0
+set PYTHONNOUSERSITE=1
 
-python main.py
+"%~dp0.venv\Scripts\python.exe" main.py
 pause

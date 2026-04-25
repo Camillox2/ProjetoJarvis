@@ -27,6 +27,9 @@ psutil>=5.9.0
 # Teclado e atalhos
 keyboard>=0.13.5
 
+# Mouse e automação de GUI
+pyautogui>=0.9.54
+
 # Clipboard
 pyperclip>=1.8.2
 
@@ -70,6 +73,7 @@ python-dotenv>=1.0.0
 google-api-python-client>=2.100.0
 google-auth-httplib2>=0.2.0
 google-auth-oauthlib>=1.2.0
+tzlocal>=5.2
 
 # Resumo de páginas
 # youtube-transcript-api>=0.6.2  # opcional: resumir vídeos do YouTube

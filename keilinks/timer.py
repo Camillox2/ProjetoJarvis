@@ -100,16 +100,25 @@ class TimerManager:
 
         return None, ""
 
+    # Palavras que não são labels úteis (pronomes, artigos soltos)
+    _LABEL_BLACKLIST = {"mim", "você", "voce", "me", "a gente", "eu", "ele", "ela",
+                        "eles", "elas", "nós", "nos", "vocês", "voces"}
+
     @staticmethod
     def _extract_label(text: str) -> str:
         """Tenta extrair um label descritivo do texto."""
         for sep in [" pra ", " para ", " de "]:
             idx = text.lower().rfind(sep)
             if idx != -1:
-                after = text[idx + len(sep):].strip()
-                # Evita pegar unidades de tempo como label
-                if after and not re.match(r"^\d+\s*(min|seg|hora|segundo|minuto)", after.lower()):
-                    return after
+                after = text[idx + len(sep):].strip().rstrip(".,!?")
+                # Ignora unidades de tempo e pronomes soltos
+                if not after:
+                    continue
+                if re.match(r"^\d+\s*(min|seg|hora|segundo|minuto)", after.lower()):
+                    continue
+                if after.lower() in TimerManager._LABEL_BLACKLIST:
+                    continue
+                return after
         return ""
 
     # ─── Criar timer ──────────────────────────────────────────────────────────

@@ -48,11 +48,18 @@ class Eyes:
 
     def capture_frame_b64(self) -> str | None:
         if self.cap is None or not self.cap.isOpened():
+            log.warning("[VISION] capture_frame_b64: câmera None ou fechada.")
             return None
         ret, frame = self.cap.read()
-        if not ret:
+        if not ret or frame is None:
+            log.warning("[VISION] capture_frame_b64: cap.read() falhou (ret=%s).", ret)
             return None
-        _, buf = cv2.imencode(".jpg", frame, [cv2.IMWRITE_JPEG_QUALITY, 85])
+        h, w = frame.shape[:2]
+        log.debug("[VISION] Frame capturado: %dx%d px", w, h)
+        ok, buf = cv2.imencode(".jpg", frame, [cv2.IMWRITE_JPEG_QUALITY, 85])
+        if not ok:
+            log.error("[VISION] cv2.imencode falhou para o frame.")
+            return None
         return base64.b64encode(buf).decode("utf-8")
 
     # ─── Captura de tela ──────────────────────────────────────────────────────

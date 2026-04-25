@@ -7,26 +7,36 @@
   ],
   "gostos": [
     "clima",
-    "conversas"
+    "conversas",
+    "conversação",
+    "conexão"
   ],
   "desgostos": [
-    "ser interrompido"
+    "ser interrompido",
+    "Spotify"
   ],
   "rotina": [],
   "objetivos": [],
   "contexto_profissional": [],
   "contexto_pessoal": [
-    "localização: Curitiba"
+    "localização: Curitiba",
+    "conversação",
+    "verificação de câmera"
   ],
   "assuntos_frequentes": [
     "clima em Curitiba",
     "atividade do assistente",
     "clima",
     "bem-estar",
-    "comunicação"
+    "comunicação",
+    "como você está",
+    "bom dia",
+    "câmera"
   ],
   "padroes_humor": {
-    "manhã": "frustrado"
+    "manhã": "frustrado",
+    "tarde": "neutro",
+    "noite": "neutro"
   },
   "horarios_uso": [
     "01:57",
@@ -34,7 +44,23 @@
     "02:06",
     "02:08",
     "02:57",
-    "02:58"
+    "02:58",
+    "12:54",
+    "12:55",
+    "12:56",
+    "12:57",
+    "12:59",
+    "21:40",
+    "21:41",
+    "21:42",
+    "21:43",
+    "21:44",
+    "21:45",
+    "21:46",
+    "21:59",
+    "22:00",
+    "22:02",
+    "22:03"
   ],
-  "ultima_atualizacao": "09/04/2026 02:58"
+  "ultima_atualizacao": "09/04/2026 22:03"
 }

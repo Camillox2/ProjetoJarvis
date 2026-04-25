@@ -154,7 +154,8 @@ class Brain:
                 "stream": False,
                 "think": False,
                 "keep_alive": OLLAMA_KEEP_ALIVE,
-                "options": {"num_ctx": 512, "num_predict": 5},
+                # num_ctx igual ao da inferência real — evita reload do KV cache
+                "options": {"num_ctx": 2048, "num_predict": 5},
             }, timeout=20.0)
             return r.status_code == 200 and not any(s in r.text.lower() for s in _OOM_SIGNALS)
         except Exception:
@@ -289,6 +290,10 @@ class Brain:
                 "role": "system", "content": system
             }, *messages],
             "stream":   True,
+            # Visão: não força think=False — o Qwen3 processa imagens durante o thinking.
+            # Para texto puro mantemos False (mais rápido). Para imagem deixamos o modelo decidir.
+            # think=False é correto mesmo para visão — o modelo processa a imagem
+            # independentemente do modo thinking. Com think=True o output fica vazio.
             "think":    False,
             "keep_alive": OLLAMA_KEEP_ALIVE,
             "options":  opts,
@@ -299,6 +304,21 @@ class Brain:
         hist_len = sum(len(m.get("content", "")) for m in messages)
         log.info("[TIMING] LLM stream: modelo=%s, system=%d chars, history=%d chars (%d msgs), num_ctx=%s, has_image=%s",
              self._active, sys_len, hist_len, len(messages), opts.get("num_ctx"), has_image)
+
+        # ── Log detalhado de visão ─────────────────────────────────────────────
+        if has_image:
+            # Verifica se a imagem chegou de fato nas mensagens
+            img_found = False
+            for m in messages:
+                imgs = m.get("images", [])
+                if imgs:
+                    img_b64_len = len(imgs[0]) if imgs else 0
+                    img_kb = img_b64_len * 3 // 4 // 1024
+                    log.info("[VISION] Imagem no payload: %d chars base64 (~%dKB). think=True", img_b64_len, img_kb)
+                    img_found = True
+            if not img_found:
+                log.warning("[VISION] has_image=True mas NENHUMA imagem encontrada nas mensagens! "
+                            "Verifique capture_frame_b64() e o path de captura em main.py.")
 
         buffer      = ""
         full_reply  = ""
@@ -396,6 +416,21 @@ class Brain:
                 final_stats.get("eval_count", token_count),
                 thinking_chars,
             )
+
+        # ── Log de diagnóstico de visão ───────────────────────────────────────
+        if has_image:
+            log.info("[VISION] Resposta completa: %d chars | thinking_chars=%d | tokens=%d",
+                     len(full_reply), thinking_chars, token_count)
+            if token_count == 0:
+                log.error("[VISION] Modelo não gerou NENHUM token com imagem. "
+                          "Possível causa: modelo não suporta visão nessa tag do Ollama, "
+                          "ou think=True causou resposta só em thinking.")
+            elif thinking_chars > 0 and len(full_reply) < 10:
+                log.warning("[VISION] Resposta quase vazia (%d chars) mas thinking=%d chars. "
+                            "Modelo processou visualmente mas não gerou conteúdo final.",
+                            len(full_reply), thinking_chars)
+            elif len(full_reply) > 5:
+                log.info("[VISION] Preview resposta: %.120s...", full_reply[:120])
 
         if oom_hit:
             self._switch_to_fallback("OOM no streaming")

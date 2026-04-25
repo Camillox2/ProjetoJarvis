@@ -3,8 +3,8 @@ import os
 # ─── Modelos ───────────────────────────────────────────────────────────────────
 OLLAMA_HOST  = "http://localhost:11434"
 # Qwen 3.5 unifica texto e visão e evita swap constante entre modelos.
-LLM_MODEL     = "qwen3.5:4b"
-LLM_FALLBACKS = ["qwen3.5:2b", "qwen3.5:0.8b"]
+LLM_MODEL     = "qwen3.5:397b-cloud"
+LLM_FALLBACKS = ["qwen3.5:9b", "qwen3.5:4b", "qwen3.5:2b", "qwen3.5:0.8b"]
 # Compatibilidade com componentes antigos que ainda usam um único fallback.
 LLM_FALLBACK  = LLM_FALLBACKS[0]
 OLLAMA_KEEP_ALIVE = "30m"
@@ -16,9 +16,9 @@ LLM_TIMEOUT_SLOW  = 45.0
 LLM_RECOVER_AFTER = 5
 
 # ─── STT (fala → texto) ────────────────────────────────────────────────────────
-WHISPER_MODEL        = "small"
+WHISPER_MODEL        = "medium"   # boot estável; na GPU já melhora tempo e precisão prática
 WHISPER_LANGUAGE     = "pt"
-WHISPER_COMPUTE_TYPE = "int8"
+WHISPER_COMPUTE_TYPE = "float16"
 
 # ─── TTS (texto → fala) ────────────────────────────────────────────────────────
 TTS_VOICE = "pt-BR-FranciscaNeural"
@@ -41,11 +41,11 @@ CLAP_COUNT_TO_WAKE          = 2      # duas palmas rápidas ativam com menos fal
 CLAP_SEQUENCE_WINDOW_SECS   = 1.5    # janela máxima entre as palmas
 CLAP_DEBOUNCE_SECS          = 0.12   # evita contar a mesma palma duas vezes
 CLAP_COOLDOWN_SECS          = 1.5    # evita reativar logo depois
-CLAP_PEAK_THRESHOLD         = 0.18   # pico mínimo normalizado (0-1)
-CLAP_STRONG_PEAK_THRESHOLD  = 0.35   # uma palma muito forte ativa sozinha
-CLAP_RMS_THRESHOLD          = 0.012  # energia mínima
-CLAP_CREST_MIN              = 4.0    # pico / rms -> ajuda a distinguir de voz
-CLAP_ACTIVE_RATIO_MAX       = 0.22   # palma é impulso curto, não som sustentado
+CLAP_PEAK_THRESHOLD         = 0.14   # pico mínimo normalizado — foi 0.18 mas cortava palmas reais
+CLAP_STRONG_PEAK_THRESHOLD  = 0.30   # uma palma muito forte ativa sozinha
+CLAP_RMS_THRESHOLD          = 0.010  # energia mínima
+CLAP_CREST_MIN              = 3.5    # pico / rms — palmas têm crest 4-8, voz tem 2-4
+CLAP_ACTIVE_RATIO_MAX       = 0.28   # palma é impulso curto — was 0.22, mas cortava palmas legítimas
 CLAP_ONSET_THRESHOLD        = 0.09   # subida brusca — ajuda a separar de voz
 
 # ─── Memória de conversa ──────────────────────────────────────────────────────

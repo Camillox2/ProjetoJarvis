@@ -13,6 +13,7 @@ Setup:
 import time
 import threading
 import json
+import re
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Callable
@@ -22,12 +23,22 @@ log = get_logger("calendar")
 
 CREDENTIALS_FILE = Path("credentials.json")
 TOKEN_FILE       = Path("memoria/calendar_token.json")
-SCOPES           = ["https://www.googleapis.com/auth/calendar.readonly"]
+SCOPES           = [
+    "https://www.googleapis.com/auth/calendar.readonly",
+    "https://www.googleapis.com/auth/calendar.events",
+]
 
 CALENDAR_TRIGGERS = [
     "minha agenda", "agenda de hoje", "meus compromissos",
     "o que tenho hoje", "o que tenho amanhã", "próximo compromisso",
     "próxima reunião", "eventos de hoje", "eventos de amanhã",
+]
+
+CALENDAR_CREATE_TRIGGERS = [
+    "cria um evento", "cria uma reunião", "cria um compromisso",
+    "adiciona à agenda", "adiciona na agenda", "marca uma reunião",
+    "marca um evento", "agenda uma reunião", "agenda um compromisso",
+    "coloca na agenda", "add na agenda",
 ]
 
 
@@ -197,6 +208,15 @@ class CalendarSync:
 
     def try_handle(self, text: str) -> str | None:
         t = text.lower()
+
+        # ── Criar evento ──────────────────────────────────────────────────────
+        if any(tr in t for tr in CALENDAR_CREATE_TRIGGERS):
+            if not self._ok:
+                return ("Calendário não configurado. Coloque o credentials.json "
+                        "do Google Calendar na pasta do projeto.")
+            return self.create_event(text)
+
+        # ── Ler agenda ────────────────────────────────────────────────────────
         if not any(tr in t for tr in CALENDAR_TRIGGERS):
             return None
         if not self._ok:
@@ -213,3 +233,68 @@ class CalendarSync:
             header = "Agenda de hoje:"
         formatted = self.format_events(events)
         return f"{header}\n{formatted}"
+
+    def create_event(self, text: str) -> str:
+        """
+        Cria um evento no Google Calendar a partir de um texto natural.
+        Ex: "cria uma reunião amanhã às 15h sobre deploy do projeto"
+        """
+        if not self._ok:
+            return "Calendário não disponível."
+        try:
+            now = datetime.now()
+            title = "Evento"
+            event_start = None
+            event_end   = None
+
+            # Extrai hora (às Xh / às HH:MM)
+            m = re.search(r"\b(?:às|as)\s+(\d{1,2})(?::(\d{2}))?h?", text, re.IGNORECASE)
+            if m:
+                hour   = int(m.group(1))
+                minute = int(m.group(2)) if m.group(2) else 0
+                base   = now + timedelta(days=1) if "amanhã" in text.lower() else now
+                event_start = base.replace(hour=hour, minute=minute, second=0, microsecond=0)
+                event_end   = event_start + timedelta(hours=1)
+
+            # Extrai "daqui a N minutos/horas"
+            if not event_start:
+                m2 = re.search(r"daqui\s+a?\s*(\d+)\s*(minuto|hora)s?", text, re.IGNORECASE)
+                if m2:
+                    n    = int(m2.group(1))
+                    unit = m2.group(2).lower()
+                    event_start = now + (timedelta(minutes=n) if "minuto" in unit else timedelta(hours=n))
+                    event_end   = event_start + timedelta(hours=1)
+
+            if not event_start:
+                return "Não entendi o horário. Ex: 'cria uma reunião às 15h sobre projeto X'."
+
+            # Extrai título (parte depois de "sobre", "de", "para")
+            for sep in [" sobre ", " de ", " para ", " pra "]:
+                if sep in text.lower():
+                    idx   = text.lower().rfind(sep)
+                    after = text[idx + len(sep):].strip()
+                    # Filtra tokens de horário
+                    if after and not re.match(r"^\d", after):
+                        title = after.strip(".,!?")
+                        break
+
+            # Usa o timezone local
+            import tzlocal  # type: ignore
+            try:
+                tz = tzlocal.get_localzone_name()
+            except Exception:
+                tz = "America/Sao_Paulo"
+
+            body = {
+                "summary": title,
+                "start": {"dateTime": event_start.isoformat(), "timeZone": tz},
+                "end":   {"dateTime": event_end.isoformat(),   "timeZone": tz},
+            }
+            self._service.events().insert(calendarId="primary", body=body).execute()
+            hora_fmt = event_start.strftime("%d/%m às %H:%M")
+            return f"Evento criado: '{title}' em {hora_fmt}."
+        except ImportError:
+            return "Instale tzlocal: pip install tzlocal"
+        except Exception as e:
+            log.error("Erro ao criar evento: %s", e)
+            return f"Não consegui criar o evento: {e}"

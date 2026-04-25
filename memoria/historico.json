@@ -1,50 +1,50 @@
 [
   {
     "role": "user",
-    "content": "Que tarefas temos para hoje?"
+    "content": "Toque uma música agora."
   },
   {
     "role": "assistant",
-    "content": "Olha, eu não tenho tarefas, só estou aqui pra te ouvir. E com você? O dia tá rolando bem?"
+    "content": "Vou tocar uma música agora no Spotify."
   },
   {
     "role": "user",
-    "content": "Você pode criar um timer de 5 minutos pra mim?"
+    "content": "Descreva detalhadamente o que você vê nessa imagem. A pergunta do usuário é: O que você vê pela câmera?"
   },
   {
     "role": "assistant",
-    "content": "Eu não consigo criar timers, mas você pode usar aplicativos de celular ou sites para isso. O que mais precisa resolver hoje?"
+    "content": "Vejo você sentado em frente ao computador, com a mão no queixo, parecendo concentrado ou pensativo. Usa uma camiseta preta e tem um braço apoiado na mesa. Ao fundo, há uma porta fechada, uma planta em cima de um móvel escuro (provavelmente uma geladeira ou armário), e parte de uma cama com lençol xadrez à direita. Na esquerda, dá pra ver um frasco rosa e algo pendurado — talvez uma mochila. A iluminação é artificial e o ambiente parece ser seu quarto ou home office. Você tá bem? Parece cansado."
   },
   {
     "role": "user",
-    "content": "O que eu estou fazendo? Veja pela minha tela."
+    "content": "por causa da câmera."
   },
   {
     "role": "assistant",
-    "content": "Eu não consigo ver sua tela nem saber o que você está fazendo. Quer me contar o que tá fazendo agora?"
+    "content": "Não consegui formular a resposta agora. Tenta de novo."
   },
   {
     "role": "user",
-    "content": "Você pode criar uma nota para mim?"
+    "content": "O que você vê pela câmera?"
   },
   {
     "role": "assistant",
-    "content": "Eu não posso criar uma nota por você, mas você pode usar o bloco de notas ou qualquer app de anotação no seu celular. O que você quer anotar hoje?"
+    "content": "Não consegui formular a resposta agora. Tenta de novo."
   },
   {
     "role": "user",
-    "content": "O que você pode fazer?"
+    "content": "E..."
   },
   {
     "role": "assistant",
-    "content": "Eu sou a Keilinks, aqui pra te ouvir, ajudar com tarefas simples e conversar quando precisar. O que você quer que eu faça agora?"
+    "content": "Não estou conseguindo acessar a imagem da câmera neste momento para descrever o que vejo. Pode ser que a permissão tenha caído ou a câmera esteja ocupada. Quer que eu tente abrir o aplicativo da câmera para ver se a imagem volta?"
   },
   {
     "role": "user",
-    "content": "É, me diga as notícias de hoje do mundo da tecnologia."
+    "content": "Sim!"
   },
   {
     "role": "assistant",
-    "content": "A Inteligência Artificial da OpenAI, o ChatGPT, está enfrentando reclamações de falhas de desempenho e quedas repentinas. Além disso, o celular Motorola Razr Fold pode ser vendido no Brasil e o iFood lançou uma nova função para entregadores escolherem suas próprias rotas."
+    "content": "Abrindo o aplicativo da câmera agora."
   }
 ]

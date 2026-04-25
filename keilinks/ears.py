@@ -10,6 +10,7 @@ from faster_whisper import WhisperModel
 from typing import Callable
 from config import (
     WHISPER_MODEL, WHISPER_LANGUAGE,
+    WHISPER_COMPUTE_TYPE,
     SAMPLE_RATE, SILENCE_THRESHOLD, SILENCE_DURATION, MAX_RECORD_SECS,
 )
 from keilinks.log import get_logger
@@ -27,12 +28,17 @@ class Ears:
     def _load_model(self):
         if self.model is not None:
             return
-        # STT roda em CPU — mantém VRAM livre para o LLM (Ollama).
-        # int8 em CPU é rápido o suficiente para PT-BR com o modelo small.
-        self.model = WhisperModel(
-            WHISPER_MODEL, device="cpu", compute_type="int8",
-        )
-        log.info("Pronta pra ouvir.")
+        try:
+            self.model = WhisperModel(
+                WHISPER_MODEL, device="cuda", compute_type=WHISPER_COMPUTE_TYPE,
+            )
+            log.info("Pronta pra ouvir. STT na GPU (%s, %s).", WHISPER_MODEL, WHISPER_COMPUTE_TYPE)
+        except Exception as e:
+            log.warning("Falha ao carregar STT na GPU: %s — usando CPU int8.", e)
+            self.model = WhisperModel(
+                WHISPER_MODEL, device="cpu", compute_type="int8",
+            )
+            log.info("Pronta pra ouvir. STT em CPU (%s, int8).", WHISPER_MODEL)
 
     def unload(self):
         """Libera VRAM do modelo STT (chamar antes de LLM pesado)."""
@@ -111,9 +117,11 @@ class Ears:
             segments, _ = self.model.transcribe(
                 audio_np,
                 language=WHISPER_LANGUAGE,
-                beam_size=3,
+                beam_size=5,
+                temperature=0.0,
+                condition_on_previous_text=False,
                 vad_filter=True,
-                vad_parameters={"min_silence_duration_ms": 500},
+                vad_parameters={"min_silence_duration_ms": 350},
             )
             text = " ".join(seg.text for seg in segments).strip()
         except Exception as e:

@@ -10,6 +10,10 @@ import sys
 import signal
 import threading
 import queue
+import faulthandler
+
+# Ativa faulthandler: imprime traceback C-level em caso de segfault/SIGABRT
+faulthandler.enable()
 
 from config import CONTINUOUS_LISTEN_TIMEOUT, CONTINUOUS_MAX_TURNS, SKILLS_DIR, CALENDAR_REMINDER_MINS, CALENDAR_CHECK_INTERVAL
 
@@ -51,8 +55,19 @@ log = get_logger("main")
 
 # ─── Triggers ─────────────────────────────────────────────────────────────────
 CAMERA_TRIGGERS = [
-    "o que você vê", "o que ta vendo", "olha isso", "veja isso",
-    "o que é isso", "olha aqui", "usa a câmera", "vê isso",
+    # frases diretas de câmera
+    "o que você vê", "o que você está vendo", "o que ta vendo", "o que tá vendo",
+    "olha isso", "veja isso", "vê isso", "olha aqui", "usa a câmera",
+    "usa a câmera", "abre a câmera", "ativa a câmera",
+    # frases implícitas de visão ao redor
+    "o que é isso", "o que tem aqui", "o que tem aí", "o que tem ali",
+    "você consegue ver", "consegue enxergar", "você enxerga",
+    "olha pra câmera", "olha pela câmera", "olha ao redor",
+    "o que está aqui", "o que está aí", "o que está ali",
+    # perguntas sobre objetos/ambiente
+    "tem alguma", "tem algum", "o que tem ligado", "está ligado",
+    "me mostra", "me fala o que tem", "descreve o que tem",
+    "analisa o ambiente", "vê o que tem",
 ]
 SCREEN_TRIGGERS = [
     "captura a tela", "analisa a tela", "o que tem na tela",
@@ -83,6 +98,10 @@ REMEMBER_TRIGGERS = [
 REMINDER_TRIGGERS = [
     "me lembra", "lembra de", "me avisa às", "coloca um lembrete",
 ]
+REMINDER_CANCEL_TRIGGERS = [
+    "cancela o lembrete", "remove o lembrete", "apaga o lembrete",
+    "cancela lembrete", "cancela todos os lembretes", "apaga todos os lembretes",
+]
 STATS_TRIGGERS = [
     "como tá o pc", "como está o pc", "status do pc", "como tá o hardware",
     "uso de cpu", "uso da gpu", "quanto de ram", "temperatura", "métricas",
@@ -108,6 +127,18 @@ RECALIBRATE_TRIGGERS   = ["recalibra minha voz", "recalibra o perfil de voz", "r
 def match(text: str, triggers: list[str]) -> bool:
     t = text.lower()
     return any(tr in t for tr in triggers)
+
+
+def is_command_like_text(text: str) -> bool:
+    t = " ".join(text.lower().split())
+    command_starts = (
+        "abre", "abrir", "fecha", "fechar", "toca", "coloca", "bota",
+        "passa", "passe", "pausa", "pause", "resume", "continua",
+        "aumenta", "abaixa", "diminui", "liga", "desliga", "clica",
+        "digita", "pesquisa", "busca", "me mostra", "me lembra",
+        "tira", "faz", "veja", "olha", "usa",
+    )
+    return t.startswith(command_starts)
 
 def extract_note(text: str) -> str | None:
     t = text.lower()
@@ -195,6 +226,19 @@ def main():
             ),
             interruptible=interruptible,
         )
+
+    def handle_spotify_open_and_play(text: str) -> str | None:
+        t = text.lower()
+        if "spotify" not in t:
+            return None
+        if not any(v in t for v in ("abre ", "abrir ", "open ")):
+            return None
+        if not any(v in t for v in ("play", "dá play", "da play", "toca", "continua", "resume", "reproduz")):
+            return None
+
+        open_resp = pc.open_app("spotify")
+        play_resp = media.play_pause()
+        return f"{open_resp} {play_resp}".strip()
 
     # Aplica perfil de voz calibrado (se existir)
     if voice_prof.calibrated:
@@ -314,9 +358,9 @@ def main():
 
     # ── Apresentação ──────────────────────────────────────────────────────────
     intro = (
-        "Oi, amor. Câmera ligada. Me chama ou bate palmas quando precisar."
+        "Oi, Camillo. Câmera ligada. Me chama ou bate palmas quando precisar."
         if eyes.is_available()
-        else "Oi, amor. Tô aqui. Me chama ou bate palmas quando precisar."
+        else "Oi, Camillo. Tô aqui. Me chama ou bate palmas quando precisar."
     )
     anim.set_state("speaking")
     voice.speak(intro)
@@ -342,12 +386,14 @@ def main():
                     continue
 
             elif kind == "presence":
-                # Abertura já vem pronta do LLM de presença
-                # Continua a conversa depois de falar — sem precisar de wake word
+                # Suprime wake word durante TTS — evita que a Keilinks se acorde
+                # pelo próprio áudio e crie dois listeners simultâneos.
+                wake.suppress(True)
                 anim.set_state("speaking")
                 presence.pause()
                 screen_mon.pause()
                 completed = voice.speak(prompt, interruptible=True)
+                wake.suppress(False)
 
                 if completed:
                     # Fica ouvindo a resposta dele por até 8s
@@ -396,430 +442,542 @@ def main():
 
     # ─── Loop principal ───────────────────────────────────────────────────────
     while True:
-        anim.set_state("idle")
-        wake.wait_for_wake_word()
-        screen_mon.pause()
-        presence.pause()
-
-        # Descarrega wake word da VRAM durante a conversa
-        wake.unload()
-
-        anim.set_state("speaking")
-        voice.speak("Oi!", interruptible=False)
-
-        # ── Conversa contínua: fica ouvindo até dar timeout ───────────────────
-        turns = 0
-        while turns < CONTINUOUS_MAX_TURNS:
-            anim.set_state("listening")
-
-            # Primeira escuta: sem timeout (espera o usuário falar)
-            # Próximas escutas: usa timeout para detectar fim da conversa
-            timeout = None if turns == 0 else CONTINUOUS_LISTEN_TIMEOUT
-            user_text = ears.listen(on_volume=anim.set_volume, timeout=timeout)
-
-            if not user_text:
-                if turns == 0:
-                    # Primeira escuta sem resultado — pede pra repetir e tenta mais 1x
-                    anim.set_state("speaking")
-                    voice.speak("Não entendi. Pode repetir?")
-                    turns += 1
-                    continue
-                else:
-                    # Timeout na conversa contínua — encerra conversa normalmente
-                    log.info("Conversa encerrada por silêncio (timeout).")
-                    break
-
-            turns += 1
-
-            # ── Salva no histórico SQLite + RAG ───────────────────────────────
-            history_db.add_message(session_id, "user", user_text)
-            rag.add(user_text, role="user")
-
-            # ── Saída ─────────────────────────────────────────────────────────
-            if match(user_text, EXIT_TRIGGERS):
-                anim.set_state("speaking")
-                voice.speak("Tá bom, amor. Até mais.")
-                handle_exit()
-
-            # ── Modo silencioso ────────────────────────────────────────────────
-            if match(user_text, SILENT_MODE_ON):
-                voice.silent_mode = True
-                # Fala antes de silenciar
-                anim.set_state("speaking")
-                voice.silent_mode = False
-                voice.speak("Ok, fico muda. Me avisa quando quiser que eu volte.")
-                voice.silent_mode = True
-                continue
-
-            if match(user_text, SILENT_MODE_OFF):
-                voice.silent_mode = False
-                anim.set_state("speaking")
-                voice.speak("Voltei! Pode falar.")
-                continue
-
-            # ── Cinema mode ────────────────────────────────────────────────────
-            cinema_resp = cinema.try_handle(user_text)
-            if cinema_resp:
-                anim.set_state("speaking")
-                voice.speak(cinema_resp)
-                continue
-
-            # ── Recalibrar perfil de voz ───────────────────────────────────────
-            if match(user_text, RECALIBRATE_TRIGGERS):
-                anim.set_state("speaking")
-                voice.speak(voice_prof.recalibrate())
-                continue
-
-            # ── Listar skills ──────────────────────────────────────────────────
-            if match(user_text, SKILL_LIST_TRIGGERS):
-                anim.set_state("speaking")
-                voice.speak(skills.list_skills())
-                continue
-
-            # ── Exportar conversa ──────────────────────────────────────────────
-            export_resp = exporter.try_handle(user_text)
-            if export_resp:
-                anim.set_state("speaking")
-                voice.speak(export_resp)
-                continue
-
-            # ── Resumo do dia ──────────────────────────────────────────────────
-            if day_summary.try_handle(user_text):
-                anim.set_state("thinking")
-                prompt = day_summary.build_summary_prompt()
-                anim.set_state("speaking")
-                speak_brain_stream(prompt, internal=True)
-                continue
-
-            # ── Google Calendar ────────────────────────────────────────────────
-            cal_resp = calendar.try_handle(user_text)
-            if cal_resp:
-                anim.set_state("speaking")
-                voice.speak(cal_resp)
-                continue
-
-            # ── Clima (wttr.in direto — mais rápido que busca web) ─────────────
-            weather_resp = weather.try_handle(user_text)
-            if weather_resp:
-                anim.set_state("speaking")
-                if any(p in user_text.lower() for p in ["e o seu", "e você", "e voce", "como você está", "como voce está", "como você tá", "como voce tá"]):
-                    weather_resp += " E eu tô bem por aqui."
-                voice.speak(weather_resp)
-                continue
-
-            smalltalk_resp = handle_smalltalk(user_text)
-            if smalltalk_resp:
-                anim.set_state("speaking")
-                voice.speak(smalltalk_resp)
-                continue
-
-            # ── Plugins/Skills dinâmicos ───────────────────────────────────────
-            skill_resp = skills.try_handle(user_text)
-            if skill_resp:
-                anim.set_state("speaking")
-                voice.speak(skill_resp)
-                continue
-
-            # ── Presença (liga/desliga) ────────────────────────────────────────
-            if match(user_text, PRESENCE_ON_TRIGGERS):
-                if eyes.is_available():
-                    presence.start(PresenceConfig(check_interval_secs=25.0, min_gap_secs=300.0))
-                    anim.set_state("speaking")
-                    voice.speak("Tá bom, vou ficar de olho em você.")
-                else:
-                    voice.speak("Câmera não disponível.")
-                continue
-
-            if match(user_text, PRESENCE_OFF_TRIGGERS):
-                presence.stop()
-                anim.set_state("speaking")
-                voice.speak("Ok, parei de te observar.")
-                continue
-
-            # ── Bom dia / boa tarde / boa noite ───────────────────────────────
-            if match(user_text, GOOD_MORNING_TRIGGERS):
-                anim.set_state("thinking")
-                prompt = build_briefing_prompt(
-                    reminders_text   = reminders.list_reminders(),
-                    habits_missed    = habits.missed_today(),
-                    learner_summary  = brain.learner.get_profile_summary(),
-                )
-                anim.set_state("speaking")
-                speak_brain_stream(prompt, internal=True)
-                continue
-
-            # ── Memória ───────────────────────────────────────────────────────
-            if match(user_text, CLEAR_HISTORY):
-                brain.clear_history()
-                anim.set_state("speaking")
-                voice.speak("Conversa limpa.")
-                continue
-
-            if match(user_text, FORGET_ALL):
-                brain.forget_everything()
-                anim.set_state("speaking")
-                voice.speak("Apaguei tudo.")
-                continue
-
-            note = extract_note(user_text)
-            if note:
-                brain.remember_note(note)
-                anim.set_state("speaking")
-                voice.speak("Anotei.")
-                continue
-
-            # ── Hábitos ───────────────────────────────────────────────────────
-            habit_resp = habits.try_handle(user_text)
-            if habit_resp:
-                anim.set_state("speaking")
-                voice.speak(habit_resp)
-                continue
-            # ── Timer / Alarme ────────────────────────────────────────────────
-            timer_resp = timer_mgr.try_handle(user_text)
-            if timer_resp:
-                anim.set_state("speaking")
-                voice.speak(timer_resp)
-                continue
-
-            # ── Notas (Obsidian-compatible) ───────────────────────────────────
-            note_resp = note_mgr.try_handle(user_text)
-            if note_resp:
-                anim.set_state("speaking")
-                voice.speak(note_resp)
-                continue
-
-            # ── Modo Estudo ───────────────────────────────────────────────────
-            study_resp = study.try_handle(user_text)
-            if study_resp:
-                anim.set_state("speaking")
-                voice.speak(study_resp)
-                continue
-
-            # ── Busca no histórico ────────────────────────────────────────────
-            if match(user_text, HISTORY_SEARCH_TRIGGERS):
-                anim.set_state("thinking")
-                # Extrai o que buscar
-                query = user_text
-                for tr in HISTORY_SEARCH_TRIGGERS:
-                    if tr in user_text.lower():
-                        query = user_text[user_text.lower().index(tr) + len(tr):].strip()
-                        break
-                if query:
-                    results = history_db.search(query, limit=5)
-                    if results:
-                        context = "\n".join(
-                            f"[{r['timestamp']}] {'Você' if r['role']=='user' else 'Keilinks'}: {r['content']}"
-                            for r in results
-                        )
-                        prompt = (
-                            f"O usuário quer lembrar de uma conversa sobre: {query}\n"
-                            f"Aqui está o que encontrei no histórico:\n{context}\n\n"
-                            "Resume o que encontrou de forma conversacional."
-                        )
-                        anim.set_state("speaking")
-                        speak_brain_stream(prompt, internal=True)
-                    else:
-                        anim.set_state("speaking")
-                        voice.speak(f"Não encontrei nada sobre '{query}' no histórico.")
-                else:
-                    anim.set_state("speaking")
-                    voice.speak("Sobre o que você quer buscar?")
-                continue
-            # ── Lembretes ─────────────────────────────────────────────────────
-            if match(user_text, REMINDER_TRIGGERS):
-                when, msg = reminders.parse_reminder(user_text)
-                reply = reminders.add(when, msg) if when else reminders.list_reminders()
-                anim.set_state("speaking")
-                voice.speak(reply)
-                continue
-
-            if "lista os lembretes" in user_text.lower() or "quais lembretes" in user_text.lower():
-                anim.set_state("speaking")
-                voice.speak(reminders.list_reminders())
-                continue
-
-            # ── Stats do PC ───────────────────────────────────────────────────
-            if match(user_text, STATS_TRIGGERS):
-                anim.set_state("speaking")
-                voice.speak(stats.summary_text())
-                continue
-
-            # ── Monitor de tela ───────────────────────────────────────────────
-            if match(user_text, MONITOR_START_TRIGGERS):
-                interval = 5.0
-                m = re.search(r"a cada\s+(\d+)\s*(segundo|minuto)s?", user_text.lower())
-                if m:
-                    n = int(m.group(1))
-                    interval = n if "segundo" in m.group(2) else n * 60
-                screen_mon.start_watching(MonitorConfig(
-                    interval_secs=interval, change_threshold=0.08, analyze_on_change=True,
-                ))
-                anim.set_state("speaking")
-                voice.speak("Tô de olho. Te aviso se mudar algo relevante.")
-                continue
-
-            if match(user_text, MONITOR_STOP_TRIGGERS):
-                screen_mon.stop_watching()
-                anim.set_state("speaking")
-                voice.speak("Parei de monitorar.")
-                continue
-
-            # ── Mídia ─────────────────────────────────────────────────────────
-            media_resp = media.try_handle(user_text)
-            if media_resp:
-                anim.set_state("speaking")
-                voice.speak(media_resp)
-                continue
-
-            # ── PC control ────────────────────────────────────────────────────
-            pc_resp = pc.try_handle(user_text)
-            if pc_resp:
-                anim.set_state("speaking")
-                voice.speak(pc_resp)
-                continue
-
-            # ── Tradução de tela ──────────────────────────────────────────────
-            if is_translate_trigger(user_text):
-                anim.set_state("thinking")
-                screen_text = eyes.read_screen_text()
-                if not screen_text:
-                    anim.set_state("speaking")
-                    voice.speak("Não consegui ler o texto da tela.")
-                    continue
-                target_lang = extract_target_language(user_text)
-                prompt      = build_translate_prompt(screen_text, target_lang)
-                anim.set_state("speaking")
-                speak_brain_stream(prompt, internal=True)
-                continue
-
-            # ── Resumo de página ──────────────────────────────────────────────
-            if match(user_text, SUMMARIZE_TRIGGERS):
-                anim.set_state("thinking")
-                url = summarizer.extract_url(user_text)
-                if not url:
-                    anim.set_state("speaking")
-                    voice.speak("Não encontrei URL. Cola no clipboard ou fala a URL.")
-                    continue
-                mode = "pontos" if any(p in user_text.lower() for p in ["pontos", "chave", "tópico"]) else "resumo"
-                voice.speak("Deixa eu acessar...", interruptible=False)
-                prompt = summarizer.summarize_url(url, mode=mode)
-                anim.set_state("speaking")
-                speak_brain_stream(prompt, internal=True)
-                continue
-
-            # ── OCR ───────────────────────────────────────────────────────────
-            if match(user_text, OCR_TRIGGERS):
-                anim.set_state("thinking")
-                text_on_screen = eyes.read_screen_text()
-                anim.set_state("speaking")
-                if text_on_screen is None:
-                    voice.speak("Pytesseract não está instalado.")
-                elif not text_on_screen.strip():
-                    voice.speak("Não encontrei texto legível na tela.")
-                else:
-                    prompt = (
-                        "O usuário pediu pra você ler o texto que está na tela. "
-                        "Leia de forma natural, resumindo se for muito longo:\n\n" + text_on_screen
-                    )
-                    speak_brain_stream(prompt, internal=True)
-                continue
-
-            # ── Visão ─────────────────────────────────────────────────────────
-            image_b64 = None
-            if match(user_text, SCREEN_TRIGGERS):
-                log.info("Capturando tela...")
-                image_b64 = eyes.capture_screen_b64()
-                if not image_b64:
-                    anim.set_state("speaking")
-                    voice.speak("Não consegui capturar a tela.")
-                    continue
-            elif match(user_text, CAMERA_TRIGGERS) and eyes.is_available():
-                log.info("Capturando câmera...")
-                image_b64 = eyes.capture_frame_b64()
-
-            # ── LLM com streaming + RAG context ──────────────────────────────
-            import time as _time
-            t0_pipeline = _time.monotonic()
-            anim.set_state("thinking")
-
-            # Suprime alertas de hardware enquanto o LLM processa (GPU sempre ~97%)
-            stats.set_suppress(True)
-
-            try:
-                import torch
-                _vram_before = torch.cuda.memory_allocated() / 1024**2
-            except Exception:
-                _vram_before = None
-
-            # Injeta contexto RAG de conversas anteriores
-            t0_rag = _time.monotonic()
-            rag_context = rag.query_for_prompt(user_text)
-            if rag_context:
-                brain.set_rag_context(rag_context)
-                log.info("[TIMING] RAG query: %.2fs", _time.monotonic() - t0_rag)
-
-            # Humor: detecta pelo áudio capturado e adapta voz
-            if ears.last_audio is not None and len(ears.last_audio) > 1600:
-                t0_mood = _time.monotonic()
-                mood_result = mood_det.analyze(ears.last_audio)
-                voice.set_mood(mood_result.mood)
-                log.debug("[TIMING] Mood detect: %.2fs", _time.monotonic() - t0_mood)
-                # Alimenta calibração do perfil de voz
-                if not voice_prof.calibrated:
-                    voice_prof.add_sample(mood_result.energy, mood_result.pitch_hz, mood_result.speed)
-                    if voice_prof.calibrated:
-                        thresholds = voice_prof.get_thresholds()
-                        if thresholds:
-                            mood_det.apply_profile_thresholds(thresholds)
-                            log.info("Perfil de voz calibrado — thresholds aplicados.")
-
-            mood_summary = mood_det.get_summary()
-            if mood_summary:
-                brain.set_mood_hint(mood_summary)
+        try:
+            anim.set_state("idle")
+            wake.wait_for_wake_word()
+            log.debug("[LOOP] wake word retornou — pausando subsistemas")
+            screen_mon.pause()
+            log.debug("[LOOP] screen_mon pausado")
+            presence.pause()
+            log.debug("[LOOP] presence pausado")
+            wake.unload()
+            log.debug("[LOOP] wake.unload() processado (modo seguro)")
 
             anim.set_state("speaking")
-            completed = speak_brain_stream(user_text, image_b64=image_b64)
-            stats.set_suppress(False)  # reativa alertas após resposta
+            voice.speak("Oi!", interruptible=False)
 
+            # ── Conversa contínua: fica ouvindo até dar timeout ───────────────────
+            turns = 0
+            while turns < CONTINUOUS_MAX_TURNS:
+                anim.set_state("listening")
+
+                # Primeira escuta: sem timeout (espera o usuário falar)
+                # Próximas escutas: usa timeout para detectar fim da conversa
+                timeout = None if turns == 0 else CONTINUOUS_LISTEN_TIMEOUT
+                user_text = ears.listen(on_volume=anim.set_volume, timeout=timeout)
+
+                if not user_text:
+                    if turns == 0:
+                        # Primeira escuta sem resultado — pede pra repetir e tenta mais 1x
+                        anim.set_state("speaking")
+                        voice.speak("Não entendi. Pode repetir?")
+                        turns += 1
+                        continue
+                    else:
+                        # Timeout na conversa contínua — encerra conversa normalmente
+                        log.info("Conversa encerrada por silêncio (timeout).")
+                        break
+
+                turns += 1
+
+                # ── Salva no histórico SQLite + RAG ───────────────────────────────
+                history_db.add_message(session_id, "user", user_text)
+                rag.add(user_text, role="user")
+
+                # ── Saída ─────────────────────────────────────────────────────────
+                if match(user_text, EXIT_TRIGGERS):
+                    anim.set_state("speaking")
+                    voice.speak("Tá bom, amor. Até mais.")
+                    handle_exit()
+
+                # ── Modo silencioso ────────────────────────────────────────────────
+                if match(user_text, SILENT_MODE_ON):
+                    voice.silent_mode = True
+                    # Fala antes de silenciar
+                    anim.set_state("speaking")
+                    voice.silent_mode = False
+                    voice.speak("Ok, fico muda. Me avisa quando quiser que eu volte.")
+                    voice.silent_mode = True
+                    continue
+
+                if match(user_text, SILENT_MODE_OFF):
+                    voice.silent_mode = False
+                    anim.set_state("speaking")
+                    voice.speak("Voltei! Pode falar.")
+                    continue
+
+                # ── Cinema mode ────────────────────────────────────────────────────
+                cinema_resp = cinema.try_handle(user_text)
+                if cinema_resp:
+                    anim.set_state("speaking")
+                    voice.speak(cinema_resp)
+                    continue
+
+                # ── Recalibrar perfil de voz ───────────────────────────────────────
+                if match(user_text, RECALIBRATE_TRIGGERS):
+                    anim.set_state("speaking")
+                    voice.speak(voice_prof.recalibrate())
+                    continue
+
+                # ── Listar skills ──────────────────────────────────────────────────
+                if match(user_text, SKILL_LIST_TRIGGERS):
+                    anim.set_state("speaking")
+                    voice.speak(skills.list_skills())
+                    continue
+
+                # ── Exportar conversa ──────────────────────────────────────────────
+                export_resp = exporter.try_handle(user_text)
+                if export_resp:
+                    anim.set_state("speaking")
+                    voice.speak(export_resp)
+                    continue
+
+                # ── Resumo do dia ──────────────────────────────────────────────────
+                if day_summary.try_handle(user_text):
+                    anim.set_state("thinking")
+                    prompt = day_summary.build_summary_prompt()
+                    anim.set_state("speaking")
+                    speak_brain_stream(prompt, internal=True)
+                    continue
+
+                # ── Google Calendar ────────────────────────────────────────────────
+                cal_resp = calendar.try_handle(user_text)
+                if cal_resp:
+                    anim.set_state("speaking")
+                    voice.speak(cal_resp)
+                    continue
+
+                # ── Clima (wttr.in direto — mais rápido que busca web) ─────────────
+                weather_resp = weather.try_handle(user_text)
+                if weather_resp:
+                    anim.set_state("speaking")
+                    if any(p in user_text.lower() for p in ["e o seu", "e você", "e voce", "como você está", "como voce está", "como você tá", "como voce tá"]):
+                        weather_resp += " E eu tô bem por aqui."
+                    voice.speak(weather_resp)
+                    continue
+
+                smalltalk_resp = handle_smalltalk(user_text)
+                if smalltalk_resp:
+                    anim.set_state("speaking")
+                    voice.speak(smalltalk_resp)
+                    continue
+
+                # ── Plugins/Skills dinâmicos ───────────────────────────────────────
+                skill_resp = skills.try_handle(user_text)
+                if skill_resp:
+                    anim.set_state("speaking")
+                    voice.speak(skill_resp)
+                    continue
+
+                # ── Presença (liga/desliga) ────────────────────────────────────────
+                if match(user_text, PRESENCE_ON_TRIGGERS):
+                    if eyes.is_available():
+                        presence.start(PresenceConfig(check_interval_secs=25.0, min_gap_secs=300.0))
+                        anim.set_state("speaking")
+                        voice.speak("Tá bom, vou ficar de olho em você.")
+                    else:
+                        voice.speak("Câmera não disponível.")
+                    continue
+
+                if match(user_text, PRESENCE_OFF_TRIGGERS):
+                    presence.stop()
+                    anim.set_state("speaking")
+                    voice.speak("Ok, parei de te observar.")
+                    continue
+
+                # ── Bom dia / boa tarde / boa noite ───────────────────────────────
+                if match(user_text, GOOD_MORNING_TRIGGERS):
+                    anim.set_state("thinking")
+                    prompt = build_briefing_prompt(
+                        reminders_text   = reminders.list_reminders(),
+                        habits_missed    = habits.missed_today(),
+                        learner_summary  = brain.learner.get_profile_summary(),
+                    )
+                    anim.set_state("speaking")
+                    speak_brain_stream(prompt, internal=True)
+                    continue
+
+                # ── Memória ───────────────────────────────────────────────────────
+                if match(user_text, CLEAR_HISTORY):
+                    brain.clear_history()
+                    anim.set_state("speaking")
+                    voice.speak("Conversa limpa.")
+                    continue
+
+                if match(user_text, FORGET_ALL):
+                    brain.forget_everything()
+                    anim.set_state("speaking")
+                    voice.speak("Apaguei tudo.")
+                    continue
+
+                note = extract_note(user_text)
+                if note:
+                    brain.remember_note(note)
+                    anim.set_state("speaking")
+                    voice.speak("Anotei.")
+                    continue
+
+                # ── Hábitos ───────────────────────────────────────────────────────
+                habit_resp = habits.try_handle(user_text)
+                if habit_resp:
+                    anim.set_state("speaking")
+                    voice.speak(habit_resp)
+                    continue
+                # ── Timer / Alarme ────────────────────────────────────────────────
+                timer_resp = timer_mgr.try_handle(user_text)
+                if timer_resp:
+                    anim.set_state("speaking")
+                    voice.speak(timer_resp)
+                    continue
+
+                # ── Notas (Obsidian-compatible) ───────────────────────────────────
+                note_resp = note_mgr.try_handle(user_text)
+                if note_resp:
+                    anim.set_state("speaking")
+                    voice.speak(note_resp)
+                    continue
+
+                # ── Modo Estudo ───────────────────────────────────────────────────
+                study_resp = study.try_handle(user_text)
+                if study_resp:
+                    anim.set_state("speaking")
+                    voice.speak(study_resp)
+                    continue
+
+                # ── Busca no histórico ────────────────────────────────────────────
+                if match(user_text, HISTORY_SEARCH_TRIGGERS):
+                    anim.set_state("thinking")
+                    # Extrai o que buscar
+                    query = user_text
+                    for tr in HISTORY_SEARCH_TRIGGERS:
+                        if tr in user_text.lower():
+                            query = user_text[user_text.lower().index(tr) + len(tr):].strip()
+                            break
+                    if query:
+                        results = history_db.search(query, limit=5)
+                        if results:
+                            context = "\n".join(
+                                f"[{r['timestamp']}] {'Você' if r['role']=='user' else 'Keilinks'}: {r['content']}"
+                                for r in results
+                            )
+                            prompt = (
+                                f"O usuário quer lembrar de uma conversa sobre: {query}\n"
+                                f"Aqui está o que encontrei no histórico:\n{context}\n\n"
+                                "Resume o que encontrou de forma conversacional."
+                            )
+                            anim.set_state("speaking")
+                            speak_brain_stream(prompt, internal=True)
+                        else:
+                            anim.set_state("speaking")
+                            voice.speak(f"Não encontrei nada sobre '{query}' no histórico.")
+                    else:
+                        anim.set_state("speaking")
+                        voice.speak("Sobre o que você quer buscar?")
+                    continue
+                # ── Lembretes ─────────────────────────────────────────────────────
+                if match(user_text, REMINDER_TRIGGERS):
+                    when, msg = reminders.parse_reminder(user_text)
+                    reply = reminders.add(when, msg) if when else reminders.list_reminders()
+                    anim.set_state("speaking")
+                    voice.speak(reply)
+                    continue
+
+                if "lista os lembretes" in user_text.lower() or "quais lembretes" in user_text.lower():
+                    anim.set_state("speaking")
+                    voice.speak(reminders.list_reminders())
+                    continue
+
+                # ── Cancelar lembrete ──────────────────────────────────────────────
+                if match(user_text, REMINDER_CANCEL_TRIGGERS):
+                    t_lower = user_text.lower()
+                    if any(p in t_lower for p in ["todos", "all", "tudo"]):
+                        reply = reminders.cancel_all()
+                    else:
+                        # Extrai palavra-chave do que cancelar
+                        kw = user_text
+                        for trigger in REMINDER_CANCEL_TRIGGERS:
+                            if trigger in t_lower:
+                                kw = user_text[t_lower.index(trigger) + len(trigger):].strip().strip(".,! ")
+                                break
+                        reply = reminders.cancel(kw) if kw else reminders.list_reminders()
+                    anim.set_state("speaking")
+                    voice.speak(reply)
+                    continue
+
+                # ── Stats do PC ───────────────────────────────────────────────────
+                if match(user_text, STATS_TRIGGERS):
+                    anim.set_state("speaking")
+                    voice.speak(stats.summary_text())
+                    continue
+
+                # ── Monitor de tela ───────────────────────────────────────────────
+                if match(user_text, MONITOR_START_TRIGGERS):
+                    interval = 5.0
+                    m = re.search(r"a cada\s+(\d+)\s*(segundo|minuto)s?", user_text.lower())
+                    if m:
+                        n = int(m.group(1))
+                        interval = n if "segundo" in m.group(2) else n * 60
+                    screen_mon.start_watching(MonitorConfig(
+                        interval_secs=interval, change_threshold=0.08, analyze_on_change=True,
+                    ))
+                    anim.set_state("speaking")
+                    voice.speak("Tô de olho. Te aviso se mudar algo relevante.")
+                    continue
+
+                if match(user_text, MONITOR_STOP_TRIGGERS):
+                    screen_mon.stop_watching()
+                    anim.set_state("speaking")
+                    voice.speak("Parei de monitorar.")
+                    continue
+
+                spotify_combo_resp = handle_spotify_open_and_play(user_text)
+                if spotify_combo_resp:
+                    anim.set_state("speaking")
+                    voice.speak(spotify_combo_resp)
+                    continue
+
+                # ── Mídia ─────────────────────────────────────────────────────────
+                media_resp = media.try_handle(user_text)
+                if media_resp:
+                    anim.set_state("speaking")
+                    voice.speak(media_resp)
+                    continue
+
+                # ── PC control ────────────────────────────────────────────────────
+                pc_resp = pc.try_handle(user_text)
+                if pc_resp:
+                    anim.set_state("speaking")
+                    voice.speak(pc_resp)
+                    continue
+
+                # ── Tradução de tela ──────────────────────────────────────────────
+                if is_translate_trigger(user_text):
+                    anim.set_state("thinking")
+                    screen_text = eyes.read_screen_text()
+                    if not screen_text:
+                        anim.set_state("speaking")
+                        voice.speak("Não consegui ler o texto da tela.")
+                        continue
+                    target_lang = extract_target_language(user_text)
+                    prompt      = build_translate_prompt(screen_text, target_lang)
+                    anim.set_state("speaking")
+                    speak_brain_stream(prompt, internal=True)
+                    continue
+
+                # ── Resumo de página ──────────────────────────────────────────────
+                if match(user_text, SUMMARIZE_TRIGGERS):
+                    anim.set_state("thinking")
+                    url = summarizer.extract_url(user_text)
+                    if not url:
+                        anim.set_state("speaking")
+                        voice.speak("Não encontrei URL. Cola no clipboard ou fala a URL.")
+                        continue
+                    mode = "pontos" if any(p in user_text.lower() for p in ["pontos", "chave", "tópico"]) else "resumo"
+                    voice.speak("Deixa eu acessar...", interruptible=False)
+                    prompt = summarizer.summarize_url(url, mode=mode)
+                    anim.set_state("speaking")
+                    speak_brain_stream(prompt, internal=True)
+                    continue
+
+                # ── OCR ───────────────────────────────────────────────────────────
+                if match(user_text, OCR_TRIGGERS):
+                    anim.set_state("thinking")
+                    text_on_screen = eyes.read_screen_text()
+                    anim.set_state("speaking")
+                    if text_on_screen is None:
+                        voice.speak("Pytesseract não está instalado.")
+                    elif not text_on_screen.strip():
+                        voice.speak("Não encontrei texto legível na tela.")
+                    else:
+                        prompt = (
+                            "O usuário pediu pra você ler o texto que está na tela. "
+                            "Leia de forma natural, resumindo se for muito longo:\n\n" + text_on_screen
+                        )
+                        speak_brain_stream(prompt, internal=True)
+                    continue
+
+                # ── Visão ─────────────────────────────────────────────────────────
+                image_b64 = None
+                if match(user_text, SCREEN_TRIGGERS):
+                    log.info("Capturando tela...")
+                    voice.speak("Deixa eu ver a tela...", interruptible=False)
+                    image_b64 = eyes.capture_screen_b64()
+                    if not image_b64:
+                        anim.set_state("speaking")
+                        voice.speak("Não consegui capturar a tela.")
+                        continue
+                    log.info("[VISION] Tela capturada: %d chars base64 (~%dKB)",
+                             len(image_b64), len(image_b64) * 3 // 4 // 1024)
+                elif match(user_text, CAMERA_TRIGGERS) and eyes.is_available():
+                    log.info("[VISION] Trigger de câmera detectado. Capturando frame...")
+                    voice.speak("Deixa eu olhar...", interruptible=False)
+                    image_b64 = eyes.capture_frame_b64()
+                    if image_b64:
+                        log.info("[VISION] Frame capturado: %d chars base64 (~%dKB)",
+                                 len(image_b64), len(image_b64) * 3 // 4 // 1024)
+                    else:
+                        log.error("[VISION] capture_frame_b64() retornou None! "
+                                  "Câmera ocupada, frame corrompido ou índice errado.")
+                elif match(user_text, CAMERA_TRIGGERS) and not eyes.is_available():
+                    log.warning("[VISION] Trigger de câmera mas câmera indisponível (eyes.is_available()=False).")
+                    anim.set_state("speaking")
+                    voice.speak("Câmera não disponível no momento.")
+                    continue
+
+                # ── LLM com streaming + RAG context ──────────────────────────────
+                import time as _time
+                t0_pipeline = _time.monotonic()
+                anim.set_state("thinking")
+
+                # Quando há imagem (câmera ou tela), usa prompt de visão explícito
+                llm_prompt = user_text
+                if image_b64:
+                    _visual_prefix = (
+                        "Descreva detalhadamente o que você vê nessa imagem. "
+                        "A pergunta do usuário é: "
+                    )
+                    llm_prompt = _visual_prefix + user_text
+
+                # Suprime alertas de hardware enquanto o LLM processa (GPU sempre ~97%)
+                stats.set_suppress(True)
+
+                try:
+                    import torch
+                    _vram_before = torch.cuda.memory_allocated() / 1024**2
+                except Exception:
+                    _vram_before = None
+
+                # Injeta contexto RAG de conversas anteriores
+                t0_rag = _time.monotonic()
+                rag_context = rag.query_for_prompt(user_text)
+                if rag_context:
+                    brain.set_rag_context(rag_context)
+                    log.info("[TIMING] RAG query: %.2fs", _time.monotonic() - t0_rag)
+
+                # Humor: detecta pelo áudio capturado e adapta voz
+                if ears.last_audio is not None and len(ears.last_audio) > 1600:
+                    t0_mood = _time.monotonic()
+                    mood_result = mood_det.analyze(ears.last_audio)
+                    voice.set_mood(mood_result.mood)
+                    log.debug("[TIMING] Mood detect: %.2fs", _time.monotonic() - t0_mood)
+                    # Alimenta calibração do perfil de voz
+                    if not voice_prof.calibrated:
+                        voice_prof.add_sample(mood_result.energy, mood_result.pitch_hz, mood_result.speed)
+                        if voice_prof.calibrated:
+                            thresholds = voice_prof.get_thresholds()
+                            if thresholds:
+                                mood_det.apply_profile_thresholds(thresholds)
+                                log.info("Perfil de voz calibrado — thresholds aplicados.")
+
+                mood_summary = mood_det.get_summary()
+                if mood_summary and not is_command_like_text(user_text):
+                    brain.set_mood_hint(mood_summary)
+
+                anim.set_state("speaking")
+                completed = speak_brain_stream(llm_prompt, image_b64=image_b64)
+                stats.set_suppress(False)  # reativa alertas após resposta
+
+                try:
+                    import torch
+                    _vram_after = torch.cuda.memory_allocated() / 1024**2
+                    if _vram_before is not None:
+                        log.debug("[VRAM] Antes LLM: %.0fMB  Depois: %.0fMB  Δ=%.0fMB  Pipeline: %.1fs",
+                                  _vram_before, _vram_after, _vram_after - _vram_before,
+                                  _time.monotonic() - t0_pipeline)
+                except Exception:
+                    pass
+
+                # Salva resposta do assistant no histórico + RAG
+                if brain.history and brain.history[-1].get("role") == "assistant":
+                    assistant_text = brain.history[-1]["content"]
+                    history_db.add_message(session_id, "assistant", assistant_text)
+                    rag.add(assistant_text, role="assistant")
+
+                # Se interrompida, ouve imediatamente (sem timeout, como ação direta)
+                if not completed:
+                    # Pré-aquece o modelo enquanto ouve — evita reload de ~20s causado
+                    # pelo fechamento abrupto do stream anterior.
+                    threading.Thread(target=brain.warmup, daemon=True).start()
+
+                    anim.set_state("listening")
+                    user_text2 = ears.listen(on_volume=anim.set_volume)
+                    if user_text2:
+                        history_db.add_message(session_id, "user", user_text2)
+                        rag.add(user_text2, role="user")
+
+                        # Passa pelos handlers de atalho antes de chamar o LLM
+                        # (mesmo pipeline do turno normal — evita que timer/reminder/etc.
+                        # sejam ignorados quando o usuário fala depois de uma interrupção)
+                        _resp2 = (
+                            timer_mgr.try_handle(user_text2)
+                            or handle_spotify_open_and_play(user_text2)
+                            or media.try_handle(user_text2)
+                            or pc.try_handle(user_text2)
+                            or note_mgr.try_handle(user_text2)
+                            or habits.try_handle(user_text2)
+                            or cinema.try_handle(user_text2)
+                        )
+                        if not _resp2 and match(user_text2, REMINDER_TRIGGERS):
+                            _when2, _msg2 = reminders.parse_reminder(user_text2)
+                            if _when2:
+                                _resp2 = reminders.add(_when2, _msg2)
+                        if not _resp2 and match(user_text2, STATS_TRIGGERS):
+                            _resp2 = stats.summary_text()
+
+                        anim.set_state("speaking")
+                        if _resp2:
+                            voice.speak(_resp2)
+                        else:
+                            anim.set_state("thinking")
+                            anim.set_state("speaking")
+                            speak_brain_stream(user_text2)
+
+                        if brain.history and brain.history[-1].get("role") == "assistant":
+                            assistant_text2 = brain.history[-1]["content"]
+                            history_db.add_message(session_id, "assistant", assistant_text2)
+                            rag.add(assistant_text2, role="assistant")
+
+                # Continua o loop da conversa contínua — volta pro listening com timeout
+
+            # ── Saiu da conversa contínua — volta ao idle ─────────────────────
+            log.info("Voltando ao modo idle.")
+            screen_mon.resume()
+            presence.resume()
+            wake.reload()   # idempotente; só recarrega se o modelo não existir
+
+        except KeyboardInterrupt:
+            handle_exit()
+        except Exception as _loop_err:
+            log.error("Erro no loop principal (recuperando automaticamente): %s", _loop_err, exc_info=True)
+            # Garante que os subsistemas voltam ao estado correto
             try:
-                import torch
-                _vram_after = torch.cuda.memory_allocated() / 1024**2
-                if _vram_before is not None:
-                    log.debug("[VRAM] Antes LLM: %.0fMB  Depois: %.0fMB  Δ=%.0fMB  Pipeline: %.1fs",
-                              _vram_before, _vram_after, _vram_after - _vram_before,
-                              _time.monotonic() - t0_pipeline)
+                stats.set_suppress(False)
             except Exception:
                 pass
-
-            # Salva resposta do assistant no histórico + RAG
-            if brain.history and brain.history[-1].get("role") == "assistant":
-                assistant_text = brain.history[-1]["content"]
-                history_db.add_message(session_id, "assistant", assistant_text)
-                rag.add(assistant_text, role="assistant")
-
-            # Se interrompida, ouve imediatamente (sem timeout, como ação direta)
-            if not completed:
-                anim.set_state("listening")
-                user_text2 = ears.listen(on_volume=anim.set_volume)
-                if user_text2:
-                    history_db.add_message(session_id, "user", user_text2)
-                    rag.add(user_text2, role="user")
-                    anim.set_state("thinking")
-                    anim.set_state("speaking")
-                    speak_brain_stream(user_text2)
-                    if brain.history and brain.history[-1].get("role") == "assistant":
-                        assistant_text2 = brain.history[-1]["content"]
-                        history_db.add_message(session_id, "assistant", assistant_text2)
-                        rag.add(assistant_text2, role="assistant")
-
-            # Continua o loop da conversa contínua — volta pro listening com timeout
-
-        # ── Saiu da conversa contínua — volta ao idle ─────────────────────────
-        log.info("Voltando ao modo idle.")
-        screen_mon.resume()
-        presence.resume()
-        wake.reload()   # recarrega o modelo tiny na VRAM
+            try:
+                screen_mon.resume()
+            except Exception:
+                pass
+            try:
+                presence.resume()
+            except Exception:
+                pass
+            try:
+                if wake.model is None:
+                    wake.reload()
+            except Exception:
+                pass
+            anim.set_state("idle")
 
 
 if __name__ == "__main__":
-    main()
+    import time as _time
+    while True:
+        try:
+            main()
+        except KeyboardInterrupt:
+            break
+        except Exception as _top_err:
+            log.critical("Keilinks caiu com erro fatal: %s", _top_err, exc_info=True)
+            print(f"\n[Keilinks] Erro fatal: {_top_err}\nReiniciando em 5 segundos...")
+            _time.sleep(5)

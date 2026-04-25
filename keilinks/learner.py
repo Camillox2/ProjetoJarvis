@@ -8,7 +8,7 @@ import threading
 from datetime import datetime
 from pathlib import Path
 import httpx
-from config import OLLAMA_HOST, LLM_FALLBACK
+from config import OLLAMA_HOST, LLM_MODEL
 from keilinks.log import get_logger
 
 log = get_logger("learner")
@@ -43,7 +43,7 @@ Mensagem: "{text}"
 
 class Learner:
     def __init__(self):
-        # Usa o modelo menor (4b) para não competir com o 8b durante conversa
+        # Usa o mesmo modelo principal para não causar reload de VRAM
         self.client  = httpx.Client(base_url=OLLAMA_HOST, timeout=30.0)
         self.profile = self._load_profile()
         self._usage_log: list[dict] = []   # log de horários de uso
@@ -91,10 +91,12 @@ class Learner:
     def _extract_from_llm(self, text: str) -> dict | None:
         try:
             r = self.client.post("/api/chat", json={
-                "model":    LLM_FALLBACK,   # 4b — rápido, não disputa VRAM com o 8b
+                "model":    LLM_MODEL,   # mesmo modelo já carregado na VRAM — zero reload
                 "messages": [{"role": "user", "content": EXTRACTION_PROMPT.format(text=text)}],
                 "stream":   False,
-                "options":  {"temperature": 0.1, "num_ctx": 1024},
+                "think":    False,
+                "keep_alive": "30m",
+                "options":  {"temperature": 0.1, "num_ctx": 2048, "num_predict": 128},
             })
             r.raise_for_status()
             content = r.json()["message"]["content"].strip()
@@ -142,8 +144,35 @@ class Learner:
             # Mantém só os últimos 50 registros únicos
             self.profile["horarios_uso"] = self.profile["horarios_uso"][-50:]
 
+    def _should_learn_from_text(self, text: str) -> bool:
+        t = " ".join(text.lower().split())
+        if len(t) < 12:
+            return False
+
+        command_starts = (
+            "abre", "abrir", "fecha", "fechar", "toca", "coloca", "bota",
+            "passa", "passe", "pausa", "pause", "resume", "continua",
+            "aumenta", "abaixa", "diminui", "liga", "desliga", "clica",
+            "digita", "pesquisa", "busca", "me mostra", "me lembra",
+            "tira", "faz", "veja", "olha", "usa",
+        )
+        if t.startswith(command_starts):
+            return False
+
+        personal_markers = (
+            " eu ", " meu ", " minha ", " meus ", " minhas ",
+            " gosto ", " nao gosto ", " não gosto ", " prefiro ",
+            " quero ", " preciso ", " trabalho ", " estudo ", " moro ",
+            " sou ", " tenho ", " costumo ", " sempre ", " normalmente ",
+        )
+        padded = f" {t} "
+        return any(marker in padded for marker in personal_markers)
+
     def learn_async(self, text: str):
         self._log_usage_time()
+        if not self._should_learn_from_text(text):
+            log.debug("Ignorando aprendizado para texto operacional/ruidoso: %s", text)
+            return
         extracted = self._extract_from_llm(text)
         if extracted and self._merge(extracted):
             self._save_profile()

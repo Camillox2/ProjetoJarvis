@@ -32,21 +32,50 @@ def _press_media_key(vk: int):
 
 
 MEDIA_TRIGGERS = {
-    "play":    ["play", "toca", "continua", "resume", "reproduz"],
+    "play":    ["play", "dá play", "da play", "toca", "continua", "resume", "reproduz"],
     "pause":   ["pause", "pausa", "para a música", "para a musica"],
     "toggle":  ["play pause", "play/pause", "parar", "pausar"],
-    "next":    ["próxima", "proxima", "next", "pula", "avança", "avanca"],
-    "prev":    ["anterior", "volta", "previous", "prev", "música anterior", "musica anterior"],
+    "next":    ["próxima", "proxima", "next", "pula", "avança", "avanca",
+                "passa a música", "passa a musica", "passe a música", "passe a musica",
+                "próxima música", "proxima musica"],
+    "prev":    ["anterior", "volta", "previous", "prev", "música anterior", "musica anterior",
+                "volta a música", "volta a musica"],
     "now":     ["o que tá tocando", "que música é essa", "qual música", "que tá tocando",
-                "que musica é essa", "o que está tocando"],
+                "que musica é essa", "o que está tocando", "que som é esse", "que artista",
+                "nome da música", "qual é a música", "qual é essa música"],
+    "like":    ["curte essa música", "curte essa musica", "salva essa música", "salva essa musica",
+                "gostei dessa música", "gostei dessa musica", "adiciona nas favoritas",
+                "salva nos favoritos", "like nessa música"],
+    "dislike": ["não gostei dessa música", "nao gostei dessa musica",
+                "remove dos favoritos", "descurte"],
     "search":  ["toca a música", "toca a musica", "coloca a música", "coloca a musica",
-                "bota pra tocar", "toca no spotify"],
+                "bota pra tocar", "toca no spotify", "coloca o", "toca o",
+                "quero ouvir", "bota o", "coloca a", "toca a"],
+    "play_generic": [
+        "tem uma música", "tem uma musica", "tem alguma música", "tem alguma musica",
+        "bota uma música", "bota uma musica", "bota alguma coisa", "bota algum som",
+        "coloca uma música", "coloca uma musica", "coloca alguma coisa", "coloca um som",
+        "toca alguma coisa", "toca alguma música", "toca alguma musica",
+        "liga o spotify", "bota o spotify", "coloca o spotify",
+        "uma música pra mim", "uma musica pra mim",
+        "bota um som pra mim", "coloca um som pra mim",
+        "quero ouvir alguma coisa", "quero uma música",
+        "coloca uma musica pra mim", "bota musica", "bota música",
+        "rola uma música", "rola uma musica", "rola algo",
+    ],
     "playlist": ["coloca uma playlist", "coloca playlist", "toca playlist",
                  "coloca uma playlist de", "playlist de"],
-    "vol_up":  ["aumenta o spotify", "volume do spotify pra cima"],
-    "vol_down": ["diminui o spotify", "volume do spotify pra baixo", "abaixa o spotify"],
-    "shuffle": ["aleatório", "aleatorio", "shuffle"],
-    "repeat":  ["repete essa", "repetir", "repeat"],
+    "vol_up":  ["aumenta o spotify", "volume do spotify pra cima", "aumenta o volume da música",
+                "aumenta o som", "mais alto"],
+    "vol_down": ["diminui o spotify", "volume do spotify pra baixo", "abaixa o spotify",
+                 "diminui o volume da música", "abaixa o som", "mais baixo"],
+    "shuffle": ["aleatório", "aleatorio", "shuffle", "modo aleatório", "embaralha"],
+    "repeat":  ["repete essa", "repetir", "repeat", "repete a música", "loop"],
+    "queue":   ["adiciona na fila", "coloca na fila", "add na fila", "bota na fila",
+                "próxima faixa coloca", "na fila coloca", "adiciona à fila"],
+    "lyrics":  ["letra dessa música", "letra da música", "o que diz essa música",
+                "me fala a letra", "qual a letra", "mostra a letra", "diz a letra",
+                "canta essa música", "como é a letra"],
 }
 
 
@@ -74,6 +103,8 @@ class SpotifyControl:
                 "user-read-playback-state "
                 "user-modify-playback-state "
                 "user-read-currently-playing "
+                "user-library-modify "
+                "user-library-read "
                 "playlist-read-private "
                 "playlist-read-collaborative"
             )
@@ -232,13 +263,107 @@ class SpotifyControl:
         except Exception as e:
             return f"Erro: {e}"
 
+    def like_current(self) -> str:
+        if not self._api_ok:
+            return "API não conectada."
+        try:
+            pb = self._sp.current_playback()
+            if not pb or not pb.get("item"):
+                return "Nenhuma música tocando."
+            track_id = pb["item"]["id"]
+            name     = pb["item"]["name"]
+            self._sp.current_user_saved_tracks_add([track_id])
+            return f"Curti e salvei '{name}' nos favoritos."
+        except Exception as e:
+            return f"Erro: {e}"
+
+    def dislike_current(self) -> str:
+        if not self._api_ok:
+            return "API não conectada."
+        try:
+            pb = self._sp.current_playback()
+            if not pb or not pb.get("item"):
+                return "Nenhuma música tocando."
+            track_id = pb["item"]["id"]
+            name     = pb["item"]["name"]
+            self._sp.current_user_saved_tracks_delete([track_id])
+            return f"Removi '{name}' dos favoritos."
+        except Exception as e:
+            return f"Erro: {e}"
+
+    def add_to_queue(self, query: str) -> str:
+        """Adiciona uma música à fila do Spotify."""
+        if not self._api_ok:
+            return "Spotify API não conectada."
+        try:
+            results = self._sp.search(q=query, type="track", limit=1, market="BR")
+            tracks  = results.get("tracks", {}).get("items", [])
+            if not tracks:
+                return f"Não encontrei '{query}' no Spotify."
+            track  = tracks[0]
+            name   = track["name"]
+            artist = track["artists"][0]["name"]
+            uri    = track["uri"]
+            device = self._get_active_device()
+            self._sp.add_to_queue(uri, device_id=device)
+            return f"Adicionei '{name}' de {artist} à fila."
+        except Exception as e:
+            return f"Erro ao adicionar na fila: {e}"
+
+    def get_lyrics(self) -> str:
+        """Busca a letra da música atual via Lyrics.ovh (API gratuita, sem key)."""
+        if not self._api_ok:
+            return "Spotify API não conectada."
+        try:
+            import httpx
+            pb = self._sp.current_playback()
+            if not pb or not pb.get("item"):
+                return "Nenhuma música tocando."
+            track  = pb["item"]
+            name   = track.get("name", "")
+            artist = track["artists"][0]["name"] if track.get("artists") else ""
+            if not name or not artist:
+                return "Não consegui identificar a música atual."
+            # API pública gratuita — sem chave
+            url = f"https://api.lyrics.ovh/v1/{httpx.URL(artist).path}/{httpx.URL(name).path}"
+            # Simplifica: usa httpx direto
+            resp = httpx.get(
+                f"https://api.lyrics.ovh/v1/{artist}/{name}",
+                timeout=8.0,
+                follow_redirects=True,
+            )
+            if resp.status_code == 200:
+                data = resp.json()
+                lyrics = data.get("lyrics", "")
+                if lyrics:
+                    # Retorna no máximo 600 chars pra não ficar enorme no TTS
+                    lyrics_clean = lyrics.replace("\r", "").strip()
+                    if len(lyrics_clean) > 600:
+                        lyrics_clean = lyrics_clean[:600] + "…"
+                    return f"Letra de {name} - {artist}:\n{lyrics_clean}"
+            return f"Não encontrei a letra de '{name}' por {artist}."
+        except Exception as e:
+            return f"Erro ao buscar letra: {e}"
+
     # ─── Handler para main ────────────────────────────────────────────────────
     def try_handle(self, text: str) -> str | None:
+        import re
         t = text.lower()
 
-        # Ordem importa
+        # Se o usuário pediu explicitamente para abrir o Spotify, deixa o PCControl
+        # resolver a abertura do app. O main trata o caso composto "abre + dá play".
+        if "spotify" in t and any(v in t for v in ("abre ", "abrir ", "open ")):
+            return None
+
+        # Ordem importa — mais específico primeiro
         if any(p in t for p in MEDIA_TRIGGERS["now"]):
             return self.now_playing()
+
+        if any(p in t for p in MEDIA_TRIGGERS["like"]):
+            return self.like_current()
+
+        if any(p in t for p in MEDIA_TRIGGERS["dislike"]):
+            return self.dislike_current()
 
         if any(p in t for p in MEDIA_TRIGGERS["shuffle"]):
             return self.toggle_shuffle()
@@ -246,14 +371,29 @@ class SpotifyControl:
         if any(p in t for p in MEDIA_TRIGGERS["repeat"]):
             return self.toggle_repeat()
 
+        if any(p in t for p in MEDIA_TRIGGERS["lyrics"]):
+            return self.get_lyrics()
+
+        if any(p in t for p in MEDIA_TRIGGERS["queue"]):
+            for tr in MEDIA_TRIGGERS["queue"]:
+                if tr in t:
+                    query = t[t.index(tr) + len(tr):].strip()
+                    if query and len(query) > 2:
+                        return self.add_to_queue(query)
+            return "Qual música você quer adicionar na fila?"
+
+        # Volume do Spotify com valor exato
+        m = re.search(r"volume\s+(?:do\s+)?spotify\s+(?:para|em|a|pro)?\s*(\d+)", t)
+        if m:
+            return self.set_volume(int(m.group(1)))
+
         if any(p in t for p in MEDIA_TRIGGERS["vol_up"]):
-            return self.set_volume(80)  # TODO: extrair valor do texto
+            return self.set_volume(80)
 
         if any(p in t for p in MEDIA_TRIGGERS["vol_down"]):
             return self.set_volume(30)
 
         if any(p in t for p in MEDIA_TRIGGERS["playlist"]):
-            # Extrai nome da playlist depois do trigger
             for tr in MEDIA_TRIGGERS["playlist"]:
                 if tr in t:
                     query = t[t.index(tr) + len(tr):].strip()
@@ -261,14 +401,18 @@ class SpotifyControl:
                         return self.play_playlist(query)
             return self.play_playlist("Top Brasil")
 
+        # Play genérico (sem música específica) — antes do search pra não conflitar
+        if any(p in t for p in MEDIA_TRIGGERS["play_generic"]):
+            return self.play_pause()
+
         if any(p in t for p in MEDIA_TRIGGERS["search"]):
-            # Extrai nome da música depois do trigger
-            for tr in MEDIA_TRIGGERS["search"]:
+            for tr in sorted(MEDIA_TRIGGERS["search"], key=len, reverse=True):  # maior trigger primeiro
                 if tr in t:
                     query = t[t.index(tr) + len(tr):].strip()
-                    if query:
+                    if query and len(query) > 2:
                         return self.search_and_play(query)
-            return "Que música você quer ouvir?"
+            # Trigger encontrado mas sem query — play genérico
+            return self.play_pause()
 
         if any(p in t for p in MEDIA_TRIGGERS["toggle"]):
             return self.play_pause()

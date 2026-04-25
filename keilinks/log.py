@@ -34,7 +34,12 @@ logging.basicConfig(
 )
 
 # Silencia logs ruidosos de terceiros
-for noisy in ("httpx", "httpcore", "urllib3", "PIL", "faster_whisper"):
+for noisy in (
+    "httpx", "httpcore", "urllib3", "PIL", "faster_whisper",
+    "comtypes", "comtypes.client", "comtypes._post_coinit",
+    "comtypes._comobject", "comtypes._vtbl", "comtypes._manage",
+    "asyncio", "chromadb", "chromadb.config",
+):
     logging.getLogger(noisy).setLevel(logging.WARNING)
 
 

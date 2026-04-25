@@ -62,14 +62,22 @@ WAKE_WORDS = [
     "kélings",
     "cilinx",
     "kelings",
-    # Ativação simples
+]
+
+WAKE_GREETINGS = [
     "oi",
-    "hey",
-    "ei",
-    # Variações fonéticas do Whisper tiny para 'oi'
-    "ui",
-    "uí",
-    " i",
+    "olá",
+    "ola",
+    "oi amor",
+    "tudo bem",
+    "oi tudo bem",
+    "oi tudo bem",
+    "olá tudo bem",
+    "ola tudo bem",
+    "como você tá",
+    "como voce ta",
+    "como você está",
+    "como voce esta",
 ]
 
 # Janela de áudio para detectar wake word (segundos)
@@ -80,13 +88,20 @@ WAKE_STEP_SECS   = 0.05
 class WakeWordDetector:
     def __init__(self):
         self.model = None
+        self._device = None
         self.chunk_samples = int(SAMPLE_RATE * WAKE_WINDOW_SECS)
         self.step_samples  = int(SAMPLE_RATE * WAKE_STEP_SECS)
         self._last_clap_ts = 0.0
         self._last_wake_ts = 0.0
         self._clap_times: list[float] = []
         self._noise_rms = 0.004
+        self._suppressed  = False   # True enquanto TTS está falando
         self._load_model()
+
+    def suppress(self, flag: bool):
+        """Desativa a detecção de wake word enquanto o TTS está falando,
+        evitando que a Keilinks se auto-acorde pelo próprio áudio."""
+        self._suppressed = flag
 
     def _load_model(self):
         """Carrega o modelo tiny na VRAM."""
@@ -99,31 +114,35 @@ class WakeWordDetector:
                 device="cuda",
                 compute_type="float16",
             )
+            self._device = "cuda"
             log.info("Wake word pronta.")
         except Exception as e:
             log.error("Falha ao carregar wake word model: %s — tentando CPU", e)
             try:
                 self.model = WhisperModel("tiny", device="cpu", compute_type="int8")
+                self._device = "cpu"
                 log.info("Wake word rodando na CPU (fallback).")
             except Exception as e2:
                 log.error("Wake word indisponível: %s", e2)
                 self.model = None
+                self._device = None
 
     def unload(self):
-        """Libera VRAM do modelo tiny (chamar durante conversas)."""
+        """No-op seguro no Windows.
+
+        O destrutor do faster-whisper/ctranslate2 em CUDA pode abortar o processo
+        ao liberar o modelo durante a troca wake->conversa. Como a wake word já
+        fica suprimida durante TTS e conversa, manter o tiny carregado é mais
+        seguro do que descarregar/recarregar a cada turno.
+        """
         if self.model is not None:
-            del self.model
-            self.model = None
-            # Libera cache CUDA
-            try:
-                import torch
-                torch.cuda.empty_cache()
-            except Exception:
-                pass
-            log.debug("Wake word model descarregado da VRAM.")
+            log.debug(
+                "Wake word unload ignorado; mantendo modelo em %s para evitar SIGABRT do ctranslate2.",
+                self._device or "desconhecido",
+            )
 
     def reload(self):
-        """Recarrega o modelo (chamar ao voltar pro idle)."""
+        """Recarrega o modelo só se ele realmente não estiver carregado."""
         self._load_model()
 
     def _transcribe_chunk(self, audio_np: np.ndarray) -> str:
@@ -132,9 +151,11 @@ class WakeWordDetector:
         segments, _ = self.model.transcribe(
             audio_np,
             language="pt",
-            beam_size=1,
+            beam_size=2,
+            temperature=0.0,
+            condition_on_previous_text=False,
             vad_filter=True,
-            vad_parameters={"min_silence_duration_ms": 300},
+            vad_parameters={"min_silence_duration_ms": 220},
         )
         return " ".join(seg.text for seg in segments).strip().lower()
 
@@ -142,7 +163,22 @@ class WakeWordDetector:
         # Remove pontuação e normaliza antes de checar
         import re
         clean = re.sub(r"[!?.,;:\-]", "", text).strip()
-        return any(w in clean for w in WAKE_WORDS)
+        if any(w in clean for w in WAKE_WORDS):
+            return True
+
+        # Permite saudações muito curtas para UX natural, mas sem voltar a aceitar
+        # qualquer ruído/transcrição solta como wake word.
+        if clean in WAKE_GREETINGS:
+            return True
+
+        words = clean.split()
+        if len(words) <= 3 and words and words[0] in {"oi", "olá", "ola"}:
+            return True
+
+        if len(words) <= 4 and clean.startswith(("tudo bem", "como você", "como voce")):
+            return True
+
+        return False
 
     def _detect_clap(self, audio_np: np.ndarray) -> tuple[bool, bool]:
         """
@@ -246,7 +282,9 @@ class WakeWordDetector:
                     chunk, _ = stream.read(self.step_samples)
                     audio_np = chunk.flatten().astype(np.float32) / 32768.0
 
-                    if self._handle_clap(audio_np):
+                    # Palmas funcionam mesmo com TTS ativo — mas não disparam
+                    # se _suppressed (TTS falando), para evitar auto-ativação
+                    if not self._suppressed and self._handle_clap(audio_np):
                         return True
 
                     window_chunks.append(audio_np)
@@ -259,6 +297,10 @@ class WakeWordDetector:
                     window_chunks.clear()
                     window_samples = 0
 
+                    # Não transcreve enquanto TTS está falando (evita auto-ativação)
+                    if self._suppressed:
+                        continue
+
                     if np.abs(audio_window).mean() < 0.01:
                         continue
 
@@ -269,6 +311,7 @@ class WakeWordDetector:
                         log.info("Wake word detectada!")
                         return True
         except Exception as e:
-            log.error("Erro no stream de áudio do wake word: %s", e)
-            input("[Pressione Enter para simular wake word] ")
+            log.error("Erro no stream de áudio do wake word: %s", e, exc_info=True)
+            # Não bloquear com input() — aguarda e retorna para o loop principal tratar
+            time.sleep(2.0)
             return True

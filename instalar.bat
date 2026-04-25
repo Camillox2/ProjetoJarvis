@@ -1,11 +1,12 @@
 @echo off
+cd /d "%~dp0"
 echo ========================================
 echo  Instalando Keilinks...
 echo ========================================
 
 :: Cria ambiente virtual
-python -m venv venv
-call venv\Scripts\activate
+python -m venv .venv
+call .venv\Scripts\activate
 
 :: Atualiza pip
 python -m pip install --upgrade pip

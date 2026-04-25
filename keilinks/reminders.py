@@ -106,6 +106,31 @@ class ReminderManager:
             self._reminders = [r for r in self._reminders if not r["done"]]
             self._save()
 
+    def cancel(self, keyword: str) -> str:
+        """Cancela um lembrete que contenha a palavra-chave na mensagem."""
+        keyword_lower = keyword.lower().strip()
+        with self._lock:
+            before = len([r for r in self._reminders if not r["done"]])
+            self._reminders = [
+                r for r in self._reminders
+                if r["done"] or keyword_lower not in r["message"].lower()
+            ]
+            after = len([r for r in self._reminders if not r["done"]])
+            self._save()
+        removed = before - after
+        if removed > 0:
+            return f"Cancelei {removed} lembrete(s) sobre '{keyword}'."
+        return f"Não encontrei lembrete sobre '{keyword}'."
+
+    def cancel_all(self) -> str:
+        """Cancela todos os lembretes pendentes."""
+        with self._lock:
+            count = len([r for r in self._reminders if not r["done"]])
+            for r in self._reminders:
+                r["done"] = True
+            self._save()
+        return f"Cancelei {count} lembrete(s)." if count else "Não havia lembretes pendentes."
+
     # ─── Persistência ─────────────────────────────────────────────────────────
     def _load(self) -> list[dict]:
         REMINDERS_FILE.parent.mkdir(exist_ok=True)

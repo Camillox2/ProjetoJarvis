@@ -1,0 +1,10 @@
+{
+  "calibrated": true,
+  "samples": 10,
+  "energy_mean": 0.6119581675855443,
+  "energy_std": 0.4057559316044141,
+  "pitch_mean": 143.49380420213217,
+  "pitch_std": 48.19812207718156,
+  "speed_mean": 0.3813118326791855,
+  "speed_std": 0.1787854203472155
+}
